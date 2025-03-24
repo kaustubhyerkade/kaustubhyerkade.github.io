@@ -120,7 +120,7 @@ const requestApiResponse = async (incomingMessageElement) => {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-                contents: [{ role: "user", parts: [{ text: currentUserMessage }] }]
+                contents: [{ role: "user", parts: [{ text: `You are a financial advisor based in India. Answer the following question: ${currentUserMessage}` }] }]
             }),
         });
 
