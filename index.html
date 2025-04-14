@@ -266,7 +266,7 @@
   <section class="py-16 text-center bg-blue-600 text-white">
     <h2 class="text-3xl font-bold">Want to Streamline Your Workflow?</h2>
     <p class="mt-2">Let GenAI assist your pharma journey.</p>
-    <a href="#" class="inline-block mt-6 bg-white text-blue-600 px-6 py-2 rounded">Request a Demo</a>
+    <a href="#" class="inline-block mt-6 bg-white text-blue-600 px-6 py-2 rounded">Request a Call</a>
   </section>
   
     <!-- Features Section -->
@@ -277,57 +277,70 @@
       <div class="bg-white p-6 shadow rounded">📁 Intelligent Filters</div>
       <div class="bg-white p-6 shadow rounded">📜 Regulatory Assistant</div>
 	  <div class="bg-white p-6 shadow rounded">🔍 Smart Product Finder</div>
-      <div class="bg-white p-6 shadow rounded">📁 Intelligent Filters</div>
-      <div class="bg-white p-6 shadow rounded">📜 Regulatory Assistant</div>
-	  <div class="bg-white p-6 shadow rounded">🔍 Smart Product Finder</div>
-      <div class="bg-white p-6 shadow rounded">📁 Intelligent Filters</div>
+      
     </div>
   </section>
   
-    <!--Testimonials carousal-->
-  <section class="bg-gray-50 py-16">
+<!--Testimonials carousal-->
+<section id='testimonials' class="bg-gray-50 py-16">
   <div class="max-w-7xl mx-auto px-6">
     <h2 class="text-3xl font-bold text-blue-700 text-center mb-10">What Our Clients Say</h2>
 
     <div class="relative">
-      <!-- Carousel Wrapper -->
-      <div id="multiCarousel" class="flex transition-transform duration-700 ease-in-out space-x-6">
-        <!-- Repeatable Testimonial Cards -->
-        <div class="min-w-[300px] max-w-xs bg-white rounded-lg shadow p-6 flex-shrink-0">
-          <img src="https://randomuser.me/api/portraits/women/44.jpg" class="w-14 h-14 mx-auto rounded-full mb-3" alt="">
-          <p class="text-gray-700 text-sm mb-2 italic">“Novapure’s impurity standards helped streamline our lab validations.”</p>
-          <h4 class="font-semibold text-blue-700 text-sm">Dr. Anjali Mehta</h4>
+      <!-- Carousel Wrapper with flex-wrap for responsiveness -->
+      <div id="responsiveCarousel" class="flex flex-nowrap md:flex-wrap overflow-x-auto scroll-smooth gap-6 pb-4">
+
+        <!-- Testimonial Cards -->
+        <div class="flex-shrink-0 w-[90%] sm:w-[45%] md:w-[30%] lg:w-[22%] bg-white rounded-lg shadow p-5">
+          <img src="https://randomuser.me/api/portraits/women/44.jpg" class="w-14 h-14 mx-auto rounded-full mb-3" />
+          <p class="text-gray-700 text-sm italic mb-2">“Novapure’s impurity standards streamlined our regulatory approval.”</p>
+          <h4 class="font-semibold text-blue-700">Dr. Anjali Mehta</h4>
           <p class="text-xs text-gray-500">QC Manager</p>
         </div>
 
-        <div class="min-w-[300px] max-w-xs bg-white rounded-lg shadow p-6 flex-shrink-0">
-          <img src="https://randomuser.me/api/portraits/men/33.jpg" class="w-14 h-14 mx-auto rounded-full mb-3" alt="">
-          <p class="text-gray-700 text-sm mb-2 italic">“Their GenAI made compliance checks effortless.”</p>
-          <h4 class="font-semibold text-blue-700 text-sm">Ravi Kumar</h4>
+        <div class="flex-shrink-0 w-[90%] sm:w-[45%] md:w-[30%] lg:w-[22%] bg-white rounded-lg shadow p-5">
+          <img src="https://randomuser.me/api/portraits/men/33.jpg" class="w-14 h-14 mx-auto rounded-full mb-3" />
+          <p class="text-gray-700 text-sm italic mb-2">“Their GenAI assistant is game-changing for compound search.”</p>
+          <h4 class="font-semibold text-blue-700">Ravi Kumar</h4>
           <p class="text-xs text-gray-500">Head of R&D</p>
         </div>
 
-        <div class="min-w-[300px] max-w-xs bg-white rounded-lg shadow p-6 flex-shrink-0">
-          <img src="https://randomuser.me/api/portraits/men/77.jpg" class="w-14 h-14 mx-auto rounded-full mb-3" alt="">
-          <p class="text-gray-700 text-sm mb-2 italic">“Amazing reference quality and support.”</p>
-          <h4 class="font-semibold text-blue-700 text-sm">Michael Reed</h4>
+        <div class="flex-shrink-0 w-[90%] sm:w-[45%] md:w-[30%] lg:w-[22%] bg-white rounded-lg shadow p-5">
+          <img src="https://randomuser.me/api/portraits/men/77.jpg" class="w-14 h-14 mx-auto rounded-full mb-3" />
+          <p class="text-gray-700 text-sm italic mb-2">“Amazing turnaround time and analytical support.”</p>
+          <h4 class="font-semibold text-blue-700">Michael Reed</h4>
           <p class="text-xs text-gray-500">Pharma Consultant</p>
         </div>
 
-        <div class="min-w-[300px] max-w-xs bg-white rounded-lg shadow p-6 flex-shrink-0">
-          <img src="https://randomuser.me/api/portraits/women/55.jpg" class="w-14 h-14 mx-auto rounded-full mb-3" alt="">
-          <p class="text-gray-700 text-sm mb-2 italic">“Excellent turnaround and sample documentation.”</p>
-          <h4 class="font-semibold text-blue-700 text-sm">Sarah Alvi</h4>
+        <div class="flex-shrink-0 w-[90%] sm:w-[45%] md:w-[30%] lg:w-[22%] bg-white rounded-lg shadow p-5">
+          <img src="https://randomuser.me/api/portraits/women/55.jpg" class="w-14 h-14 mx-auto rounded-full mb-3" />
+          <p class="text-gray-700 text-sm italic mb-2">“Great documentation and reference quality.”</p>
+          <h4 class="font-semibold text-blue-700">Sarah Alvi</h4>
           <p class="text-xs text-gray-500">Sr. Analyst</p>
         </div>
 
-        <!-- Add more cards here if needed -->
       </div>
 
+      <!-- Optional Scroll Buttons -->
+      <div class="flex justify-between mt-6">
+        <button onclick="scrollTestimonials(-1)" class="bg-blue-100 hover:bg-blue-200 text-blue-800 px-4 py-2 rounded">⟨ Prev</button>
+        <button onclick="scrollTestimonials(1)" class="bg-blue-100 hover:bg-blue-200 text-blue-800 px-4 py-2 rounded">Next ⟩</button>
+      </div>
     </div>
   </div>
 </section>
-  <!------------------------->
+
+<script>
+  function scrollTestimonials(dir) {
+    const wrapper = document.getElementById('responsiveCarousel');
+    const scrollAmount = 320 * dir; // pixels to scroll
+    wrapper.scrollBy({
+      left: scrollAmount,
+      behavior: 'smooth'
+    });
+  }
+</script>
+<!------------------------->
   
   <!-- Gen AI search bar -->
   <div class="max-w-3xl mx-auto mt-10 p-6 bg-white shadow-lg rounded-lg">
@@ -395,19 +408,6 @@
 
 
 
-
-
-  <!-- Testimonials -->
-  <section id="testimonials" class="py-16 bg-gray-100 px-6">
-    <h2 class="text-3xl font-bold text-center mb-6">Client Reviews</h2>
-    <div class="grid md:grid-cols-1 gap-6">
-      <div class="bg-white p-4 rounded shadow">"Excellent accuracy and customer support!" — QC Head</div>
-      <div class="bg-white p-4 rounded shadow">"Loved the AI-enabled suggestions!" — R&D Lead</div>
-    </div>
-  </section>
-
-
-
   <!-- FAQ -->
   <section id="faq" class="py-16 bg-white px-6">
     <h2 class="text-3xl font-bold text-center mb-6">Frequently Asked Questions</h2>
@@ -419,6 +419,21 @@
       <details class="p-4 bg-gray-100 rounded">
         <summary class="font-semibold cursor-pointer">Can GenAI help with documentation?</summary>
         <p>Yes, it can auto-generate COAs, MSDS, and data packs based on your queries.</p>
+      </details>
+	  <details class="p-4 bg-gray-100 rounded">
+        <summary class="font-semibold cursor-pointer">What do we do ? </summary>
+        <p>Novapure helps pharma companies test and improve their medicines by supplying 
+		samples of impurity reference used for quality checks. Plays a critical 
+		behind-the-scenes role in pharmaceutical development. Their products make 
+		sure that medicines are pure, safe, and compliant.</p>
+      </details>
+	  <details class="p-4 bg-gray-100 rounded">
+        <summary class="font-semibold cursor-pointer">Who we are ? </summary>
+        <p>Novapure Healthcare is a science-driven pharmaceutical reference standards 
+		company specializing in the design, synthesis, and supply of impurity reference 
+		materials for the pharmaceutical industry. With an advanced R&D setup and a team 
+		of experienced synthetic chemists, the company supports critical phases of drug 
+		development, regulatory filings, and quality assurance processes.</p>
       </details>
     </div>
   </section>
@@ -542,7 +557,7 @@
       <h3 class="text-lg font-semibold mb-3">Quick Links</h3>
       <ul class="space-y-2 text-gray-200">
         <li><a href="#products" class="hover:text-white">Our Products</a></li>
-        <li><a href="#ai" class="hover:text-white">AI Solutions</a></li>
+        <li><a href="#ai" class="hover:text-white">Solutions</a></li>
         <li><a href="#faq" class="hover:text-white">FAQs</a></li>
         <li><a href="#contact" class="hover:text-white">Support</a></li>
         <li><a href="#privacy" class="hover:text-white">Privacy Policy</a></li>
@@ -552,23 +567,23 @@
     <!-- Contact Details -->
     <div>
       <h3 class="text-lg font-semibold mb-3">Contact Us</h3>
-      <p class="text-gray-200 mb-2">📍 44/2B, Research Park Avenue<br>Hyderabad, Telangana, India</p>
-      <p class="text-gray-200 mb-2">📞 +91 98765 43210</p>
-      <p class="text-gray-200">✉️ info@novapurehealthcare.com</p>
+      <p class="text-gray-200 mb-2">📍 204, Research Park Avenue Oriana Business Park,<br>Thane, Maharashtra, India</p>
+      <p class="text-gray-200 mb-2">📞 ++91 9819 395 336</p>
+      <p class="text-gray-200">✉️ admin@novapurehealthcare.com</p>
     </div>
 
     <!-- Embedded Map -->
     <div>
       <h3 class="text-lg font-semibold mb-3">Find Us</h3>
       <iframe class="w-full h-40 rounded shadow"
-        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3782.0478166364597!2d78.4867009!3d17.3850447!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bcb9774d2943d4d%3A0x4f90a5a60f3f682f!2sHyderabad%20Research%20Centre!5e0!3m2!1sen!2sin!4v1670000000000"
+        src="https://www.google.com/maps/embed?pb="
         allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
     </div>
   </div>
 
   <!-- Footer Bottom -->
   <div class="border-t border-blue-700 mt-10 pt-4 text-center text-xs text-gray-300">
-    © 2024 Novapure Healthcare. All rights reserved.
+    © 2025 Novapure Healthcare. All rights reserved.
   </div>
 </footer>
 
