@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Nova Smart Product Filter</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f4f6f8;
+      margin: 0;
+      padding: 2rem;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+    }
+
+    .filters {
+      flex: 1;
+      min-width: 300px;
+      background: white;
+      padding: 1.5rem;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .filter-group {
+      margin-bottom: 1.2rem;
+    }
+
+    .filter-group h4 {
+      margin-bottom: 0.5rem;
+      font-size: 1rem;
+      color: #333;
+    }
+
+    .filter-group label {
+      display: block;
+      margin-bottom: 0.3rem;
+      font-size: 0.9rem;
+      color: #555;
+    }
+
+    .products {
+      flex: 3;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1rem;
+    }
+
+    .product-card {
+      background: white;
+      border-radius: 10px;
+	  height: 400px;
+      padding: 1rem;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+      transition: all 0.2s ease;
+    }
+
+    .product-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .product-title {
+      font-weight: bold;
+      margin-bottom: 0.4rem;
+      font-size: 1.1rem;
+    }
+
+    .tag {
+      background: #e6f2ff;
+      color: #005a9c;
+      padding: 2px 6px;
+      margin: 2px;
+      font-size: 0.8rem;
+      border-radius: 4px;
+      display: inline-block;
+    }
+
+    .details {
+      margin-top: 0.5rem;
+      font-size: 0.85rem;
+      color: #444;
+    }
+
+    .details b {
+      display: inline-block;
+      width: 110px;
+    }
+  </style>
+</head>
+<body>
+
+ 
+  <h3 class="mb-4 text-3xl font-extrabold text-gray-900 dark:text-white md:text-5xl lg:text-6xl"><span class="text-transparent bg-clip-text bg-gradient-to-r to-emerald-600 from-sky-400">Novapure Smart </span>Product Filter Demo:</h3>
+  <div class="container">
+    <div class="filters" id="filters">
+      <div class="filter-group">
+        <h4>API Family</h4>
+        <label><input type="checkbox" value="FamilyA" data-filter="apiFamily"> FamilyA</label>
+        <label><input type="checkbox" value="FamilyB" data-filter="apiFamily"> FamilyB</label>
+      </div>
+
+      <div class="filter-group">
+        <h4>Product Type</h4>
+        <label><input type="checkbox" value="Impurity" data-filter="productType"> Impurity</label>
+        <label><input type="checkbox" value="Metabolite" data-filter="productType"> Metabolite</label>
+        <label><input type="checkbox" value="Stable Isotope Labelled" data-filter="productType"> Stable Isotope Labelled</label>
+        <label><input type="checkbox" value="API" data-filter="productType"> API</label>
+        <label><input type="checkbox" value="Excipient" data-filter="productType"> Excipient</label>
+        <label><input type="checkbox" value="Other" data-filter="productType"> Other</label>
+      </div>
+
+
+
+      <div class="filter-group">
+        <h4>Accreditations</h4>
+        <label><input type="checkbox" value="ISO 17025" data-filter="accreditations"> ISO 17025</label>
+        <label><input type="checkbox" value="ISO 17034" data-filter="accreditations"> ISO 17034</label>
+        <label><input type="checkbox" value="ISO/IEC 17025" data-filter="accreditations"> ISO/IEC 17025</label>
+      </div>
+
+      <div class="filter-group">
+        <h4>Product Format</h4>
+        <label><input type="checkbox" value="Neat" data-filter="format"> Neat</label>
+        <label><input type="checkbox" value="Mixture" data-filter="format"> Mixture</label>
+        <label><input type="checkbox" value="Single Solution" data-filter="format"> Single Solution</label>
+      </div>
+
+      <div class="filter-group">
+        <h4>Impurity Type</h4>
+        <label><input type="checkbox" value="Intermediate" data-filter="impurityType"> Intermediate</label>
+        <label><input type="checkbox" value="By-Product" data-filter="impurityType"> By-Product</label>
+        <label><input type="checkbox" value="Degradation Product" data-filter="impurityType"> Degradation Product</label>
+      </div>
+
+      <div class="filter-group">
+        <h4>SIL Type</h4>
+        <label><input type="checkbox" value="Deuterium" data-filter="silType"> Deuterium</label>
+        <label><input type="checkbox" value="Carbon" data-filter="silType"> Carbon</label>
+        <label><input type="checkbox" value="Nitrogen" data-filter="silType"> Nitrogen</label>
+        <label><input type="checkbox" value="Oxygen" data-filter="silType"> Oxygen</label>
+      </div>
+	        <div class="filter-group">
+        <h4>Brand</h4>
+        <label><input type="checkbox" value="Mikromol" data-filter="brand"> Mikromol</label>
+        <label><input type="checkbox" value="TRC" data-filter="brand"> TRC</label>
+        <label><input type="checkbox" value="EDQM" data-filter="brand"> EDQM</label>
+        <label><input type="checkbox" value="BP" data-filter="brand"> BP</label>
+        <label><input type="checkbox" value="TLC" data-filter="brand"> TLC</label>
+        <label><input type="checkbox" value="CDN" data-filter="brand"> CDN</label>
+      </div>
+    </div>
+
+    <div class="products" id="productList"></div>
+  </div>
+
+  <script>
+    const products = [
+      {
+        title: "Deuterated Impurity X",
+        apiFamily: "FamilyA",
+        productType: "Stable Isotope Labelled",
+        brand: "TRC",
+        accreditations: ["ISO 17025"],
+        analyte: "Compound-X",
+		formula:"h202c1",
+        casNumber: "123-45-6",
+        format: "Neat",
+        impurityType: "Degradation Product",
+        silType: "Deuterium",
+        matrix: "Plasma"
+      },
+      {
+        title: "Impurity Y",
+        apiFamily: "FamilyB",
+        productType: "Impurity",
+        brand: "Mikromol",
+        accreditations: ["ISO 17034", "ISO/IEC 17025"],
+        analyte: "Compound-Y",
+		formula:"h202c1",
+        casNumber: "789-12-3",
+        format: "Mixture",
+        impurityType: "Intermediate",
+        silType: "Carbon",
+        matrix: "Water"
+      },
+	  {
+        title: "Impurity Z",
+        apiFamily: "FamilyB",
+        productType: "Impurity",
+        brand: "TRC",
+        accreditations: ["ISO 17034", "ISO/IEC 17025"],
+        analyte: "Compound-Z",
+		formula:"h202c1",
+        casNumber: "777-11-4",
+        format: "Mixture",
+        impurityType: "By-Product",
+        silType: "Nitrogen",
+        matrix: "Water"
+      },
+	  {
+        title: "Impurity A",
+        apiFamily: "FamilyB",
+        productType: "Impurity",
+        brand: "TRC",
+        accreditations: ["ISO 17034", "ISO/IEC 17025"],
+        analyte: "Compound-A",
+		formula:"h202c1",
+        casNumber: "888-11-4",
+        format: "Mixture",
+        impurityType: "By-Product",
+        silType: "Nitrogen",
+        matrix: "Water"
+      },
+	  {
+        title: "Impurity B",
+        apiFamily: "FamilyB",
+        productType: "Impurity",
+        brand: "TRC",
+        accreditations: ["ISO 17034", "ISO/IEC 17025"],
+        analyte: "Compound-A",
+		formula:"h202c1",
+		formula:"h202c1",
+        casNumber: "888-11-4",
+        format: "Mixture",
+        impurityType: "By-Product",
+        silType: "Nitrogen",
+        matrix: "Water"
+      },
+	  {
+        title: "Impurity C",
+        apiFamily: "FamilyB",
+        productType: "Impurity",
+        brand: "TRC",
+        accreditations: ["ISO 17034", "ISO/IEC 17025"],
+        analyte: "Compound-A",
+		formula:"h202c1",
+        casNumber: "888-11-4",
+        format: "Mixture",
+        impurityType: "By-Product",
+        silType: "Nitrogen",
+        matrix: "Water"
+      }
+    ];
+
+    const productList = document.getElementById("productList");
+
+    function renderProducts(list) {
+      productList.innerHTML = '';
+      if (list.length === 0) {
+        productList.innerHTML = '<p>No products found.</p>';
+        return;
+      }
+      list.forEach(p => {
+        const el = document.createElement("div");
+        el.className = "product-card";
+        el.innerHTML = `
+          <div class="product-title">${p.title}</div>
+          <div>
+            <span class="tag">${p.productType}</span>
+            <span class="tag">${p.brand}</span>
+            <span class="tag">${p.format}</span>
+            <span class="tag">${p.impurityType}</span>
+            <span class="tag">${p.silType}</span>
+          </div>
+          <div class="details">
+            <p><b>Analyte:</b> ${p.analyte}</p>
+			<p><b>Formula:</b> ${p.formula}</p>
+            <p><b>CAS No.:</b> ${p.casNumber}</p>
+            <p><b>Matrix:</b> ${p.matrix}</p>
+            <p><b>Accreditation:</b> ${p.accreditations.join(', ')}</p>
+			<br>
+			<p>
+	        <b><button class="bg-blue-600 text-white px-3 ml-2 rounded"><a href="product_Info.html">View Details</a></button></b>
+			<b><button class="bg-green-600 text-white px-3 ml-2 rounded">+ Add  to cart</button></b>
+			</p>
+          </div>
+        `;
+        productList.appendChild(el);
+      });
+    }
+
+    renderProducts(products);
+
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    checkboxes.forEach(cb => {
+      cb.addEventListener("change", () => {
+        const activeFilters = {};
+
+        checkboxes.forEach(input => {
+          if (input.checked) {
+            const key = input.getAttribute("data-filter");
+            if (!activeFilters[key]) activeFilters[key] = [];
+            activeFilters[key].push(input.value);
+          }
+        });
+
+        const filtered = products.filter(product => {
+          return Object.entries(activeFilters).every(([key, values]) => {
+            if (Array.isArray(product[key])) {
+              return product[key].some(v => values.includes(v));
+            }
+            return values.includes(product[key]);
+          });
+        });
+
+        renderProducts(filtered);
+      });
+    });
+  </script>
+
+</body>
+</html>
