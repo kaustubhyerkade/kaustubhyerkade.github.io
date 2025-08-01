@@ -40,6 +40,28 @@
             scroll-behavior: smooth;
         }
 
+        /* Canvas Background */
+        #particle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2; /* Ensure it's behind everything else */
+            opacity: 0.8;
+        }
+
+        /* Overlay to ensure readability */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            z-index: -1;
+        }
+
         /* Layout and Sections */
         .container {
             max-width: 1200px;
@@ -85,9 +107,8 @@
             justify-content: space-between;
             align-items: center;
             padding: 1rem;
-            flex-wrap: wrap; /* Allow nav items to wrap on smaller screens */
         }
-
+        
         .logo {
             font-family: 'Space Grotesk', sans-serif;
             font-size: 1.8rem;
@@ -107,7 +128,7 @@
             list-style: none;
             display: flex;
             gap: 1rem;
-            flex-wrap: wrap; /* Ensure links wrap if necessary */
+            flex-wrap: wrap;
         }
 
         .nav-links a {
@@ -116,7 +137,7 @@
             font-weight: 500;
             position: relative;
             padding-bottom: 5px;
-            font-size: 0.9rem; /* Slightly smaller font for better mobile fit */
+            font-size: 0.9rem;
         }
 
         .nav-links a::after {
@@ -135,6 +156,66 @@
             width: 100%;
         }
 
+        /* Hamburger Menu for Mobile */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 30px;
+            height: 20px;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        .hamburger span {
+            display: block;
+            width: 100%;
+            height: 2px;
+            background: var(--text-color);
+            transition: all 0.3s ease-in-out;
+        }
+        
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -5px);
+        }
+
+        @media (max-width: 768px) {
+            .hamburger {
+                display: flex;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%; /* Start off-screen */
+                width: 100%;
+                height: 100vh;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 2rem;
+                background: rgba(10, 10, 10, 0.95);
+                backdrop-filter: blur(15px);
+                transition: right 0.4s ease-in-out;
+            }
+
+            .nav-links.active {
+                right: 0; /* Slide in */
+            }
+
+            .nav-links a {
+                font-size: 1.5rem;
+            }
+        }
+        
         /* Hero Section */
         .hero {
             display: flex;
@@ -145,7 +226,6 @@
             text-align: center;
             position: relative;
             overflow: hidden;
-            background: radial-gradient(circle, rgba(102, 126, 234, 0.1) 0%, rgba(10, 10, 10, 0.1) 70%);
             animation: pulse-bg 10s infinite ease-in-out;
         }
 
@@ -378,16 +458,6 @@
             .blog-carousel-header {
                 flex-direction: column;
                 gap: 1rem;
-            }
-            .about-content {
-                grid-template-columns: 1fr;
-            }
-            .about-text {
-                order: 2;
-            }
-            .profile-image {
-                order: 1;
-                margin-bottom: 2rem;
             }
         }
 
@@ -717,28 +787,34 @@
         @keyframes blink {
             50% { opacity: 0; }
         }
-
-        /* Responsive adjustments for navigation */
+        
+        /* Mobile-specific adjustments for other sections */
         @media (max-width: 768px) {
-            nav {
-                flex-direction: column;
-                gap: 1rem;
+            .about-content {
+                grid-template-columns: 1fr;
             }
-            .nav-links {
-                justify-content: center;
-                gap: 0.8rem;
-                margin-top: 1rem;
+            .about-text {
+                order: 2;
             }
-            .logo {
-                font-size: 1.5rem;
+            .profile-image {
+                order: 1;
+                margin-bottom: 2rem;
             }
         }
     </style>
 </head>
 <body>
+    <canvas id="particle-canvas"></canvas>
+    <div class="overlay"></div>
+
     <header>
         <nav class="container">
             <a href="#" class="logo">Your Name</a>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
             <ul class="nav-links">
                 <li><a href="#about">About</a></li>
                 <li><a href="#experience">Experience</a></li>
@@ -979,16 +1055,120 @@
     </footer>
 
     <script>
-        // DOMContentLoaded is used to ensure the DOM is fully loaded before the script runs.
-        document.addEventListener('DOMContentLoaded', () => {
+        // === Particle Background Animation ===
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        const maxParticles = 80;
+        
+        // Ensure the canvas is the right size
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        
+        // Call resize on load and on window resize
+        window.addEventListener('load', resizeCanvas);
+        window.addEventListener('resize', resizeCanvas);
 
-            // === Smooth Scroll for Navigation ===
+        // A simple Particle class
+        class Particle {
+            constructor(x, y) {
+                this.x = x || Math.random() * canvas.width;
+                this.y = y || Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 0.5;
+                this.speedX = (Math.random() - 0.5) * 0.5;
+                this.speedY = (Math.random() - 0.5) * 0.5;
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                // Wrap particles around the screen
+                if (this.x < 0) this.x = canvas.width;
+                if (this.x > canvas.width) this.x = 0;
+                if (this.y < 0) this.y = canvas.height;
+                if (this.y > canvas.height) this.y = 0;
+            }
+
+            draw() {
+                ctx.fillStyle = `rgba(102, 126, 234, ${this.size / 2})`; // Subtle blue glow
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        // Initialize particles
+        function init() {
+            particles = [];
+            for (let i = 0; i < maxParticles; i++) {
+                particles.push(new Particle());
+            }
+        }
+        init();
+
+        // Connect particles with lines
+        function connect() {
+            let opacityValue = 1;
+            for (let a = 0; a < particles.length; a++) {
+                for (let b = a; b < particles.length; b++) {
+                    const distance = ((particles[a].x - particles[b].x) ** 2) + ((particles[a].y - particles[b].y) ** 2);
+                    if (distance < (canvas.width / 8) ** 2) {
+                        opacityValue = 1 - (distance / ((canvas.width / 8) ** 2));
+                        ctx.strokeStyle = `rgba(102, 126, 234, ${opacityValue})`;
+                        ctx.lineWidth = 1;
+                        ctx.beginPath();
+                        ctx.moveTo(particles[a].x, particles[a].y);
+                        ctx.lineTo(particles[b].x, particles[b].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+
+        // The main animation loop
+        function animate() {
+            requestAnimationFrame(animate);
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+            }
+
+            connect();
+        }
+        
+        // Start the animation loop when the window is loaded
+        window.addEventListener('load', animate);
+
+
+        // === Smooth Scroll for Navigation and Menu Close ===
+        document.addEventListener('DOMContentLoaded', () => {
+            const hamburger = document.querySelector('.hamburger');
+            const navLinks = document.querySelector('.nav-links');
+
+            hamburger.addEventListener('click', () => {
+                hamburger.classList.toggle('active');
+                navLinks.classList.toggle('active');
+            });
+
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 anchor.addEventListener('click', function (e) {
                     e.preventDefault();
+                    
+                    // Smooth scroll to the section
                     document.querySelector(this.getAttribute('href')).scrollIntoView({
                         behavior: 'smooth'
                     });
+
+                    // Close the mobile menu after clicking a link
+                    if (window.innerWidth <= 768) {
+                        hamburger.classList.remove('active');
+                        navLinks.classList.remove('active');
+                    }
                 });
             });
 
@@ -1003,24 +1183,18 @@
             });
 
             // === Intersection Observer for Scroll Animations ===
-            // This observer watches for elements with the 'scroll-animate' class
-            // and adds a 'visible' class when they enter the viewport.
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         entry.target.classList.add('visible');
-                        // Optional: Unobserve the element after it's animated once
-                        // observer.unobserve(entry.target);
                     }
                 });
-            }, { threshold: 0.1 }); // The animation triggers when 10% of the element is visible
+            }, { threshold: 0.1 });
 
-            // Apply the observer to all elements with the 'scroll-animate' class
             document.querySelectorAll('.scroll-animate').forEach(el => observer.observe(el));
 
 
             // === Parallax Scrolling Effect (Restored Original) ===
-            // The parallax effect on the hero section gives a sense of depth.
             window.addEventListener('scroll', () => {
                 const scrolled = window.pageYOffset;
                 const hero = document.querySelector('.hero');
@@ -1031,7 +1205,6 @@
 
 
             // === Interactive Effects for Project Cards ===
-            // These effects make the project cards feel more responsive and dynamic.
             document.querySelectorAll('.project-card').forEach(card => {
                 card.addEventListener('mouseenter', function() {
                     this.style.transform = 'translateY(-10px) scale(1.02)';
@@ -1056,23 +1229,25 @@
             };
 
             const resizeCarousel = () => {
-                cardWidth = blogCards[0].offsetWidth + parseInt(window.getComputedStyle(blogCards[0]).marginRight);
+                // Ensure cardWidth is correctly calculated based on current screen size
+                const firstCard = blogCards[0];
+                if (firstCard) {
+                    cardWidth = firstCard.offsetWidth + parseInt(window.getComputedStyle(firstCard).marginRight);
+                } else {
+                    cardWidth = 0;
+                }
                 updateCarousel();
             };
             window.addEventListener('resize', resizeCarousel);
-
-            // Initial resize to set the correct card width
             resizeCarousel();
 
             nextBtn.addEventListener('click', () => {
-                // Get the number of visible cards
                 const visibleCards = Math.floor(carouselTrack.parentElement.offsetWidth / cardWidth);
 
                 if (currentIndex < blogCards.length - visibleCards) {
                     currentIndex++;
                     updateCarousel();
                 } else {
-                    // Loop to the beginning if at the end
                     currentIndex = 0;
                     updateCarousel();
                 }
@@ -1084,7 +1259,6 @@
                     currentIndex--;
                     updateCarousel();
                 } else {
-                     // Loop to the end if at the beginning
                     currentIndex = blogCards.length - visibleCards;
                     updateCarousel();
                 }
@@ -1116,7 +1290,6 @@
             
             const originalTitleText = 'Your Name';
 
-            // Start the typing animation and subsequent fade-ins
             heroTitle.style.opacity = '1';
             typeWriter(heroTitle, originalTitleText, 100, () => {
                 heroSubtitle.style.opacity = '1';
