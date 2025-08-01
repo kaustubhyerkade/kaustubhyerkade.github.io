@@ -2,238 +2,1184 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-
-    <!-- Meta Tags for SEO -->
-    <title>John Doe | Full Stack Developer</title>
-    <meta name="description" content="Personal portfolio website of John Doe, a passionate Full Stack Developer specializing in modern web technologies.">
-    <meta name="keywords" content="full stack developer, web developer, portfolio, javascript, react, nodejs">
-    <meta name="author" content="John Doe">
-
-    <!-- Open Graph Meta Tags (for social sharing) -->
-    <meta property="og:title" content="John Doe | Full Stack Developer">
-    <meta property="og:description" content="Check out my portfolio to see my projects and skills.">
-    <meta property="og:image" content="https://placehold.co/1200x630/1a1a2e/ffffff?text=John+Doe">
-    <meta property="og:url" content="https://yourusername.github.io/your-repo-name/">
-    <meta property="og:type" content="website">
-
-    <!-- Favicon -->
-    <link rel="icon" href="https://placehold.co/32x32/1a1a2e/ffffff?text=JD" type="image/x-icon">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Name - DevOps Engineer</title>
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* General Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" xintegrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    
-    <!-- External CSS -->
-    <link rel="stylesheet" href="style.css">
+        :root {
+            --bg-color: #0a0a0a;
+            --text-color: #ffffff;
+            --accent-color: #667eea;
+            --secondary-accent: #764ba2;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --border-color: rgba(255, 255, 255, 0.1);
+            --gradient-1: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            --gradient-2: linear-gradient(90deg, #764ba2 0%, #a67bbd 100%);
+            --gradient-text: linear-gradient(45deg, var(--accent-color), var(--secondary-accent));
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-weight: 400;
+            background: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+            scroll-behavior: smooth;
+        }
+
+        /* Particle Background Canvas */
+        #particle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.8;
+        }
+
+        /* Layout and Sections */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        section {
+            padding: 5rem 0;
+            position: relative;
+        }
+
+        .section-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 3rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 3rem;
+            background: var(--gradient-text);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            transition: all 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        /* Header and Navigation */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            transition: background 0.4s ease, backdrop-filter 0.4s ease;
+        }
+
+        header.scrolled {
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+        }
+
+        .logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: var(--gradient-text);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 500;
+            position: relative;
+            padding-bottom: 5px;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient-text);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after,
+        .nav-links a.active::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            background: radial-gradient(circle, rgba(102, 126, 234, 0.1) 0%, rgba(10, 10, 10, 0.1) 70%);
+            animation: pulse-bg 10s infinite ease-in-out;
+        }
+
+        .hero-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(2rem, 8vw, 5rem);
+            font-weight: 700;
+            background: var(--gradient-text);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+            line-height: 1.1;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+        
+        .hero-title.is-typing::after {
+            content: '|';
+            animation: blink 1s infinite;
+        }
+
+        .hero-subtitle,
+        .hero-tagline,
+        .cta-buttons {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 1s ease-out, transform 1s ease-out;
+        }
+        .hero-subtitle {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: clamp(1rem, 4vw, 1.5rem);
+            color: #ccc;
+            margin-bottom: 1rem;
+            transition-delay: 0.5s;
+        }
+        .hero-tagline {
+            font-size: clamp(0.9rem, 3vw, 1.2rem);
+            color: #aaa;
+            max-width: 600px;
+            margin-bottom: 2rem;
+            transition-delay: 1s;
+        }
+        
+        /* Buttons */
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            transition-delay: 1.5s;
+        }
+        
+        .btn {
+            padding: 0.8rem 1.8rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-primary {
+            background: var(--gradient-1);
+            color: var(--text-color);
+            border: none;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-color);
+            border: 2px solid var(--accent-color);
+        }
+        
+        .btn-secondary:hover {
+            transform: translateY(-3px);
+            background: var(--gradient-1);
+            border-color: transparent;
+        }
+
+        /* About Section */
+        .about-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            align-items: center;
+        }
+        
+        .about-text p {
+            margin-bottom: 1rem;
+            color: #ccc;
+        }
+
+        .about-text-columns {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+
+        @media (min-width: 768px) {
+            .about-text-columns {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        
+        .profile-image {
+            width: 100%;
+            height: auto;
+            border-radius: 1rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .profile-image:hover {
+            transform: scale(1.03);
+        }
+
+        /* Blog Carousel */
+        .blog-carousel-container {
+            margin-top: 5rem;
+            position: relative;
+        }
+
+        .blog-carousel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .blog-carousel-header h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2rem;
+            background: var(--gradient-text);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .carousel-nav {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .carousel-nav-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .carousel-nav-btn:hover {
+            background: var(--accent-color);
+            border-color: var(--accent-color);
+        }
+
+        .blog-carousel-wrapper {
+            overflow: hidden;
+            border-radius: 1rem;
+        }
+
+        .blog-carousel-track {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .blog-card {
+            min-width: 33.3333%; /* Show 3 cards per view on large screens */
+            padding: 1rem;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 1rem;
+            margin-right: 1.5rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--text-color);
+        }
+
+        .blog-card:last-child {
+            margin-right: 0;
+        }
+        
+        .blog-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--accent-color);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
+        }
+
+        .blog-card .blog-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            background: var(--gradient-2);
+        }
+
+        .blog-card h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .blog-card .blog-meta {
+            font-family: 'JetBrains Mono', monospace;
+            color: #aaa;
+            font-size: 0.8rem;
+            margin-bottom: 1rem;
+        }
+
+        @media (max-width: 1024px) {
+            .blog-card {
+                min-width: 50%; /* Show 2 cards per view on medium screens */
+            }
+        }
+
+        @media (max-width: 768px) {
+            .blog-card {
+                min-width: 100%; /* Show 1 card per view on mobile */
+            }
+            .blog-carousel-header {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+
+
+        /* Skills Section */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1.5rem;
+            text-align: center;
+        }
+
+        .skill-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 2rem 1rem;
+            border-radius: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .skill-card:hover {
+            transform: translateY(-10px) scale(1.05);
+            border-color: var(--accent-color);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
+        }
+
+        .skill-card i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: var(--gradient-text);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .skill-card h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.2rem;
+        }
+
+        /* Projects Section */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .project-card {
+            background: var(--card-bg);
+            border-radius: 1rem;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            border-color: var(--secondary-accent);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+        }
+        
+        .project-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background: var(--gradient-2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .project-image i {
+            font-size: 4rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .project-content {
+            padding: 1.5rem;
+        }
+        
+        .project-content h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            background: var(--gradient-text);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .project-content p {
+            color: #ccc;
+        }
+
+        /* Experience Section */
+        .experience-timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            position: relative;
+            padding-left: 20px;
+        }
+
+        .experience-timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 2px;
+            background: var(--border-color);
+        }
+
+        .experience-item {
+            position: relative;
+            padding-left: 30px;
+        }
+
+        .experience-item::before {
+            content: '';
+            position: absolute;
+            left: -10px;
+            top: 5px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--accent-color);
+            border: 4px solid var(--bg-color);
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.4);
+        }
+
+        .experience-item h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            color: var(--text-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .experience-item .company-date {
+            font-family: 'JetBrains Mono', monospace;
+            color: #ccc;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .experience-item p {
+            color: #aaa;
+        }
+
+        /* Education Section */
+        .education-item {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .education-item:hover {
+            transform: translateY(-10px) scale(1.02);
+            border-color: var(--accent-color);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
+        }
+
+        .education-item h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            margin-bottom: 0.5rem;
+            background: var(--gradient-text);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .education-item .details {
+            font-family: 'JetBrains Mono', monospace;
+            color: #ccc;
+            font-size: 0.9rem;
+        }
+
+        /* Testimonials Section */
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .testimonial-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 1rem;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            position: relative;
+            padding-top: 3.5rem;
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            border-color: var(--secondary-accent);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .testimonial-card::before {
+            content: '“';
+            position: absolute;
+            top: 0.5rem;
+            left: 1.5rem;
+            font-family: 'Georgia', serif;
+            font-size: 4rem;
+            line-height: 1;
+            color: var(--accent-color);
+            opacity: 0.5;
+        }
+
+        .testimonial-card p {
+            font-style: italic;
+            color: #ccc;
+            margin-bottom: 1.5rem;
+        }
+
+        .testimonial-author h4 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.1rem;
+        }
+
+        .testimonial-author span {
+            font-family: 'JetBrains Mono', monospace;
+            color: #aaa;
+            font-size: 0.85rem;
+        }
+
+
+        /* Contact Section */
+        .contact-content {
+            text-align: center;
+        }
+        
+        .contact-content p {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            color: #ccc;
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            list-style: none;
+        }
+
+        .social-links a {
+            color: var(--text-color);
+            font-size: 1.8rem;
+            transition: transform 0.3s ease, color 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            transform: translateY(-5px) scale(1.1);
+            color: var(--accent-color);
+        }
+
+        /* Footer */
+        footer {
+            padding: 2rem;
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* Scroll Animations */
+        .scroll-animate {
+            opacity: 0;
+            transition: opacity 1s cubic-bezier(0.5, 0, 0, 1), transform 1s cubic-bezier(0.5, 0, 0, 1);
+        }
+        
+        /* Fade In Up */
+        .scroll-animate.fade-in-up {
+            transform: translateY(50px);
+        }
+        
+        .scroll-animate.fade-in-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Fade In Left */
+        .scroll-animate.fade-in-left {
+            transform: translateX(-50px);
+        }
+        
+        .scroll-animate.fade-in-left.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Fade In Right */
+        .scroll-animate.fade-in-right {
+            transform: translateX(50px);
+        }
+        
+        .scroll-animate.fade-in-right.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Fade In Scale */
+        .scroll-animate.fade-in-scale {
+            transform: scale(0.9);
+        }
+        
+        .scroll-animate.fade-in-scale.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* Keyframe Animations */
+        @keyframes pulse-bg {
+            0% {
+                background: radial-gradient(circle, rgba(102, 126, 234, 0.1) 0%, rgba(10, 10, 10, 0.1) 70%);
+            }
+            50% {
+                background: radial-gradient(circle, rgba(118, 75, 162, 0.1) 0%, rgba(10, 10, 10, 0.1) 70%);
+            }
+            100% {
+                background: radial-gradient(circle, rgba(102, 126, 234, 0.1) 0%, rgba(10, 10, 10, 0.1) 70%);
+            }
+        }
+
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+    </style>
 </head>
 <body>
-
-    <!-- Header & Navigation -->
-    <header id="header">
-        <nav id="navbar">
-            <a href="#home" class="nav-logo">John Doe</a>
+    <canvas id="particle-canvas"></canvas>
+    
+    <header>
+        <nav class="container">
+            <a href="#" class="logo">Your Name</a>
             <ul class="nav-links">
                 <li><a href="#about">About</a></li>
+                <li><a href="#experience">Experience</a></li>
+                <li><a href="#education">Education</a></li>
                 <li><a href="#skills">Skills</a></li>
                 <li><a href="#projects">Projects</a></li>
+                <li><a href="#testimonials">Testimonials</a></li>
                 <li><a href="#contact">Contact</a></li>
             </ul>
-            <div class="nav-extra">
-                 <div class="theme-switch-wrapper">
-                    <label class="theme-switch" for="checkbox">
-                        <input type="checkbox" id="checkbox" />
-                        <div class="slider round">
-                            <i class="fas fa-sun sun-icon"></i>
-                            <i class="fas fa-moon moon-icon"></i>
-                        </div>
-                    </label>
-                </div>
-                <div class="hamburger">
-                    <i class="fas fa-bars"></i>
-                </div>
-            </div>
         </nav>
     </header>
 
     <main>
-        <!-- Hero Section -->
-        <section id="home" class="hero">
-            <div class="hero-content">
-                <h1 class="hero-title">Hi, I'm John Doe</h1>
-                <p class="hero-subtitle">A Passionate Full Stack Developer</p>
-                <a href="#projects" class="btn btn-primary">View My Work</a>
-            </div>
-            <div class="hero-socials">
-                <a href="https://github.com/yourusername" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
-                <a href="https://linkedin.com/in/yourusername" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
-                <a href="https://twitter.com/yourusername" target="_blank" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+        <section id="hero" class="hero">
+            <h1 id="hero-title" class="hero-title"></h1>
+            <p id="hero-subtitle" class="hero-subtitle">DevOps Engineer</p>
+            <p id="hero-tagline" class="hero-tagline">Building robust, scalable systems and automating the future of software delivery.</p>
+            <div id="cta-buttons" class="cta-buttons">
+                <a href="#projects" class="btn btn-primary">My Work</a>
+                <a href="#contact" class="btn btn-secondary">Get in Touch</a>
             </div>
         </section>
 
-        <!-- About Me Section -->
-        <section id="about" class="about-me scroll-target">
-            <h2 class="section-title">About Me</h2>
-            <div class="about-content">
-                <div class="about-image">
-                    <img src="https://placehold.co/400x400/dddddd/333333?text=Profile+Photo" alt="John Doe Profile Picture" loading="lazy">
+        <section id="about" class="about">
+            <div class="container">
+                <h2 class="section-title scroll-animate fade-in-up">About Me</h2>
+                <div class="about-content">
+                    <div class="about-text scroll-animate fade-in-left">
+                        <div class="about-text-columns">
+                            <div>
+                                <p>Hello! I'm a passionate DevOps Engineer with a knack for automation, cloud infrastructure, and building robust, scalable systems. With experience in tools like Docker, Kubernetes, and Jenkins, I enjoy streamlining development workflows and ensuring continuous delivery.</p>
+                            </div>
+                            <div>
+                                <p>My journey in tech began with a deep curiosity about how software is built and deployed. I thrive on solving complex problems, embracing new challenges, and constantly learning. When I'm not writing code or managing infrastructure, you can find me exploring the latest open-source technologies or enjoying a good book.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <img src="https://placehold.co/500x500/667eea/ffffff?text=Your+Image" alt="Your Name" class="profile-image scroll-animate fade-in-right">
                 </div>
-                <div class="about-text">
-                    <p>
-                        Hello! I'm a full-stack developer based in New York, with a passion for building beautiful and functional web applications. My journey into web development started years ago, and I've been hooked ever since.
-                    </p>
-                    <p>
-                        I specialize in both front-end and back-end development, with a strong focus on the MERN stack. I love turning complex problems into simple, elegant solutions. When I'm not coding, you can find me exploring new technologies, contributing to open-source projects, or enjoying a good cup of coffee.
-                    </p>
+
+                <div class="blog-carousel-container scroll-animate fade-in-up" style="transition-delay: 0.5s;">
+                    <div class="blog-carousel-header">
+                        <h2>My Latest Blog Posts</h2>
+                        <div class="carousel-nav">
+                            <button class="carousel-nav-btn prev-btn"><i class="fas fa-chevron-left"></i></button>
+                            <button class="carousel-nav-btn next-btn"><i class="fas fa-chevron-right"></i></button>
+                        </div>
+                    </div>
+                    <div class="blog-carousel-wrapper">
+                        <div class="blog-carousel-track">
+                            <!-- Blog Post 1 -->
+                            <a href="#" class="blog-card">
+                                <img src="https://placehold.co/800x450/764ba2/ffffff?text=Blog+Post+1" alt="Blog Post 1" class="blog-image">
+                                <h3>Automating Your CI/CD Pipeline</h3>
+                                <p class="blog-meta">Published on July 25, 2024</p>
+                                <p>A deep dive into how to build a robust and efficient CI/CD pipeline using Jenkins and Docker.</p>
+                            </a>
+                            <!-- Blog Post 2 -->
+                            <a href="#" class="blog-card">
+                                <img src="https://placehold.co/800x450/a67bbd/ffffff?text=Blog+Post+2" alt="Blog Post 2" class="blog-image">
+                                <h3>The Power of Kubernetes in Cloud</h3>
+                                <p class="blog-meta">Published on July 10, 2024</p>
+                                <p>Exploring the core concepts of Kubernetes and how it can help you manage containerized applications at scale.</p>
+                            </a>
+                            <!-- Blog Post 3 -->
+                            <a href="#" class="blog-card">
+                                <img src="https://placehold.co/800x450/667eea/ffffff?text=Blog+Post+3" alt="Blog Post 3" class="blog-image">
+                                <h3>Infrastructure as Code with Terraform</h3>
+                                <p class="blog-meta">Published on June 20, 2024</p>
+                                <p>An introductory guide to using Terraform to provision and manage your cloud infrastructure.</p>
+                            </a>
+                            <!-- Blog Post 4 (example) -->
+                            <a href="#" class="blog-card">
+                                <img src="https://placehold.co/800x450/764ba2/ffffff?text=Blog+Post+4" alt="Blog Post 4" class="blog-image">
+                                <h3>Monitoring with Prometheus and Grafana</h3>
+                                <p class="blog-meta">Published on June 5, 2024</p>
+                                <p>Setting up a powerful monitoring stack to gain insights into your applications and infrastructure.</p>
+                            </a>
+                            <!-- Blog Post 5 (example) -->
+                            <a href="#" class="blog-card">
+                                <img src="https://placehold.co/800x450/a67bbd/ffffff?text=Blog+Post+5" alt="Blog Post 5" class="blog-image">
+                                <h3>GitOps: The Future of CI/CD</h3>
+                                <p class="blog-meta">Published on May 15, 2024</p>
+                                <p>Understanding the principles of GitOps and how it can revolutionize your deployment strategy.</p>
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- Skills Section -->
-        <section id="skills" class="skills scroll-target">
-            <h2 class="section-title">My Skills</h2>
-            <div class="skills-container">
-                <div class="skill-category">
-                    <h3><i class="fas fa-code"></i> Frontend</h3>
-                    <ul>
-                        <li><i class="fab fa-html5"></i> HTML5</li>
-                        <li><i class="fab fa-css3-alt"></i> CSS3</li>
-                        <li><i class="fab fa-js-square"></i> JavaScript (ES6+)</li>
-                        <li><i class="fab fa-react"></i> React</li>
-                        <li><i class="fas fa-paint-brush"></i> Responsive Design</li>
+        <section id="experience" class="experience">
+            <div class="container">
+                <h2 class="section-title scroll-animate fade-in-up">Experience</h2>
+                <div class="experience-timeline">
+                    <div class="experience-item scroll-animate fade-in-up">
+                        <h3>Senior DevOps Engineer</h3>
+                        <div class="company-date">Tech Innovators Inc. | Jan 2022 - Present</div>
+                        <p>Leading a team to design and implement highly available and scalable cloud infrastructure on AWS. Automated CI/CD pipelines, reducing deployment time by 50%.</p>
+                    </div>
+                    <div class="experience-item scroll-animate fade-in-up" style="transition-delay: 0.2s;">
+                        <h3>DevOps Engineer</h3>
+                        <div class="company-date">Global Solutions | Mar 2019 - Dec 2021</div>
+                        <p>Managed and maintained containerized applications using Docker and Kubernetes. Implemented monitoring and logging solutions with Prometheus and Grafana.</p>
+                    </div>
+                    <div class="experience-item scroll-animate fade-in-up" style="transition-delay: 0.4s;">
+                        <h3>Junior System Administrator</h3>
+                        <div class="company-date">Local Tech Startup | Jun 2017 - Feb 2019</div>
+                        <p>Assisted in the maintenance of server infrastructure and network systems. Wrote bash scripts to automate routine system administration tasks.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="education" class="education">
+            <div class="container">
+                <h2 class="section-title scroll-animate fade-in-up">Education</h2>
+                <div class="education-item scroll-animate fade-in-up">
+                    <h3>Master of Science in Computer Science</h3>
+                    <div class="details">University of Technology | 2017</div>
+                </div>
+                <div class="education-item scroll-animate fade-in-up" style="transition-delay: 0.2s;">
+                    <h3>Bachelor of Science in Information Technology</h3>
+                    <div class="details">State College | 2015</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="skills" class="skills">
+            <div class="container">
+                <h2 class="section-title scroll-animate fade-in-up">My Skills</h2>
+                <div class="skills-grid">
+                    <div class="skill-card scroll-animate fade-in-up">
+                        <i class="fa-brands fa-docker"></i>
+                        <h3>Docker</h3>
+                    </div>
+                    <div class="skill-card scroll-animate fade-in-up" style="transition-delay: 0.1s;">
+                        <i class="fa-brands fa-jenkins"></i>
+                        <h3>Jenkins</h3>
+                    </div>
+                    <div class="skill-card scroll-animate fade-in-up" style="transition-delay: 0.2s;">
+                        <i class="fa-brands fa-aws"></i>
+                        <h3>AWS</h3>
+                    </div>
+                    <div class="skill-card scroll-animate fade-in-up" style="transition-delay: 0.3s;">
+                        <i class="fa-solid fa-cloud"></i>
+                        <h3>Kubernetes</h3>
+                    </div>
+                    <div class="skill-card scroll-animate fade-in-up" style="transition-delay: 0.4s;">
+                        <i class="fa-brands fa-git-alt"></i>
+                        <h3>Git</h3>
+                    </div>
+                    <div class="skill-card scroll-animate fade-in-up" style="transition-delay: 0.5s;">
+                        <i class="fa-brands fa-python"></i>
+                        <h3>Python</h3>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="projects" class="projects">
+            <div class="container">
+                <h2 class="section-title scroll-animate fade-in-up">Featured Projects</h2>
+                <div class="projects-grid">
+                    <a href="#" class="project-card scroll-animate fade-in-left">
+                        <div class="project-image">
+                            <i class="fa-solid fa-server"></i>
+                        </div>
+                        <div class="project-content">
+                            <h3>Automated CI/CD Pipeline</h3>
+                            <p>Implemented a robust CI/CD pipeline using Jenkins, Docker, and Kubernetes to automate build, test, and deployment workflows.</p>
+                        </div>
+                    </a>
+                    <a href="#" class="project-card scroll-animate fade-in-up" style="transition-delay: 0.2s;">
+                        <div class="project-image">
+                            <i class="fa-solid fa-code-branch"></i>
+                        </div>
+                        <div class="project-content">
+                            <h3>Cloud Cost Optimization</h3>
+                            <p>Developed scripts and monitoring dashboards to analyze and reduce cloud infrastructure costs by 30% across multiple services.</p>
+                        </div>
+                    </a>
+                    <a href="#" class="project-card scroll-animate fade-in-right">
+                        <div class="project-image">
+                            <i class="fa-solid fa-cubes-stacked"></i>
+                        </div>
+                        <div class="project-content">
+                            <h3>Infrastructure as Code</h3>
+                            <p>Used Terraform and Ansible to manage and provision infrastructure on AWS, ensuring consistent and reproducible environments.</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section id="testimonials" class="testimonials">
+            <div class="container">
+                <h2 class="section-title scroll-animate fade-in-up">Testimonials</h2>
+                <div class="testimonials-grid">
+                    <div class="testimonial-card scroll-animate fade-in-up">
+                        <p>"Working with [Your Name] was a game-changer for our team. Their expertise in DevOps and automation significantly improved our delivery speed and system stability."</p>
+                        <div class="testimonial-author">
+                            <h4>Jane Doe</h4>
+                            <span>CTO at Company A</span>
+                        </div>
+                    </div>
+                    <div class="testimonial-card scroll-animate fade-in-up" style="transition-delay: 0.2s;">
+                        <p>"[Your Name] is an exceptional problem-solver. They tackled our complex infrastructure challenges with innovative and efficient solutions. Highly recommended."</p>
+                        <div class="testimonial-author">
+                            <h4>John Smith</h4>
+                            <span>Senior Software Engineer at Company B</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="contact">
+            <div class="container">
+                <h2 class="section-title scroll-animate fade-in-up">Get In Touch</h2>
+                <div class="contact-content scroll-animate fade-in-scale">
+                    <p>I'm always open to new opportunities and collaborations. Feel free to reach out to me via email or connect with me on social media!</p>
+                    <div class="cta-buttons">
+                        <a href="mailto:your.email@example.com" class="btn btn-primary">Email Me</a>
+                    </div>
+                    <ul class="social-links">
+                        <li><a href="#" target="_blank" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a></li>
+                        <li><a href="#" target="_blank" aria-label="GitHub"><i class="fa-brands fa-github"></i></a></li>
+                        <li><a href="#" target="_blank" aria-label="Twitter"><i class="fa-brands fa-twitter"></i></a></li>
                     </ul>
                 </div>
-                <div class="skill-category">
-                    <h3><i class="fas fa-server"></i> Backend</h3>
-                    <ul>
-                        <li><i class="fab fa-node-js"></i> Node.js</li>
-                        <li><i class="fas fa-database"></i> Express.js</li>
-                        <li><i class="fas fa-database"></i> MongoDB</li>
-                        <li><i class="fas fa-fire"></i> Firebase</li>
-                        <li><i class="fas fa-cogs"></i> RESTful APIs</li>
-                    </ul>
-                </div>
-                <div class="skill-category">
-                    <h3><i class="fas fa-wrench"></i> Tools & Others</h3>
-                    <ul>
-                        <li><i class="fab fa-git-alt"></i> Git & GitHub</li>
-                        <li><i class="fab fa-npm"></i> npm</li>
-                        <li><i class="fas fa-terminal"></i> Command Line</li>
-                        <li><i class="fas fa-vial"></i> Jest</li>
-                        <li><i class="fas fa-box"></i> Webpack</li>
-                    </ul>
-                </div>
             </div>
         </section>
-
-        <!-- Projects Section -->
-        <section id="projects" class="projects scroll-target">
-            <h2 class="section-title">My Projects</h2>
-            <div class="projects-grid">
-                <!-- Project 1 -->
-                <div class="project-card">
-                    <img src="https://placehold.co/600x400/3498db/ffffff?text=Project+1" alt="Project 1 Screenshot" class="project-image" loading="lazy">
-                    <div class="project-info">
-                        <h3 class="project-title">E-commerce Platform</h3>
-                        <p class="project-description">A full-featured e-commerce website with product listings, a shopping cart, and a checkout process.</p>
-                        <div class="project-tech">
-                            <span>React</span>
-                            <span>Node.js</span>
-                            <span>MongoDB</span>
-                        </div>
-                        <div class="project-links">
-                            <a href="https://github.com/yourusername/project1" target="_blank" class="btn btn-secondary"><i class="fab fa-github"></i> GitHub</a>
-                            <a href="#" target="_blank" class="btn btn-secondary"><i class="fas fa-external-link-alt"></i> Live Demo</a>
-                        </div>
-                    </div>
-                </div>
-                <!-- Project 2 -->
-                <div class="project-card">
-                    <img src="https://placehold.co/600x400/2ecc71/ffffff?text=Project+2" alt="Project 2 Screenshot" class="project-image" loading="lazy">
-                    <div class="project-info">
-                        <h3 class="project-title">Task Management App</h3>
-                        <p class="project-description">A sleek and intuitive task management application to help users stay organized and productive.</p>
-                        <div class="project-tech">
-                            <span>JavaScript</span>
-                            <span>Firebase</span>
-                            <span>CSS Grid</span>
-                        </div>
-                        <div class="project-links">
-                            <a href="https://github.com/yourusername/project2" target="_blank" class="btn btn-secondary"><i class="fab fa-github"></i> GitHub</a>
-                            <a href="#" target="_blank" class="btn btn-secondary"><i class="fas fa-external-link-alt"></i> Live Demo</a>
-                        </div>
-                    </div>
-                </div>
-                <!-- Project 3 -->
-                <div class="project-card">
-                    <img src="https://placehold.co/600x400/e74c3c/ffffff?text=Project+3" alt="Project 3 Screenshot" class="project-image" loading="lazy">
-                    <div class="project-info">
-                        <h3 class="project-title">Portfolio Website</h3>
-                        <p class="project-description">This very portfolio, built from scratch using pure HTML, CSS, and JavaScript with a focus on clean design and performance.</p>
-                        <div class="project-tech">
-                            <span>HTML5</span>
-                            <span>CSS3</span>
-                            <span>JavaScript</span>
-                        </div>
-                        <div class="project-links">
-                            <a href="https://github.com/yourusername/portfolio" target="_blank" class="btn btn-secondary"><i class="fab fa-github"></i> GitHub</a>
-                            <a href="#home" class="btn btn-secondary"><i class="fas fa-external-link-alt"></i> Live Demo</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Contact Section -->
-        <section id="contact" class="contact scroll-target">
-            <h2 class="section-title">Get In Touch</h2>
-            <div class="contact-container">
-                <div class="contact-info">
-                    <p>I'm currently open to new opportunities. Feel free to reach out via email or connect with me on social media. I'll get back to you as soon as possible!</p>
-                    <ul>
-                        <li><i class="fas fa-envelope"></i> <a href="mailto:your.email@example.com">your.email@example.com</a></li>
-                        <li><i class="fab fa-linkedin"></i> <a href="https://linkedin.com/in/yourusername" target="_blank">linkedin.com/in/yourusername</a></li>
-                        <li><i class="fab fa-github"></i> <a href="https://github.com/yourusername" target="_blank">github.com/yourusername</a></li>
-                    </ul>
-                </div>
-                <form id="contact-form" class="contact-form" action="https://formspree.io/f/your_form_id" method="POST">
-                    <div class="form-group">
-                        <input type="text" id="name" name="name" required placeholder="Your Name">
-                    </div>
-                    <div class="form-group">
-                        <input type="email" id="email" name="email" required placeholder="Your Email">
-                    </div>
-                    <div class="form-group">
-                        <textarea id="message" name="message" rows="5" required placeholder="Your Message"></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Send Message</button>
-                </form>
-            </div>
-        </section>
-
     </main>
 
-    <!-- Footer -->
-    <footer id="footer">
-        <div class="footer-socials">
-            <a href="https://github.com/yourusername" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
-            <a href="https://linkedin.com/in/yourusername" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
-            <a href="https://twitter.com/yourusername" target="_blank" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-        </div>
-        <p>&copy; 2024 John Doe. All rights reserved.</p>
+    <footer>
+        <p>&copy; 2024 Your Name. All rights reserved.</p>
     </footer>
 
-    <!-- Scroll to Top Button -->
-    <a href="#home" class="scroll-to-top" aria-label="Scroll to top">
-        <i class="fas fa-arrow-up"></i>
-    </a>
+    <script>
+        // DOMContentLoaded is used to ensure the DOM is fully loaded before the script runs.
+        document.addEventListener('DOMContentLoaded', () => {
 
-    <!-- External JavaScript -->
-    <script src="script.js"></script>
+            // === Smooth Scroll for Navigation ===
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
 
+            // === Header Scroll Effect ===
+            const header = document.querySelector('header');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 100) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            });
+
+            // === Intersection Observer for Scroll Animations ===
+            // This observer watches for elements with the 'scroll-animate' class
+            // and adds a 'visible' class when they enter the viewport.
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        // Optional: Unobserve the element after it's animated once
+                        // observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 }); // The animation triggers when 10% of the element is visible
+
+            // Apply the observer to all elements with the 'scroll-animate' class
+            document.querySelectorAll('.scroll-animate').forEach(el => observer.observe(el));
+
+
+            // === Parallax Scrolling Effect ===
+            // The parallax effect on the hero section gives a sense of depth.
+            window.addEventListener('scroll', () => {
+                const scrolled = window.pageYOffset;
+                const hero = document.querySelector('.hero');
+                if (hero) {
+                    hero.style.transform = `translateY(${scrolled * 0.5}px)`;
+                }
+            });
+
+
+            // === Interactive Effects for Project Cards ===
+            // These effects make the project cards feel more responsive and dynamic.
+            document.querySelectorAll('.project-card').forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-10px) scale(1.02)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0) scale(1)';
+                });
+            });
+
+            // === Dynamic Starfield Background ===
+            // This creates an animated starfield effect on a canvas element.
+            const canvas = document.getElementById('particle-canvas');
+            const ctx = canvas.getContext('2d');
+            let particles = [];
+            let rafId;
+
+            const resizeCanvas = () => {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            };
+            window.addEventListener('resize', resizeCanvas);
+            resizeCanvas();
+
+            class Particle {
+                constructor() {
+                    this.x = Math.random() * canvas.width;
+                    this.y = Math.random() * canvas.height;
+                    this.size = Math.random() * 1.5 + 0.5;
+                    this.opacity = Math.random();
+                    this.speedX = Math.random() * 0.1 - 0.05;
+                    this.speedY = Math.random() * 0.1 - 0.05;
+                    this.life = Math.random() * 100;
+                }
+
+                draw() {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
+                    ctx.shadowBlur = this.size * 2;
+                    ctx.shadowColor = `rgba(255, 255, 255, ${this.opacity})`;
+                    ctx.fill();
+                }
+
+                update() {
+                    // Move particle
+                    this.x += this.speedX;
+                    this.y += this.speedY;
+
+                    // Twinkling effect
+                    this.life += 0.5;
+                    this.opacity = 0.3 + Math.abs(Math.sin(this.life / 50)) * 0.7;
+                    this.size = 0.5 + Math.abs(Math.sin(this.life / 100)) * 1;
+
+
+                    // Check boundaries and reset if out of view
+                    if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) {
+                        this.x = Math.random() * canvas.width;
+                        this.y = Math.random() * canvas.height;
+                        this.size = Math.random() * 1.5 + 0.5;
+                        this.opacity = Math.random();
+                    }
+
+                    this.draw();
+                }
+            }
+
+            const init = () => {
+                particles = [];
+                const numberOfParticles = (canvas.width * canvas.height) / 15000;
+                for (let i = 0; i < numberOfParticles; i++) {
+                    particles.push(new Particle());
+                }
+            };
+            
+            const animate = () => {
+                rafId = requestAnimationFrame(animate);
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                for (let i = 0; i < particles.length; i++) {
+                    particles[i].update();
+                }
+            };
+            
+            init();
+            animate();
+
+            // === Blog Carousel Logic ===
+            const carouselTrack = document.querySelector('.blog-carousel-track');
+            const prevBtn = document.querySelector('.prev-btn');
+            const nextBtn = document.querySelector('.next-btn');
+            const blogCards = document.querySelectorAll('.blog-card');
+            let cardWidth = blogCards[0].offsetWidth + parseInt(window.getComputedStyle(blogCards[0]).marginRight);
+            let currentIndex = 0;
+
+            const updateCarousel = () => {
+                carouselTrack.style.transform = `translateX(${-currentIndex * cardWidth}px)`;
+            };
+
+            const resizeCarousel = () => {
+                cardWidth = blogCards[0].offsetWidth + parseInt(window.getComputedStyle(blogCards[0]).marginRight);
+                updateCarousel();
+            };
+            window.addEventListener('resize', resizeCarousel);
+
+            nextBtn.addEventListener('click', () => {
+                if (currentIndex < blogCards.length - Math.floor(carouselTrack.parentElement.offsetWidth / cardWidth)) {
+                    currentIndex++;
+                    updateCarousel();
+                } else {
+                    currentIndex = 0;
+                    updateCarousel();
+                }
+            });
+
+            prevBtn.addEventListener('click', () => {
+                if (currentIndex > 0) {
+                    currentIndex--;
+                    updateCarousel();
+                } else {
+                     // Loop to the end if at the beginning
+                    currentIndex = blogCards.length - Math.floor(carouselTrack.parentElement.offsetWidth / cardWidth);
+                    updateCarousel();
+                }
+            });
+            
+            // === Typing Animation for Hero Title ===
+            function typeWriter(element, text, speed = 100, callback) {
+                let i = 0;
+                element.innerHTML = '';
+                element.classList.add('is-typing');
+                
+                function type() {
+                    if (i < text.length) {
+                        element.innerHTML += text.charAt(i);
+                        i++;
+                        setTimeout(type, speed);
+                    } else {
+                        element.classList.remove('is-typing');
+                        if (callback) callback();
+                    }
+                }
+                type();
+            }
+
+            const heroTitle = document.getElementById('hero-title');
+            const heroSubtitle = document.getElementById('hero-subtitle');
+            const heroTagline = document.getElementById('hero-tagline');
+            const ctaButtons = document.getElementById('cta-buttons');
+            
+            const originalTitleText = 'Your Name';
+
+            // Start the typing animation and subsequent fade-ins
+            heroTitle.style.opacity = '1';
+            typeWriter(heroTitle, originalTitleText, 100, () => {
+                heroSubtitle.style.opacity = '1';
+                heroSubtitle.style.transform = 'translateY(0)';
+                setTimeout(() => {
+                    heroTagline.style.opacity = '1';
+                    heroTagline.style.transform = 'translateY(0)';
+                }, 500);
+                setTimeout(() => {
+                    ctaButtons.style.opacity = '1';
+                    ctaButtons.style.transform = 'translateY(0)';
+                }, 1000);
+            });
+        });
+    </script>
 </body>
 </html>
