@@ -3,15 +3,15 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>user_name | DevOps × GenAI Engineer</title>
-  <meta name="description" content="Personal portfolio of user_name — DevOps engineer building Generative AI products, cloud architectures, and high-impact automation." />
+  <title>kaustubh | DevOps × GenAI Engineer</title>
+  <meta name="description" content="Personal portfolio of kaustubh — DevOps engineer building Generative AI products, cloud architectures, and high-impact automation." />
   <meta name="theme-color" content="#0ea5e9" />
   <!-- Open Graph -->
-  <meta property="og:title" content="user_name | DevOps × GenAI Engineer" />
+  <meta property="og:title" content="kaustubh | DevOps × GenAI Engineer" />
   <meta property="og:description" content="DevOps, Cloud, and Generative AI portfolio — projects, case studies, and writing." />
   <meta property="og:type" content="website" />
   <meta property="og:image" content="https://raw.githubusercontent.com/user/repo/main/og-image.png" />
-  <meta property="og:url" content="https://yourusername.github.io" />
+  <meta property="og:url" content="https://kaustubhyerkade.github.io" />
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
@@ -45,7 +45,7 @@
       line-height: 1.6;
     }
 
-    .container { max-width: 1100px; margin: 0 auto; padding: 1.2rem 1.2rem 4rem; position: relative; }
+    .container { max-width: 1100px; margin: 0 auto; padding: 1.2rem 1.2rem 4rem; }
 
     /* Nav */
     .nav { position: sticky; top: 0; z-index: 50; backdrop-filter: saturate(1.2) blur(8px); background: color-mix(in hsl, var(--panel) 85%, transparent); border-bottom: 1px solid rgba(148,163,184,.15); }
@@ -54,7 +54,7 @@
     .logo { width: 28px; height: 28px; border-radius:9px; background: linear-gradient(135deg, var(--brand), var(--brand-2)); display:grid; place-items:center; color:white; font-weight:800; box-shadow: 0 6px 18px rgba(14,165,233,.35); }
     .nav a { color: var(--text); text-decoration:none; opacity:.9; font-weight:600; }
     .nav-links { display:flex; gap:1.1rem; align-items:center; }
-    .btn { display:inline-flex; align-items:center; gap:.5rem; padding:.6rem .9rem; border-radius: 14px; background: rgba(14, 165, 233, 0.1); border:1px solid rgba(14, 165, 233, 0.2); backdrop-filter: blur(8px); box-shadow: 0 10px 24px rgba(2, 6, 23, .35), inset 0 1px 0 rgba(255,255,255,.06); transition: transform .2s ease, box-shadow .2s ease; }
+    .btn { display:inline-flex; align-items:center; gap:.5rem; padding:.6rem .9rem; border-radius: 14px; background: linear-gradient(180deg, color-mix(in hsl, var(--panel) 85%, #000 5%), color-mix(in hsl, var(--panel) 70%, #000 15%)); border:1px solid rgba(148,163,184,.18); box-shadow: 0 10px 24px rgba(2, 6, 23, .35), inset 0 1px 0 rgba(255,255,255,.06); transition: transform .2s ease, box-shadow .2s ease; }
     .btn:hover { transform: translateY(-1px); box-shadow: 0 14px 32px rgba(2,6,23,.5); }
 
     /* Hamburger Menu */
@@ -77,7 +77,7 @@
     }
 
     /* Hero */
-    .hero { display:grid; grid-template-columns: 1.1fr .9fr; gap: 2rem; padding: 3.5rem 0 2rem; align-items:center; position: relative; overflow: hidden; }
+    .hero { display:grid; grid-template-columns: 1.1fr .9fr; gap: 2rem; padding: 3.5rem 0 2rem; align-items:center; }
     @media (max-width: 900px){
       /* Mobile layout for the hero section */
       .hero {
@@ -96,20 +96,20 @@
         display: contents;
       }
     }
-    .badge { display:inline-flex; align-items:center; gap:.5rem; padding:.3rem .6rem; border-radius:999px; border:1px solid rgba(148,163,184,.25); color: var(--muted); background: rgba(148, 163, 184, 0.08); backdrop-filter: blur(8px); }
+    .badge { display:inline-flex; align-items:center; gap:.5rem; padding:.3rem .6rem; border-radius:999px; border:1px solid rgba(148,163,184,.25); background: color-mix(in hsl, var(--panel) 80%, transparent); font-size:.8rem; color:var(--muted); }
     .title { font-size: clamp(2rem, 4.6vw, 3.4rem); line-height:1.12; margin:.6rem 0 1rem; font-weight:800; letter-spacing:-.02em; }
     .title span.gradient { background: linear-gradient(120deg, var(--brand) 10%, var(--brand-2) 80%); -webkit-background-clip: text; background-clip: text; color: transparent; }
     .subtitle { font-size: clamp(1rem, 1.6vw, 1.15rem); color: var(--muted); max-width: 60ch; }
     .cta { display:flex; gap:.75rem; margin-top:1.25rem; flex-wrap: wrap; }
     .ghost { background: transparent; border:1px dashed rgba(148,163,184,.35); }
 
-    .hero-card { position: relative; border-radius: 22px; padding: 1px; background: rgba(14,165,233,.2); border: 1px solid rgba(14,165,233,.25); display: flex; flex-direction: column; gap: 1rem; backdrop-filter: blur(12px); }
-    .hero-card-inner { height: 100%; border-radius: 21px; padding: 1.2rem; background: rgba(148,163,184,0.06); border: 1px solid rgba(148,163,184,.15); }
+    .hero-card { position: relative; border-radius: 22px; padding: 1rem; background: linear-gradient(180deg, rgba(14,165,233,.10), rgba(14,165,233,0)); border: 1px solid rgba(14,165,233,.25); display: flex; flex-direction: column; gap: 1rem; }
+    .hero-card-inner { height: 100%; border-radius: 16px; padding: 1.2rem; background: var(--card); border: 1px solid rgba(148,163,184,.15); }
     .stat-grid { display:grid; grid-template-columns: repeat(3,1fr); gap: .8rem; margin-top: .8rem; }
-    .stat { padding:.9rem; border:1px solid rgba(148,163,184,.15); border-radius: 14px; background: rgba(14, 165, 233, 0.05); backdrop-filter: blur(6px); }
+    .stat { padding:.9rem; border:1px solid rgba(148,163,184,.15); border-radius: 14px; background: linear-gradient(180deg, color-mix(in hsl, var(--panel) 82%, #000 6%), color-mix(in hsl, var(--panel) 80%, transparent)); }
     .stat h3 { margin:0; font-size:1.2rem; }
     .stat p { margin:.2rem 0 0; color:var(--muted); font-size:.85rem; }
-    
+
     /* Sections */
     section { padding: 2.2rem 0; }
     .section-title { display:flex; align-items:center; justify-content:space-between; gap:1rem; margin-bottom: 1rem; }
@@ -117,11 +117,11 @@
     .section-title .line { height:1px; background: linear-gradient(90deg, rgba(148,163,184,.4), rgba(148,163,184,.05)); flex:1; }
 
     .cards { display:grid; grid-template-columns: repeat(12, 1fr); gap: 1rem; }
-    .card { grid-column: span 6; padding: 1rem; border-radius: 18px; background: rgba(14, 165, 233, 0.05); border:1px solid rgba(14, 165, 233, 0.2); backdrop-filter: blur(12px); transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease; }
+    .card { grid-column: span 6; padding: 1rem; border-radius: 18px; background: var(--card); border:1px solid rgba(148,163,184,.15); transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease; }
     .card:hover { transform: translateY(-2px); border-color: rgba(14,165,233,.35); box-shadow: 0 16px 36px rgba(2,6,23,.42); }
     @media (max-width: 900px){ .card { grid-column: span 12; } }
 
-    .chip { display:inline-flex; align-items:center; gap:.4rem; padding:.35rem .6rem; font-size:.8rem; border-radius: 999px; border:1px solid rgba(148,163,184,.25); color: var(--muted); background: rgba(148, 163, 184, 0.08); backdrop-filter: blur(8px); }
+    .chip { display:inline-flex; align-items:center; gap:.4rem; padding:.35rem .6rem; font-size:.8rem; border-radius: 999px; border:1px solid rgba(148,163,184,.25); color: var(--muted); background: color-mix(in hsl, var(--panel) 80%, transparent); }
     .chips { display:flex; flex-wrap:wrap; gap:.4rem; }
 
     .grid-3 { display:grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
@@ -129,7 +129,7 @@
 
     .timeline { position: relative; padding-left: 1rem; }
     .timeline::before { content:""; position:absolute; left:.2rem; top:.3rem; bottom:.3rem; width:2px; background: linear-gradient(180deg, rgba(148,163,184,.5), rgba(148,163,184,.1)); }
-    .t-item { position: relative; padding:.6rem .8rem .6rem 1.1rem; margin:.25rem 0 .5rem; border:1px solid rgba(148,163,184,.15); border-radius: 14px; background: rgba(14, 165, 233, 0.05); backdrop-filter: blur(6px); }
+    .t-item { position: relative; padding:.6rem .8rem .6rem 1.1rem; margin:.25rem 0 .5rem; border:1px solid rgba(148,163,184,.15); border-radius: 14px; background: var(--card); }
     .t-item::before { content:""; position:absolute; left:-7px; top:14px; width:10px; height:10px; border-radius:50%; background: linear-gradient(135deg, var(--brand), var(--brand-2)); box-shadow: 0 0 0 3px var(--ring); }
 
     .project-thumb { aspect-ratio: 16/9; width: 100%; border-radius: 12px; background: linear-gradient(135deg, rgba(14,165,233,.25), rgba(34,211,238,.12)); display:grid; place-items:center; font-weight:700; letter-spacing:.6px; }
@@ -201,11 +201,10 @@
         top: 100%;
         left: 0;
         width: 100%;
-        background: rgba(15, 23, 42, 0.8);
+        background: var(--panel);
         border-bottom: 1px solid rgba(148,163,184,.15);
         padding: 1rem;
         box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-        backdrop-filter: blur(12px);
       }
       .nav-links.active {
         display: flex;
@@ -241,41 +240,6 @@
             order: 3; /* Puts the highlights card third */
         }
     }
-
-    /* Star animation CSS */
-    .stars {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 0; /* Ensures stars are behind other content */
-    }
-
-    .star {
-      position: absolute;
-      background-color: var(--text);
-      border-radius: 50%;
-      opacity: 0;
-      animation: move-star linear infinite;
-    }
-
-    @keyframes move-star {
-      0% {
-        transform: translateY(0) scale(1);
-        opacity: 0;
-      }
-      20% {
-        opacity: 1;
-      }
-      80% {
-        opacity: 1;
-      }
-      100% {
-        transform: translateY(100vh) scale(0.5);
-        opacity: 0;
-      }
-    }
   </style>
 </head>
 <body>
@@ -286,8 +250,8 @@
   <header class="nav" role="banner">
     <div class="nav-inner">
       <div class="brand">
-        <div class="logo" aria-hidden="true">R</div>
-        <a href="#" aria-label="Go to top">user_name</a>
+        <div class="logo" aria-hidden="true">KY</div>
+        <a href="#" aria-label="Go to top">kaustubh yerkade</a>
       </div>
       <nav aria-label="Primary">
         <button id="menu-toggle" class="menu-toggle" aria-controls="nav-links" aria-expanded="false">☰</button>
@@ -308,13 +272,10 @@
 
     <!-- HERO -->
     <section class="hero" id="home">
-      <!-- Star animation container -->
-      <div class="stars"></div>
-      
       <!-- Add a class to the hero text content for targeting -->
       <div class="hero-content">
         <div class="badge">🚀 DevOps × Generative AI</div>
-        <h1 class="title">Hi, I’m <span class="gradient">user_name</span> — building resilient cloud systems and <span class="gradient">AI products</span> that ship.</h1>
+        <h1 class="title">Hi, I’m <span class="gradient">kaustubh</span> building resilient cloud systems and <span class="gradient">AI products</span> that ship.</h1>
         <p class="subtitle">DevOps engineer with a knack for GenAI. I automate deployments, craft scalable cloud architectures, and build practical AI features like RAG chatbots, smart product navigation, and risk scoring tools. Currently exploring Google Cloud Architect patterns and AI-first UX on the web.</p>
         <div class="cta">
           <a class="btn" href="#projects">View Projects</a>
@@ -330,7 +291,7 @@
       <div class="hero-right-column">
         <!-- Profile Picture -->
         <div class="profile-pic-container">
-          <img src="https://placehold.co/120x120" alt="user_name's profile picture" class="profile-pic">
+          <img src="portfolio.jpg" alt="kaustubh's profile picture" class="profile-pic">
         </div>
         <aside class="hero-card" aria-label="Highlights">
           <div class="hero-card-inner">
@@ -522,7 +483,7 @@
           <p class="muted">Slide deck + notes for leaders at HDFC‑style organizations: real use‑cases, ROI math, and risk controls.</p>
           <div class="row">
             <a class="btn" href="#" target="_blank">View Slides</a>
-            <a class="btn ghost" href="https://user_name.medium.com" target="_blank" rel="noopener">Medium</a>
+            <a class="btn ghost" href="https://kaustubh.medium.com" target="_blank" rel="noopener">Medium</a>
           </div>
         </article>
         <article class="card">
@@ -531,7 +492,7 @@
           <p class="muted">An intuitive walk‑through with diagrams, tokenization gotchas, and practical tips for builders.</p>
           <div class="row">
             <a class="btn" href="#" target="_blank">Read Post</a>
-            <a class="btn ghost" href="https://dev.to/user_name" target="_blank" rel="noopener">Dev.to</a>
+            <a class="btn ghost" href="https://dev.to/kaustubh" target="_blank" rel="noopener">Dev.to</a>
           </div>
         </article>
         <!-- New Card -->
@@ -583,7 +544,7 @@
     </section>
 
     <footer class="footer">
-      <span>© <span id="year"></span> user_name. Built with semantic HTML, accessible components, and a sprinkle of CSS magic.</span>
+      <span>© <span id="year"></span> kaustubh. Built with semantic HTML, accessible components, and a sprinkle of CSS magic.</span>
       <div class="row">
         <a class="inline" href="#">Back to top ↑</a>
       </div>
@@ -596,13 +557,13 @@
     {
       "@context": "https://schema.org",
       "@type": "Person",
-      "name": "user_name",
+      "name": "kaustubh",
       "url": "https://yourusername.github.io",
       "jobTitle": "DevOps & Generative AI Engineer",
       "sameAs": [
         "https://github.com/yourusername",
         "https://www.linkedin.com/in/yourprofile",
-        "https://user_name.medium.com"
+        "https://kaustubh.medium.com"
       ]
     }
   </script>
@@ -657,21 +618,6 @@
           menuToggle.setAttribute('aria-expanded', !isExpanded);
           navLinks.classList.toggle('active');
         });
-      }
-      
-      // Star animation script
-      const starsContainer = document.querySelector('.stars');
-      const numberOfStars = 70; // Adjust as needed
-      for (let i = 0; i < numberOfStars; i++) {
-          const star = document.createElement('span');
-          star.className = 'star';
-          star.style.left = `${Math.random() * 100}%`;
-          star.style.top = `${Math.random() * -20}%`; // Start above the screen
-          star.style.width = `${1 + Math.random() * 2}px`; // Vary size
-          star.style.height = star.style.width; // Keep star round
-          star.style.animationDelay = `${Math.random() * 5}s`;
-          star.style.animationDuration = `${15 + Math.random() * 10}s`; // Vary speed
-          starsContainer.appendChild(star);
       }
     });
   </script>
