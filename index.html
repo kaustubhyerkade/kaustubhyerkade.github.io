@@ -79,9 +79,10 @@
     /* Hero */
     .hero { display:grid; grid-template-columns: 1.1fr .9fr; gap: 2rem; padding: 3.5rem 0 2rem; align-items:center; }
     @media (max-width: 900px){
+      /* Mobile layout for the hero section */
       .hero {
-        display: flex;
-        flex-direction: column-reverse;
+        display: flex; /* Override the grid to use flexbox */
+        flex-direction: column; /* Stack items vertically */
         gap: 2rem;
         padding: 2rem 0;
         text-align: center;
@@ -89,7 +90,11 @@
     }
     .hero-right-column { display: flex; flex-direction: column; gap: 1.5rem; }
     @media (max-width: 900px){
-      .hero-right-column { align-items: center; }
+      .hero-right-column {
+        align-items: center;
+        /* Make the children of this container flex items of the parent .hero */
+        display: contents;
+      }
     }
     .badge { display:inline-flex; align-items:center; gap:.5rem; padding:.3rem .6rem; border-radius:999px; border:1px solid rgba(148,163,184,.25); background: color-mix(in hsl, var(--panel) 80%, transparent); font-size:.8rem; color:var(--muted); }
     .title { font-size: clamp(2rem, 4.6vw, 3.4rem); line-height:1.12; margin:.6rem 0 1rem; font-weight:800; letter-spacing:-.02em; }
@@ -221,6 +226,20 @@
       box-shadow: 0 0 0 5px rgba(14, 165, 233, 0.2);
       object-fit: cover;
     }
+
+    /* Mobile hero section order */
+    @media (max-width: 900px) {
+        /* Reorder the main items of the hero section */
+        .hero .profile-pic-container {
+            order: 1; /* Puts the profile picture at the top */
+        }
+        .hero .hero-content {
+            order: 2; /* Puts the main text content second */
+        }
+        .hero .hero-card {
+            order: 3; /* Puts the highlights card third */
+        }
+    }
   </style>
 </head>
 <body>
@@ -231,7 +250,7 @@
   <header class="nav" role="banner">
     <div class="nav-inner">
       <div class="brand">
-        <div class="logo" aria-hidden="true">KY</div>
+        <div class="logo" aria-hidden="true">R</div>
         <a href="#" aria-label="Go to top">kaustubh</a>
       </div>
       <nav aria-label="Primary">
@@ -253,7 +272,8 @@
 
     <!-- HERO -->
     <section class="hero" id="home">
-      <div>
+      <!-- Add a class to the hero text content for targeting -->
+      <div class="hero-content">
         <div class="badge">🚀 DevOps × Generative AI</div>
         <h1 class="title">Hi, I’m <span class="gradient">kaustubh</span> — building resilient cloud systems and <span class="gradient">AI products</span> that ship.</h1>
         <p class="subtitle">DevOps engineer with a knack for GenAI. I automate deployments, craft scalable cloud architectures, and build practical AI features like RAG chatbots, smart product navigation, and risk scoring tools. Currently exploring Google Cloud Architect patterns and AI-first UX on the web.</p>
