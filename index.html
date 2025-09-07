@@ -11,7 +11,7 @@
   <meta property="og:description" content="DevOps, Cloud, and Generative AI portfolio — projects, case studies, and writing." />
   <meta property="og:type" content="website" />
   <meta property="og:image" content="https://raw.githubusercontent.com/user/repo/main/og-image.png" />
-  <meta property="og:url" content="https://yourusername.github.io" />
+  <meta property="og:url" content="https://kaustubhyerkade.github.io" />
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
@@ -190,6 +190,12 @@
             text-align: center;
             gap: 0.5rem;
         }
+        
+        /* Profile picture size on mobile */
+        .profile-pic {
+            width: 150px;
+            height: 150px;
+        }
     }
 
     /* Mobile Nav */
@@ -219,8 +225,8 @@
       margin-bottom: 0;
     }
     .profile-pic {
-      width: 120px;
-      height: 120px;
+      width: 180px;
+      height: 180px;
       border-radius: 50%; /* Makes the image circular */
       border: 3px solid var(--brand);
       box-shadow: 0 0 0 5px rgba(14, 165, 233, 0.2);
@@ -304,7 +310,7 @@
   <header class="nav" role="banner">
     <div class="nav-inner">
       <div class="brand">
-        <div class="logo" aria-hidden="true">R</div>
+        <div class="logo" aria-hidden="true">KY</div>
         <a href="#" aria-label="Go to top">kaustubh</a>
       </div>
       <nav aria-label="Primary">
@@ -329,7 +335,7 @@
       <!-- Add a class to the hero text content for targeting -->
       <div class="hero-content">
         <div class="badge">🚀 DevOps × Generative AI</div>
-        <h1 class="title">Hi, I’m <span class="gradient">kaustubh</span> — building resilient cloud systems and <span class="gradient">AI products</span> that ship.</h1>
+        <h1 class="title">Hi, I’m <span class="gradient">kaustubh</span> building resilient cloud systems and <span class="gradient">AI products</span> that ship.</h1>
         <p class="subtitle">DevOps engineer with a knack for GenAI. I automate deployments, craft scalable cloud architectures, and build practical AI features like RAG chatbots, smart product navigation, and risk scoring tools. Currently exploring Google Cloud Architect patterns and AI-first UX on the web.</p>
         <div class="cta">
           <a class="btn" href="#projects">View Projects</a>
@@ -345,7 +351,7 @@
       <div class="hero-right-column">
         <!-- Profile Picture -->
         <div class="profile-pic-container">
-          <img src="portfolio.jpg" alt="kaustubh's profile picture" class="profile-pic">
+          <img src="https://placehold.co/180x180" alt="kaustubh's profile picture" class="profile-pic">
         </div>
         <aside class="hero-card" aria-label="Highlights">
           <div class="hero-card-inner">
@@ -382,7 +388,7 @@
         <!-- Project 1 -->
         <article class="card" aria-labelledby="p1-title">
           <div class="project-thumb">Chemical Industry AI Website</div>
-          <h3 id="p1-title">Nova Healthcare — AI-first Product Website</h3>
+          <h3 id="p1-title">Nova Healthcare: AI-first Product Website</h3>
           <p class="muted">Production-grade site using Carbon Design System with integrated AI: RAG chatbot, product metadata extraction (PubChem), smart product filters, and Ask-PDF assistant. Deployed on cloud with CI/CD and analytics.</p>
           <div class="chips">
             <span class="chip">Carbon Design</span>
@@ -417,7 +423,7 @@
         <!-- Project 3 -->
         <article class="card" aria-labelledby="p3-title">
           <div class="project-thumb">AIX Beats</div>
-          <h3 id="p3-title">AIX Beats — Observability for IBM AIX</h3>
+          <h3 id="p3-title">AIX Beats : Observability for IBM AIX</h3>
           <p class="muted">A custom lightweight shipper to bring AIX telemetry into modern ELK/Grafana stacks where official Beats support is missing. Includes packaging, security hardening, and dashboards.</p>
           <div class="chips">
             <span class="chip">IBM AIX</span>
@@ -434,7 +440,7 @@
         <!-- Project 4 -->
         <article class="card" aria-labelledby="p4-title">
           <div class="project-thumb">RAG Chatbot</div>
-          <h3 id="p4-title">Domain RAG Chatbot — AIX Expert</h3>
+          <h3 id="p4-title">Domain RAG Chatbot : AIX Expert</h3>
           <p class="muted">Retrieval-augmented assistant tailored for IBM AIX operations and troubleshooting, with citations, toolformer-style actions, and structured answers.</p>
           <div class="chips">
             <span class="chip">RAG</span>
@@ -676,7 +682,7 @@
       const numberOfObjects = 70; // Total number of stars and objects
       const starRatio = 0.75; // 75% stars
       const planetRatio = 0.15; // 15% planets
-      const flyingObjectRatio = 0.01; // 10% flying objects
+      const flyingObjectRatio = 0.1; // 10% flying objects
       
       const flyingObjects = ['🚀', '🛸','🛰️','🪐','⭐','🌌','🌕','🌠']; // Emojis for the objects
       const planetColors = [
