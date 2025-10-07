@@ -1,0 +1,536 @@
+import React, { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence, useInView, useAnimation, animate } from 'framer-motion';
+
+// Helper components & data moved inside the App component or defined before use
+// This ensures everything is self-contained in a single file structure.
+
+// --- SVG Icon Components ---
+const KubernetesIcon = () => <svg viewBox="0 0 24 24" fill="currentColor" className="w-8 h-8 text-blue-400"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-.5 15.5l-5-2.5v-5l5 2.5v5zm1 0v-5l5-2.5v5l-5 2.5zM12 4.5l5 2.5-5 2.5-5-2.5L12 4.5z"/></svg>;
+const DockerIcon = () => <svg viewBox="0 0 24 24" fill="currentColor" className="w-8 h-8 text-blue-500"><path d="M22.1 9.5c-.5-2.8-2.6-5-5.3-5.5H7.2c-2.7.5-4.8 2.7-5.3 5.5v5c.5 2.8 2.6 5 5.3 5.5h9.6c2.7-.5 4.8-2.7 5.3-5.5v-5zM8 12.5c0-.8.7-1.5 1.5-1.5s1.5.7 1.5 1.5-.7 1.5-1.5 1.5-1.5-.7-1.5-1.5zm3 0c0-.8.7-1.5 1.5-1.5s1.5.7 1.5 1.5-.7 1.5-1.5 1.5-1.5-.7-1.5-1.5zm3 0c0-.8.7-1.5 1.5-1.5s1.5.7 1.5 1.5-.7 1.5-1.5 1.5-1.5-.7-1.5-1.5z"/></svg>;
+const PythonIcon = () => <svg viewBox="0 0 24 24" fill="currentColor" className="w-8 h-8 text-yellow-400"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 16.5v-3.5h2v-1h-2v-3h3v-1h-3V7.5h1v-2h-2v2.5H7.5v1H10v3H7.5v1H10v3.5h1z"/></svg>;
+const GeminiIcon = () => <svg viewBox="0 0 24 24" fill="currentColor" className="w-8 h-8 text-purple-400"><path d="M12 2c5.52 0 10 4.48 10 10s-4.48 10-10 10S2 17.52 2 12 6.48 2 12 2zm3.2 6.2l-3.2 3.2-3.2-3.2-1.4 1.4 3.2 3.2-3.2 3.2 1.4 1.4 3.2-3.2 3.2 3.2 1.4-1.4-3.2-3.2 3.2-3.2-1.4-1.4z"/></svg>;
+const TerraformIcon = () => <svg viewBox="0 0 24 24" fill="currentColor" className="w-8 h-8 text-indigo-500"><path d="M2 2h8v8H2V2zm12 0h8v8h-8V2zM2 14h8v8H2v-8zm12 0h8v8h-8v-8z"/></svg>;
+
+const GithubIcon = ({ className }) => <svg className={className} viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>;
+const YoutubeIcon = ({ className }) => <svg className={className} viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>;
+const InstagramIcon = ({ className }) => <svg className={className} viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.85s-.011 3.584-.069 4.85c-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07s-3.584-.012-4.85-.07c-3.252-.148-4.771-1.691-4.919-4.919-.058-1.265-.069-1.645-.069-4.85s.011-3.584.069-4.85c.149-3.225 1.664-4.771 4.919-4.919 1.266.058 1.644.07 4.85.07zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948s.014 3.667.072 4.947c.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072s3.667-.014 4.947-.072c4.358-.2 6.78-2.618 6.98-6.98.059-1.281.073-1.689.073-4.948s-.014-3.667-.072-4.947c-.2-4.358-2.618-6.78-6.98-6.98-1.281-.059-1.689-.073-4.948-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.162 6.162 6.162 6.162-2.759 6.162-6.162-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4s1.791-4 4-4 4 1.79 4 4-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44 1.441-.645 1.441-1.44-.645-1.44-1.441-1.44z"/></svg>;
+const MediumIcon = ({ className }) => <svg className={className} viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-3.6 6.3c.66 0 1.2.54 1.2 1.2s-.54 1.2-1.2 1.2-1.2-.54-1.2-1.2.54-1.2 1.2-1.2zm3.6 0c.66 0 1.2.54 1.2 1.2s-.54 1.2-1.2 1.2-1.2-.54-1.2-1.2.54-1.2 1.2-1.2zm3.6 0c.66 0 1.2.54 1.2 1.2s-.54 1.2-1.2 1.2-1.2-.54-1.2-1.2.54-1.2 1.2-1.2z"/></svg>;
+const DevToIcon = ({ className }) => <svg className={className} viewBox="0 0 24 24" fill="currentColor"><path d="M22.5 4H1.5C.67 4 0 4.67 0 5.5v13c0 .83.67 1.5 1.5 1.5h21c.83 0 1.5-.67 1.5-1.5v-13c0-.83-.67-1.5-1.5-1.5zM8 17H5V7h3v10zm6.5-5.2H11v-1.6h3.5v1.6zm-1.7 3.4h-1.6v1.6H11v-1.6h1.8v-1.6h1.6v3.2zM19 17h-3V7h3v10z"/></svg>;
+const MailIcon = ({ className }) => <svg className={className} viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>;
+
+const App = () => {
+    const [theme, setTheme] = useState('dark');
+    const [isStoryOpen, setStoryOpen] = useState(false);
+    const [selectedProject, setSelectedProject] = useState(null);
+    const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+    const vantaRef = useRef(null);
+
+    // Toggle theme
+    useEffect(() => {
+        if (theme === 'dark') {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    }, [theme]);
+    
+    // Load Vanta.js dynamically and only once
+    useEffect(() => {
+        const loadScripts = () => {
+            if (document.getElementById('three-script')) return; // Prevent re-adding scripts
+
+            const threeScript = document.createElement('script');
+            threeScript.id = 'three-script';
+            threeScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js';
+            threeScript.async = true;
+            document.body.appendChild(threeScript);
+
+            const vantaScript = document.createElement('script');
+            vantaScript.id = 'vanta-script';
+            vantaScript.src = 'https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js';
+            vantaScript.async = true;
+            document.body.appendChild(vantaScript);
+        };
+        loadScripts();
+    }, []);
+
+    // Consolidated Vanta.js initialization and management effect
+    useEffect(() => {
+        let vantaEffect = null;
+        
+        const initVanta = () => {
+            if (window.VANTA && vantaRef.current) {
+                vantaEffect = window.VANTA.NET({
+                    el: vantaRef.current,
+                    mouseControls: true,
+                    touchControls: true,
+                    gyroControls: false,
+                    minHeight: 200.00,
+                    minWidth: 200.00,
+                    scale: 1.00,
+                    scaleMobile: 1.00,
+                    color: theme === 'dark' ? 0x6b21a8 : 0x3b82f6,
+                    backgroundColor: theme === 'dark' ? 0x020617 : 0xf1f5f9,
+                    points: 12.00,
+                    maxDistance: 22.00,
+                    spacing: 18.00
+                });
+            }
+        };
+
+        // Vanta script might load after the initial render. We check for it.
+        if (window.VANTA) {
+            initVanta();
+        } else {
+            const checkInterval = setInterval(() => {
+                if (window.VANTA) {
+                    clearInterval(checkInterval);
+                    initVanta();
+                }
+            }, 500); // Check for Vanta every 500ms
+        }
+
+        // Cleanup function: This is crucial. It runs when the component unmounts OR when `theme` changes.
+        return () => {
+            if (vantaEffect) {
+                vantaEffect.destroy();
+            }
+        };
+    }, [theme]); // This effect re-runs ONLY when the theme changes.
+
+
+    // Cursor trail effect
+    useEffect(() => {
+        const handleMouseMove = (e) => {
+            setMousePosition({ x: e.clientX, y: e.clientY });
+        };
+        window.addEventListener('mousemove', handleMouseMove);
+        return () => window.removeEventListener('mousemove', handleMouseMove);
+    }, []);
+
+    const toggleTheme = () => {
+        setTheme(prevTheme => (prevTheme === 'dark' ? 'light' : 'dark'));
+    };
+
+    // --- Data ---
+    const taglines = ['Automation', 'AI', 'Innovation', 'Creativity'];
+    const [taglineIndex, setTaglineIndex] = useState(0);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setTaglineIndex((prevIndex) => (prevIndex + 1) % taglines.length);
+        }, 2000);
+        return () => clearInterval(interval);
+    }, []);
+
+
+    const stories = [
+        { id: 1, type: 'image', url: 'https://placehold.co/1080x1920/1e293b/94a3b8?text=Deploying+to+Prod\\non+Friday', duration: 5000 },
+        { id: 2, type: 'text', content: 'Debugging a Kubernetes pod at 2 AM. #DevOpsLife', duration: 5000 },
+        { id: 3, type: 'image', url: 'https://placehold.co/1080x1920/4a044e/f0abfc?text=My+GenAI+model\\nfinally+worked!', duration: 5000 },
+        { id: 4, type: 'text', content: 'The best part of my job? The tech memes, of course.', duration: 5000 },
+    ];
+    
+    const projects = [
+        {
+            title: "AIX Beats – Monitoring for IBM AIX",
+            description: "A comprehensive monitoring solution for IBM AIX servers, using the Elastic Stack. It provides real-time insights into system performance, security, and availability.",
+            tags: ["DevOps", "Elastic", "IBM AIX", "Monitoring"],
+            imageUrl: "https://placehold.co/600x400/1e40af/ffffff?text=AIX+Beats"
+        },
+        {
+            title: "Generative AI RAG Chatbot",
+            description: "A Retrieval-Augmented Generation chatbot for the healthcare industry, providing accurate and context-aware answers from a vast medical knowledge base.",
+            tags: ["GenAI", "RAG", "Python", "Healthcare"],
+            imageUrl: "https://placehold.co/600x400/7e22ce/ffffff?text=RAG+Chatbot"
+        },
+        {
+            title: "Selenium Test Automation Pipeline",
+            description: "A fully automated CI/CD pipeline for browser-based testing using Selenium, Docker, and Jenkins, reducing manual testing effort by over 80%.",
+            tags: ["Automation", "Selenium", "CI/CD", "Docker"],
+            imageUrl: "https://placehold.co/600x400/15803d/ffffff?text=Selenium+Pipeline"
+        }
+    ];
+    
+    const blogPosts = [
+        { platform: 'Medium', title: 'The Rise of AIOps: A DevOps Game Changer', link: '#' },
+        { platform: 'Dev.to', title: 'Building a RAG model from Scratch with Gemini', link: '#' },
+        { platform: 'Medium', title: 'Kubernetes Best Practices in 2025', link: '#' },
+        { platform: 'Dev.to', title: 'Terraform Modules for Reusable Infrastructure', link: '#' },
+    ];
+
+    // --- Components ---
+    const AnimatedCursor = () => (
+        <motion.div
+            className="fixed top-0 left-0 w-8 h-8 rounded-full bg-purple-500/50 dark:bg-cyan-400/50 backdrop-filter backdrop-blur-sm pointer-events-none z-[9999] border-2 border-purple-400 dark:border-cyan-300"
+            style={{
+                translateX: mousePosition.x - 16,
+                translateY: mousePosition.y - 16,
+            }}
+            transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+        />
+    );
+    
+    const Section = ({ children, id }) => {
+        const ref = useRef(null);
+        const isInView = useInView(ref, { once: true, amount: 0.3 });
+        return (
+            <section ref={ref} id={id} className="min-h-screen w-full max-w-5xl mx-auto py-20 px-4 md:px-8 flex items-center justify-center">
+                <motion.div 
+                    className="w-full"
+                    initial={{ opacity: 0, y: 50 }}
+                    animate={isInView ? { opacity: 1, y: 0 } : {}}
+                    transition={{ duration: 0.8, ease: "easeOut" }}
+                >
+                    {children}
+                </motion.div>
+            </section>
+        );
+    };
+    
+    const AnimatedCounter = ({ to, text }) => {
+        const ref = useRef(null);
+        const inView = useInView(ref, { once: true, amount: 0.5 });
+        const [displayValue, setDisplayValue] = useState(0);
+
+        useEffect(() => {
+            if (inView) {
+                const controls = animate(0, to, {
+                    duration: 2,
+                    ease: "easeOut",
+                    onUpdate: (latest) => {
+                        setDisplayValue(Math.round(latest));
+                    }
+                });
+                return () => controls.stop();
+            }
+        }, [inView, to]);
+
+        return (
+            <div ref={ref} className="text-center">
+                <p className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-cyan-400 mb-2">{displayValue}+</p>
+                <p className="text-sm text-slate-500 dark:text-slate-400">{text}</p>
+            </div>
+        );
+    };
+
+    const StoryViewer = ({ stories, onClose }) => {
+        const [currentIndex, setCurrentIndex] = useState(0);
+        const [isPaused, setPaused] = useState(false);
+    
+        useEffect(() => {
+            if (!isPaused) {
+                const timer = setTimeout(() => {
+                    if (currentIndex < stories.length - 1) {
+                        setCurrentIndex(currentIndex + 1);
+                    } else {
+                        onClose();
+                    }
+                }, stories[currentIndex].duration);
+                return () => clearTimeout(timer);
+            }
+        }, [currentIndex, stories, onClose, isPaused]);
+    
+        const goToNext = () => {
+            if (currentIndex < stories.length - 1) {
+                setCurrentIndex(currentIndex + 1);
+            } else {
+                onClose();
+            }
+        };
+    
+        const goToPrevious = () => {
+            if (currentIndex > 0) {
+                setCurrentIndex(currentIndex - 1);
+            }
+        };
+
+        const currentStory = stories[currentIndex];
+    
+        return (
+            <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="fixed inset-0 bg-black/80 backdrop-blur-lg flex items-center justify-center z-50"
+                onClick={onClose}
+            >
+                <div 
+                    className="relative w-full max-w-[400px] h-[85vh] bg-slate-900 rounded-2xl overflow-hidden shadow-2xl shadow-purple-500/20"
+                    onClick={(e) => e.stopPropagation()}
+                    onMouseDown={() => setPaused(true)}
+                    onMouseUp={() => setPaused(false)}
+                    onTouchStart={() => setPaused(true)}
+                    onTouchEnd={() => setPaused(false)}
+                >
+                    {/* Progress Bars */}
+                    <div className="absolute top-2 left-2 right-2 flex space-x-1 h-1 z-20">
+                        {stories.map((story, index) => (
+                            <div key={story.id} className="flex-1 bg-white/30 rounded-full overflow-hidden">
+                                {index < currentIndex && <div className="h-full bg-white w-full"></div>}
+                                {index === currentIndex && (
+                                    <motion.div
+                                        className="h-full bg-white"
+                                        initial={{ width: "0%" }}
+                                        animate={{ width: isPaused ? "auto" : "100%" }}
+                                        transition={{ duration: story.duration / 1000, ease: 'linear' }}
+                                    />
+                                )}
+                            </div>
+                        ))}
+                    </div>
+    
+                    {/* Content */}
+                    <div className="absolute inset-0">
+                       <AnimatePresence initial={false}>
+                          <motion.div
+                            key={currentStory.id}
+                            className="w-full h-full"
+                            initial={{ x: '100%', opacity: 0 }}
+                            animate={{ x: '0%', opacity: 1 }}
+                            exit={{ x: '-100%', opacity: 0 }}
+                            transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                          >
+                            {currentStory.type === 'image' ? (
+                                <img src={currentStory.url} className="w-full h-full object-cover" alt="Story content"/>
+                            ) : (
+                                <div className="w-full h-full flex items-center justify-center p-8 bg-gradient-to-br from-purple-600 to-blue-800">
+                                    <p className="text-white text-2xl font-semibold text-center">{currentStory.content}</p>
+                                </div>
+                            )}
+                          </motion.div>
+                       </AnimatePresence>
+                    </div>
+
+                     {/* Navigation */}
+                    <button onClick={goToPrevious} className="absolute left-0 top-0 bottom-0 w-1/3 z-30"></button>
+                    <button onClick={goToNext} className="absolute right-0 top-0 bottom-0 w-2/3 z-30"></button>
+                    <button onClick={onClose} className="absolute top-4 right-4 text-white text-3xl z-30">&times;</button>
+                </div>
+            </motion.div>
+        );
+    };
+    
+    const ProjectModal = ({ project, onClose }) => {
+        if (!project) return null;
+        return (
+            <motion.div 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="fixed inset-0 bg-black/80 backdrop-blur-lg flex items-center justify-center z-50 p-4"
+                onClick={onClose}
+            >
+                <motion.div
+                    initial={{ scale: 0.9, y: 20 }}
+                    animate={{ scale: 1, y: 0 }}
+                    exit={{ scale: 0.9, y: 20 }}
+                    className="relative w-full max-w-2xl bg-slate-900/50 dark:bg-slate-800/50 backdrop-blur-xl border border-white/10 rounded-2xl overflow-hidden p-8 text-white"
+                    onClick={(e) => e.stopPropagation()}
+                >
+                    <img src={project.imageUrl} alt={project.title} className="w-full h-60 object-cover rounded-lg mb-6"/>
+                    <h3 className="text-3xl font-bold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-cyan-400">{project.title}</h3>
+                    <p className="text-slate-300 dark:text-slate-400 mb-4">{project.description}</p>
+                    <div className="flex flex-wrap gap-2 mb-6">
+                        {project.tags.map(tag => (
+                            <span key={tag} className="bg-white/10 text-xs px-3 py-1 rounded-full">{tag}</span>
+                        ))}
+                    </div>
+                    <button onClick={onClose} className="absolute top-4 right-4 text-white/50 hover:text-white transition-colors">&times;</button>
+                </motion.div>
+            </motion.div>
+        );
+    };
+
+    return (
+        <div className={`min-h-screen font-sans bg-slate-100 dark:bg-slate-950 text-slate-800 dark:text-slate-200 transition-colors duration-500`}>
+            <div ref={vantaRef} className="fixed top-0 left-0 w-full h-full z-0"></div>
+            
+            <AnimatedCursor />
+
+            <header className="fixed top-0 left-0 right-0 z-40 p-4 flex justify-between items-center">
+                <h1 className="font-bold text-xl tracking-wider">kosmos</h1>
+                <button
+                    onClick={toggleTheme}
+                    className="w-12 h-12 flex items-center justify-center rounded-full bg-white/10 backdrop-blur-md border border-white/10 hover:bg-white/20 transition-all duration-300"
+                >
+                    {theme === 'dark' ? '☀️' : '🌙'}
+                </button>
+            </header>
+
+            <main className="relative z-10">
+                {/* Hero Section */}
+                <section id="hero" className="min-h-screen flex flex-col items-center justify-center text-center p-4">
+                    <motion.div
+                        className="relative mb-6 cursor-pointer group"
+                        onClick={() => setStoryOpen(true)}
+                        whileHover={{ scale: 1.05 }}
+                        transition={{ type: 'spring', stiffness: 300 }}
+                    >
+                        <img 
+                            src="https://placehold.co/150x150/020617/a5b4fc?text=k" 
+                            alt="kosmos profile" 
+                            className="w-36 h-36 rounded-full object-cover border-4 border-white/20 shadow-lg"
+                        />
+                        <div className="absolute inset-0 rounded-full bg-purple-500/50 blur-2xl group-hover:blur-3xl transition-all duration-500 animate-pulse"></div>
+                        <div className="absolute inset-0 rounded-full border-2 border-purple-400 animate-spin-slow"></div>
+                    </motion.div>
+                    <motion.h2 
+                        className="text-3xl md:text-5xl font-bold mb-3"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.8, delay: 0.2 }}
+                    >
+                        Hi, I’m kosmos
+                    </motion.h2>
+                    <motion.p 
+                        className="text-xl md:text-2xl text-slate-600 dark:text-slate-400 mb-6"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.8, delay: 0.4 }}
+                    >
+                        DevOps & Generative AI Engineer
+                    </motion.p>
+                    <motion.div 
+                        className="text-lg font-mono p-2 bg-white/10 rounded-md h-8 flex items-center justify-center"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.8, delay: 0.6 }}
+                    >
+                         <AnimatePresence mode="wait">
+                            <motion.span
+                                key={taglines[taglineIndex]}
+                                initial={{ opacity: 0, y: -20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: 20 }}
+                                transition={{ duration: 0.5 }}
+                            >
+                                {taglines[taglineIndex]}
+                            </motion.span>
+                         </AnimatePresence>
+                    </motion.div>
+                     <motion.a 
+                        href="#about"
+                        className="mt-10 px-6 py-3 rounded-full bg-purple-600/50 dark:bg-cyan-500/50 text-white backdrop-blur-md border border-white/20 hover:bg-purple-600/80 dark:hover:bg-cyan-500/80 transition-all duration-300"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.8, delay: 0.8 }}
+                    >
+                        Explore My World
+                    </motion.a>
+                </section>
+                
+                {/* About Section */}
+                <Section id="about">
+                    <div className="bg-black/10 dark:bg-white/5 backdrop-blur-xl p-8 md:p-12 rounded-3xl border border-white/10">
+                        <h2 className="text-3xl font-bold mb-8 text-center bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-cyan-400">About Me</h2>
+                        <div className="grid md:grid-cols-3 gap-8 items-center">
+                            <div className="md:col-span-2">
+                                <p className="mb-4">
+                                    I'm a passionate engineer at the intersection of robust infrastructure and intelligent systems. As a DevOps Engineer, I specialize in building scalable, automated CI/CD pipelines and managing cloud-native infrastructure with tools like Kubernetes, Docker, and Terraform.
+                                </p>
+                                <p>
+                                    My curiosity then led me to the fascinating world of Generative AI. I now build and deploy intelligent applications, from advanced RAG chatbots to creative content generation tools, leveraging the power of models like Gemini to solve real-world problems.
+                                </p>
+                                <div className="flex justify-center md:justify-start gap-4 mt-8">
+                                    <KubernetesIcon /> <DockerIcon /> <TerraformIcon /> <PythonIcon /> <GeminiIcon />
+                                </div>
+                            </div>
+                            <div className="space-y-6">
+                                <AnimatedCounter to={5} text="Years of Experience" />
+                                <AnimatedCounter to={150} text="Projects Deployed" />
+                                <AnimatedCounter to={12} text="AI Models Built" />
+                            </div>
+                        </div>
+                    </div>
+                </Section>
+                
+                {/* Featured Work Section */}
+                <Section id="work">
+                    <div className="text-center">
+                        <h2 className="text-3xl font-bold mb-12 bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-cyan-400">Featured Work</h2>
+                        <div className="grid md:grid-cols-3 gap-8">
+                            {projects.map((project, i) => (
+                                <motion.div
+                                    key={i}
+                                    className="bg-black/10 dark:bg-white/5 backdrop-blur-xl p-6 rounded-3xl border border-white/10 cursor-pointer"
+                                    whileHover={{ y: -10, scale: 1.03, transition: { type: 'spring', stiffness: 300 } }}
+                                    onClick={() => setSelectedProject(project)}
+                                >
+                                    <img src={project.imageUrl} alt={project.title} className="w-full h-40 object-cover rounded-xl mb-4"/>
+                                    <h3 className="font-bold text-lg mb-2">{project.title}</h3>
+                                    <div className="flex flex-wrap gap-2">
+                                        {project.tags.map(tag => (
+                                            <span key={tag} className="bg-white/10 text-xs px-2 py-1 rounded-full">{tag}</span>
+                                        ))}
+                                    </div>
+                                </motion.div>
+                            ))}
+                        </div>
+                    </div>
+                </Section>
+
+                {/* Blogs & Content Section */}
+                <Section id="content">
+                     <div className="text-center">
+                        <h2 className="text-3xl font-bold mb-12 bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-cyan-400">Blogs & Content</h2>
+                        <div className="grid md:grid-cols-2 gap-8">
+                            {blogPosts.map((post, i) => (
+                                <a href={post.link} key={i} target="_blank" rel="noopener noreferrer" className="block bg-black/10 dark:bg-white/5 backdrop-blur-xl p-6 rounded-3xl border border-white/10 text-left hover:border-purple-400/50 transition-all duration-300">
+                                    <span className="text-sm font-semibold text-purple-400 dark:text-cyan-400">{post.platform}</span>
+                                    <h3 className="font-bold text-lg mt-1">{post.title}</h3>
+                                </a>
+                            ))}
+                        </div>
+                        <div className="mt-12">
+                             <h3 className="text-2xl font-bold mb-6">YouTube & Instagram</h3>
+                             <div className="grid md:grid-cols-2 gap-8">
+                                <div className="aspect-video bg-black/10 dark:bg-white/5 rounded-2xl flex items-center justify-center">
+                                    <p>YouTube Video Embed</p>
+                                </div>
+                                <div className="aspect-video bg-black/10 dark:bg-white/5 rounded-2xl flex items-center justify-center">
+                                    <p>Instagram Reel Embed</p>
+                                </div>
+                             </div>
+                        </div>
+                    </div>
+                </Section>
+                
+                 {/* Contact Section */}
+                <Section id="contact">
+                    <div className="bg-black/10 dark:bg-white/5 backdrop-blur-xl p-8 md:p-12 rounded-3xl border border-white/10 max-w-2xl mx-auto">
+                        <h2 className="text-3xl font-bold mb-8 text-center bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-cyan-400">Get In Touch</h2>
+                        <form className="space-y-6">
+                             <input type="text" placeholder="Your Name" className="w-full p-4 bg-white/5 border border-white/10 rounded-lg backdrop-blur-lg focus:ring-2 focus:ring-purple-500 outline-none transition-all" />
+                            <input type="email" placeholder="Your Email" className="w-full p-4 bg-white/5 border border-white/10 rounded-lg backdrop-blur-lg focus:ring-2 focus:ring-purple-500 outline-none transition-all" />
+                            <textarea placeholder="Your Message" rows="5" className="w-full p-4 bg-white/5 border border-white/10 rounded-lg backdrop-blur-lg focus:ring-2 focus:ring-purple-500 outline-none transition-all"></textarea>
+                            <button type="submit" className="w-full px-6 py-4 rounded-lg bg-purple-600/80 dark:bg-cyan-500/80 text-white backdrop-blur-md border border-white/20 hover:bg-purple-600/100 dark:hover:bg-cyan-500/100 transition-all duration-300 font-bold">
+                                Send Message
+                            </button>
+                        </form>
+                         <div className="flex justify-center gap-6 mt-8">
+                            <a href="https://kosmos.github.io" target="_blank" rel="noopener noreferrer"><GithubIcon className="w-6 h-6 hover:text-purple-400 transition-colors" /></a>
+                            <a href="https://kosmos.medium.com" target="_blank" rel="noopener noreferrer"><MediumIcon className="w-6 h-6 hover:text-purple-400 transition-colors" /></a>
+                            <a href="https://dev.to/kosmos" target="_blank" rel="noopener noreferrer"><DevToIcon className="w-6 h-6 hover:text-purple-400 transition-colors" /></a>
+                            <a href="#" target="_blank" rel="noopener noreferrer"><YoutubeIcon className="w-6 h-6 hover:text-purple-400 transition-colors" /></a>
+                            <a href="#" target="_blank" rel="noopener noreferrer"><InstagramIcon className="w-6 h-6 hover:text-purple-400 transition-colors" /></a>
+                            <a href="mailto:kosmos.devops.ai@gmail.com"><MailIcon className="w-6 h-6 hover:text-purple-400 transition-colors" /></a>
+                        </div>
+                    </div>
+                </Section>
+            </main>
+            
+            <footer className="relative z-10 text-center p-8 text-sm text-slate-500 dark:text-slate-400">
+                <p>Built with ❤️ by kosmos | Powered by GitHub Pages</p>
+            </footer>
+
+            <AnimatePresence>
+                {isStoryOpen && <StoryViewer stories={stories} onClose={() => setStoryOpen(false)} />}
+                {selectedProject && <ProjectModal project={selectedProject} onClose={() => setSelectedProject(null)} />}
+            </AnimatePresence>
+        </div>
+    );
+};
+
+export default App;
+
