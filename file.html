@@ -21,22 +21,31 @@
     <style>
         /* Define Inter font and custom scrollbar for futuristic feel */
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+
+        /* --- DARK MODE VARIABLES (DEFAULT) --- */
         :root {
-            --primary-glow: 0 0 10px rgba(59, 130, 246, 0.7), 0 0 20px rgba(59, 130, 246, 0.5);
-            --secondary-glow: 0 0 8px rgba(192, 132, 252, 0.7), 0 0 15px rgba(192, 132, 252, 0.5);
+            --color-bg: #080410;
+            --color-card: rgba(15, 7, 36, 0.6);
+            --color-text: #E2E8F0;
+            --color-primary-accent: #3b82f6; /* Blue */
+            --color-secondary-accent: #c084fc; /* Purple */
+            --color-border: rgba(59, 130, 246, 0.3);
+            --glow-primary: 0 0 10px rgba(59, 130, 246, 0.7), 0 0 20px rgba(59, 130, 246, 0.5);
         }
+
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #080410; /* Dark space background */
-            color: #E2E8F0;
+            background-color: var(--color-bg);
+            color: var(--color-text);
             overflow-x: hidden;
             scroll-behavior: smooth;
         }
-        /* Custom Scrollbar for a cleaner look */
+
+        /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #0f0724; }
-        ::-webkit-scrollbar-thumb { background: #3b82f6; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #60a5fa; }
+        ::-webkit-scrollbar-track { background: var(--color-bg); }
+        ::-webkit-scrollbar-thumb { background: var(--color-primary-accent); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--color-primary-accent); }
 
         #vanta-background {
             position: fixed;
@@ -47,55 +56,39 @@
             z-index: -10;
         }
         .glass-card {
-            background-color: rgba(15, 7, 36, 0.6); /* Dark purple glass */
-            border: 1px solid rgba(59, 130, 246, 0.3); /* Blue border glow */
+            background-color: var(--color-card);
+            border: 1px solid var(--color-border);
             box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
         }
         .glow-text {
-            text-shadow: 0 0 8px rgba(59, 130, 246, 0.8);
+            text-shadow: var(--glow-primary);
         }
+
+        /* Profile Picture Pulse */
         .profile-pic-container {
-            width: 200px;
-            height: 200px;
+            width: 120px;
+            height: 120px;
             border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 10px;
-            cursor: pointer;
-            transition: all 0.3s;
+            padding: 4px; /* Space for the pulse effect */
+            background: transparent;
             position: relative;
-            /* Initial blue pulse glow */
+            cursor: pointer;
             box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7);
             animation: pulse-glow 2s infinite;
         }
-
+        .profile-pic {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 4px solid var(--color-secondary-accent);
+        }
         @keyframes pulse-glow {
             0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7); }
             70% { box-shadow: 0 0 0 20px rgba(59, 130, 246, 0); }
             100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
-        }
-
-        .profile-pic {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 4px solid #3b82f6;
-            transition: transform 0.3s;
-        }
-        .social-icon {
-            transition: color 0.3s, transform 0.3s;
-        }
-        .social-icon:hover {
-            color: #60a5fa;
-            transform: scale(1.2);
-            filter: drop-shadow(0 0 5px #60a5fa);
-        }
-        .project-card:hover .project-title {
-            text-shadow: var(--secondary-glow);
         }
     </style>
 </head>
@@ -113,7 +106,7 @@
                 <!-- Profile Picture (Interactive) -->
                 <div id="profile-pic-trigger" class="profile-pic-container mx-auto" onclick="openStories()">
                     <img src="https://placehold.co/200x200/5e009a/ffffff?text=K" alt="kosmos Profile" class="profile-pic">
-                    <span class="absolute top-0 right-0 p-2 bg-blue-500 rounded-full text-xs font-bold shadow-lg" style="box-shadow: 0 0 10px #3b82f6;">NEW</span>
+                    <span class="absolute top-0 right-0 p-2 bg-indigo-600 rounded-full text-xs font-bold shadow-lg" style="box-shadow: 0 0 10px #4f46e5;">NEW</span>
                 </div>
 
                 <!-- Headline -->
@@ -140,7 +133,7 @@
         <div id="stories-overlay" class="fixed inset-0 z-[100] bg-black bg-opacity-90 backdrop-blur-md hidden justify-center items-center" onclick="closeStories()">
             <div class="relative w-11/12 max-w-md h-[80vh] rounded-xl overflow-hidden shadow-2xl transition-all duration-500" onclick="event.stopPropagation()">
                 <!-- Close Button -->
-                <button onclick="closeStories()" class="absolute top-4 right-4 text-white z-50 p-2 bg-black/50 rounded-full hover:bg-black/80 transition">
+                <button onclick="closeStories()" class="absolute top-4 right-4 text-white z-50 p-2 bg-purple-600/80 rounded-full hover:bg-purple-600 transition shadow-lg">
                     <i data-lucide="x" class="w-6 h-6"></i>
                 </button>
 
@@ -154,11 +147,11 @@
                     <!-- Stories will be injected here -->
                 </div>
 
-                <!-- Navigation Buttons -->
-                <button id="prev-story-btn" class="absolute left-0 top-1/2 -translate-y-1/2 p-4 text-white z-50 transition opacity-0 md:opacity-100 hover:bg-black/30 h-full w-1/4 flex items-center justify-start" onclick="prevStory()">
+                <!-- Navigation Buttons (Transparent for better visual flow) -->
+                <button id="prev-story-btn" class="absolute left-0 top-1/2 -translate-y-1/2 p-4 text-white z-50 transition opacity-0 md:opacity-100 h-full w-1/4 flex items-center justify-start" onclick="prevStory()">
                     <i data-lucide="chevron-left" class="w-8 h-8 drop-shadow-lg"></i>
                 </button>
-                <button id="next-story-btn" class="absolute right-0 top-1/2 -translate-y-1/2 p-4 text-white z-50 transition opacity-0 md:opacity-100 hover:bg-black/30 h-full w-1/4 flex items-center justify-end" onclick="nextStory()">
+                <button id="next-story-btn" class="absolute right-0 top-1/2 -translate-y-1/2 p-4 text-white z-50 transition opacity-0 md:opacity-100 h-full w-1/4 flex items-center justify-end" onclick="nextStory()">
                     <i data-lucide="chevron-right" class="w-8 h-8 drop-shadow-lg"></i>
                 </button>
             </div>
@@ -167,16 +160,16 @@
 
         <!-- 3. About Me Section -->
         <section id="about" class="py-16 md:py-24 container mx-auto px-4">
-            <h2 class="text-3xl md:text-5xl font-bold text-center mb-12 text-cyan-400 glow-text">About Me / The Fusion</h2>
+            <h2 class="text-3xl md:text-5xl font-bold text-center mb-12 text-cyan-400 glow-text" style="color:var(--color-primary-accent)">About Me / The Fusion</h2>
 
             <div class="glass-card p-6 md:p-12 rounded-3xl shadow-xl space-y-12">
                 <!-- Core Description -->
                 <div class="grid md:grid-cols-2 gap-8 items-center">
                     <div class="order-2 md:order-1 space-y-6">
-                        <p class="text-lg text-gray-200 leading-relaxed">
-                            I am <span class="font-bold text-blue-300">kosmos</span>, an engineer operating at the nexus of reliable infrastructure and intelligent systems. My expertise spans classic **DevOps** methodologies (automation, CI/CD, cloud orchestration) and cutting-edge **Generative AI** development (RAG, prompt engineering, fine-tuning).
+                        <p class="text-lg leading-relaxed" style="color:var(--color-text)">
+                            I am <span class="font-bold text-blue-300" style="color:var(--color-secondary-accent)">kosmos</span>, an engineer operating at the nexus of reliable infrastructure and intelligent systems. My expertise spans classic **DevOps** methodologies (automation, CI/CD, cloud orchestration) and cutting-edge **Generative AI** development (RAG, prompt engineering, fine-tuning).
                         </p>
-                        <p class="text-lg text-gray-200 leading-relaxed">
+                        <p class="text-lg leading-relaxed" style="color:var(--color-text)">
                             I thrive on building creative systems—from auto-scaling, self-healing **Kubernetes** clusters to bespoke, enterprise-grade **Gemini-powered chatbots**. I believe that the future is automated, intelligent, and scalable.
                         </p>
                     </div>
@@ -186,27 +179,27 @@
                 </div>
 
                 <!-- Stats Counters -->
-                <div class="border-t border-blue-500/30 pt-8 mt-8">
-                    <h3 class="text-2xl font-semibold mb-6 text-purple-400">Highlights</h3>
+                <div class="border-t pt-8 mt-8" style="border-color:var(--color-border)">
+                    <h3 class="text-2xl font-semibold mb-6 text-purple-400" style="color:var(--color-secondary-accent)">Highlights</h3>
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 text-center">
                         <div class="p-6 glass-card rounded-xl">
-                            <div id="counter-years" class="text-5xl font-extrabold text-blue-400 mb-2">0</div>
+                            <div id="counter-years" class="text-5xl font-extrabold mb-2" style="color:var(--color-primary-accent)">0</div>
                             <div class="text-gray-400">Years in Tech</div>
                         </div>
                         <div class="p-6 glass-card rounded-xl">
-                            <div id="counter-projects" class="text-5xl font-extrabold text-cyan-400 mb-2">0</div>
+                            <div id="counter-projects" class="text-5xl font-extrabold mb-2" style="color:var(--color-primary-accent)">0</div>
                             <div class="text-gray-400">Projects Deployed</div>
                         </div>
                         <div class="p-6 glass-card rounded-xl">
-                            <div id="counter-ai-models" class="text-5xl font-extrabold text-purple-400 mb-2">0</div>
+                            <div id="counter-ai-models" class="text-5xl font-extrabold mb-2" style="color:var(--color-primary-accent)">0</div>
                             <div class="text-gray-400">AI Models Built</div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Animated Icons / Tech Stack -->
-                <div class="border-t border-blue-500/30 pt-8 mt-8">
-                    <h3 class="text-2xl font-semibold mb-6 text-blue-400">Core Stack</h3>
+                <div class="border-t pt-8 mt-8" style="border-color:var(--color-border)">
+                    <h3 class="text-2xl font-semibold mb-6 text-blue-400" style="color:var(--color-primary-accent)">Core Stack</h3>
                     <div id="tech-icons" class="flex flex-wrap justify-center gap-6 md:gap-10">
                         <!-- Icons will be animated in via JS -->
                     </div>
@@ -216,43 +209,39 @@
 
         <!-- 4. Projects / Work -->
         <section id="projects" class="py-16 md:py-24 container mx-auto px-4">
-            <h2 class="text-3xl md:text-5xl font-bold text-center mb-12 text-purple-400 glow-text">Select Projects</h2>
+            <h2 class="text-3xl md:text-5xl font-bold text-center mb-12 text-purple-400 glow-text" style="color:var(--color-secondary-accent)">Select Projects</h2>
 
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <!-- Project 1 -->
                 <div class="project-card glass-card rounded-2xl p-6 cursor-pointer transform transition-all duration-300 hover:shadow-[0_0_20px_rgba(192,132,252,0.5)]" data-project-id="ai-beats">
-                    <i data-lucide="cloud-cog" class="w-10 h-10 text-cyan-400 mb-4"></i>
-                    <h3 class="project-title text-2xl font-bold mb-2 text-white transition-all duration-300">AIX Beats – Monitoring</h3>
+                    <i data-lucide="cloud-cog" class="w-10 h-10 text-cyan-400 mb-4" style="color:var(--color-primary-accent)"></i>
+                    <h3 class="project-title text-2xl font-bold mb-2 text-white transition-all duration-300" style="color:var(--color-text)">AIX Beats – Monitoring</h3>
                     <p class="text-gray-400 mb-4">A custom observability agent for legacy IBM AIX systems, streaming metrics to a modern stack.</p>
                     <span class="inline-block text-sm font-medium px-3 py-1 rounded-full bg-blue-600/50 text-white">DevOps</span>
-                    <span class="inline-block text-sm font-medium px-3 py-1 rounded-full bg-purple-600/50 text-white">Go/Docker</span>
                 </div>
 
                 <!-- Project 2 -->
                 <div class="project-card glass-card rounded-2xl p-6 cursor-pointer transform transition-all duration-300 hover:shadow-[0_0_20px_rgba(59,130,246,0.5)]" data-project-id="rag-chatbot">
-                    <i data-lucide="message-square-text" class="w-10 h-10 text-blue-400 mb-4"></i>
-                    <h3 class="project-title text-2xl font-bold mb-2 text-white transition-all duration-300">GenAI RAG Chatbot</h3>
+                    <i data-lucide="message-square-text" class="w-10 h-10 text-blue-400 mb-4" style="color:var(--color-primary-accent)"></i>
+                    <h3 class="project-title text-2xl font-bold mb-2 text-white transition-all duration-300" style="color:var(--color-text)">GenAI RAG Chatbot</h3>
                     <p class="text-gray-400 mb-4">A private, secure RAG system for querying internal healthcare documentation using the Gemini API.</p>
                     <span class="inline-block text-sm font-medium px-3 py-1 rounded-full bg-indigo-600/50 text-white">Gen AI</span>
-                    <span class="inline-block text-sm font-medium px-3 py-1 rounded-full bg-green-600/50 text-white">Python/VectorDB</span>
                 </div>
 
                 <!-- Project 3 -->
                 <div class="project-card glass-card rounded-2xl p-6 cursor-pointer transform transition-all duration-300 hover:shadow-[0_0_20px_rgba(252,165,165,0.5)]" data-project-id="selenium-pipeline">
-                    <i data-lucide="file-check" class="w-10 h-10 text-red-400 mb-4"></i>
-                    <h3 class="project-title text-2xl font-bold mb-2 text-white transition-all duration-300">Selenium Automation Pipeline</h3>
+                    <i data-lucide="file-check" class="w-10 h-10 text-red-400 mb-4" style="color:var(--color-primary-accent)"></i>
+                    <h3 class="project-title text-2xl font-bold mb-2 text-white transition-all duration-300" style="color:var(--color-text)">Selenium Automation Pipeline</h3>
                     <p class="text-gray-400 mb-4">Fully containerized, scheduled CI/CD pipeline for end-to-end web testing across multiple browsers.</p>
                     <span class="inline-block text-sm font-medium px-3 py-1 rounded-full bg-yellow-600/50 text-white">Automation</span>
-                    <span class="inline-block text-sm font-medium px-3 py-1 rounded-full bg-blue-600/50 text-white">Jenkins/Terraform</span>
                 </div>
 
                 <!-- Project 4 -->
                 <div class="project-card glass-card rounded-2xl p-6 cursor-pointer transform transition-all duration-300 hover:shadow-[0_0_20px_rgba(52,211,153,0.5)]" data-project-id="ai-meme-generator">
-                    <i data-lucide="sparkles" class="w-10 h-10 text-green-400 mb-4"></i>
-                    <h3 class="project-title text-2xl font-bold mb-2 text-white transition-all duration-300">AI Meme Generator</h3>
+                    <i data-lucide="sparkles" class="w-10 h-10 text-green-400 mb-4" style="color:var(--color-secondary-accent)"></i>
+                    <h3 class="project-title text-2xl font-bold mb-2 text-white transition-all duration-300" style="color:var(--color-text)">AI Meme Generator</h3>
                     <p class="text-gray-400 mb-4">A fun side project using image generation models to create tech-specific, viral content.</p>
                     <span class="inline-block text-sm font-medium px-3 py-1 rounded-full bg-pink-600/50 text-white">Content</span>
-                    <span class="inline-block text-sm font-medium px-3 py-1 rounded-full bg-green-600/50 text-white">Imagen/React</span>
                 </div>
             </div>
         </section>
@@ -260,12 +249,12 @@
         <!-- Project Modal (Single, Reusable) -->
         <div id="project-modal" class="fixed inset-0 z-50 bg-black bg-opacity-80 backdrop-blur-md hidden justify-center items-center p-4">
             <div class="glass-card w-full max-w-3xl rounded-3xl p-6 md:p-10 shadow-2xl relative">
-                <button onclick="closeProjectModal()" class="absolute top-4 right-4 text-white z-10 p-2 bg-indigo-600 rounded-full hover:bg-indigo-700 transition">
+                <button onclick="closeProjectModal()" class="absolute top-4 right-4 text-white z-10 p-2 bg-purple-600 rounded-full hover:bg-purple-700 transition">
                     <i data-lucide="x" class="w-6 h-6"></i>
                 </button>
-                <h3 id="modal-title" class="text-3xl md:text-4xl font-bold mb-4 text-cyan-400 glow-text"></h3>
-                <p id="modal-description" class="text-gray-300 mb-6"></p>
-                <img id="modal-image" src="" alt="Project Image" class="w-full h-auto rounded-xl mb-6 border border-purple-500/50" />
+                <h3 id="modal-title" class="text-3xl md:text-4xl font-bold mb-4 text-cyan-400 glow-text" style="color:var(--color-primary-accent)"></h3>
+                <p id="modal-description" class="text-gray-300 mb-6" style="color:var(--color-text)"></p>
+                <img id="modal-image" src="" alt="Project Image" class="w-full h-auto rounded-xl mb-6 border-4 border-purple-500/50" />
                 <div id="modal-details" class="space-y-4">
                     <!-- Dynamic details will be inserted here -->
                 </div>
@@ -276,32 +265,32 @@
 
         <!-- 5. Blogs & Content -->
         <section id="content" class="py-16 md:py-24 container mx-auto px-4">
-            <h2 class="text-3xl md:text-5xl font-bold text-center mb-12 text-cyan-400 glow-text">Blogs & Content</h2>
+            <h2 class="text-3xl md:text-5xl font-bold text-center mb-12 text-cyan-400 glow-text" style="color:var(--color-primary-accent)">Blogs & Content</h2>
 
             <div class="space-y-12">
                 <!-- Medium & Dev.to -->
                 <div class="grid md:grid-cols-2 gap-8">
                     <!-- Medium Card -->
-                    <div class="glass-card p-6 rounded-2xl border-l-4 border-l-green-400">
+                    <div class="glass-card p-6 rounded-2xl border-l-4" style="border-left-color:#34d399">
                         <div class="flex items-center space-x-3 mb-4">
                             <i data-lucide="book-open" class="w-8 h-8 text-green-400"></i>
-                            <h3 class="text-2xl font-bold text-white">Medium Articles</h3>
+                            <h3 class="text-2xl font-bold" style="color:var(--color-text)">Medium Articles</h3>
                         </div>
                         <p class="text-gray-400 mb-4 italic">Latest: "Scaling Kubernetes with Generative AI Predictions"</p>
-                        <a href="https://kosmos.medium.com" target="_blank" class="text-green-400 font-semibold hover:text-green-300 transition flex items-center space-x-1">
+                        <a href="https://kosmos.medium.com" target="_blank" class="font-semibold transition flex items-center space-x-1" style="color:#34d399">
                             <span>Read More on Medium</span>
                             <i data-lucide="external-link" class="w-4 h-4"></i>
                         </a>
                     </div>
 
                     <!-- Dev.to Card -->
-                    <div class="glass-card p-6 rounded-2xl border-l-4 border-l-blue-400">
+                    <div class="glass-card p-6 rounded-2xl border-l-4" style="border-left-color:#60a5fa">
                         <div class="flex items-center space-x-3 mb-4">
                             <i data-lucide="code" class="w-8 h-8 text-blue-400"></i>
-                            <h3 class="text-2xl font-bold text-white">Dev.to Deep Dives</h3>
+                            <h3 class="text-2xl font-bold" style="color:var(--color-text)">Dev.to Deep Dives</h3>
                         </div>
                         <p class="text-gray-400 mb-4 italic">Latest: "Terraform Best Practices for Multi-Cloud Deployments"</p>
-                        <a href="https://dev.to/kosmos" target="_blank" class="text-blue-400 font-semibold hover:text-blue-300 transition flex items-center space-x-1">
+                        <a href="https://dev.to/kosmos" target="_blank" class="font-semibold transition flex items-center space-x-1" style="color:#60a5fa">
                             <span>Read More on Dev.to</span>
                             <i data-lucide="external-link" class="w-4 h-4"></i>
                         </a>
@@ -309,22 +298,22 @@
                 </div>
 
                 <!-- YouTube/Reels -->
-                <div class="pt-8 border-t border-purple-500/30">
-                    <h3 class="text-2xl font-bold mb-6 text-purple-400 text-center">Video Content & Reels</h3>
+                <div class="pt-8 border-t" style="border-color:var(--color-border)">
+                    <h3 class="text-2xl font-bold mb-6 text-purple-400 text-center" style="color:var(--color-secondary-accent)">Video Content & Reels</h3>
                     <div class="grid md:grid-cols-2 gap-8">
                         <div class="glass-card p-4 rounded-2xl">
-                            <div class="aspect-video bg-gray-900 flex items-center justify-center rounded-xl mb-4">
+                            <div class="aspect-video bg-gray-900 flex items-center justify-center rounded-xl mb-4" style="background-color:var(--color-bg)">
                                 <i data-lucide="youtube" class="w-12 h-12 text-red-500"></i>
                                 <span class="ml-3 text-gray-400">YouTube Channel Video Placeholder</span>
                             </div>
-                            <p class="text-gray-300 font-medium">Weekly Tech Deep Dive: CI/CD with GitHub Actions.</p>
+                            <p class="font-medium" style="color:var(--color-text)">Weekly Tech Deep Dive: CI/CD with GitHub Actions.</p>
                         </div>
                         <div class="glass-card p-4 rounded-2xl">
-                            <div class="aspect-video bg-gray-900 flex items-center justify-center rounded-xl mb-4">
+                            <div class="aspect-video bg-gray-900 flex items-center justify-center rounded-xl mb-4" style="background-color:var(--color-bg)">
                                 <i data-lucide="instagram" class="w-12 h-12 text-pink-500"></i>
                                 <span class="ml-3 text-gray-400">Instagram Reel/Meme Placeholder</span>
                             </div>
-                            <p class="text-gray-300 font-medium">Daily AI Meme: When your LLM hallucinates production logs.</p>
+                            <p class="font-medium" style="color:var(--color-text)">Daily AI Meme: When your LLM hallucinates production logs.</p>
                         </div>
                     </div>
                 </div>
@@ -333,19 +322,19 @@
 
         <!-- 6. Stats & Highlights (Repetition with emphasis) -->
         <section id="stats" class="py-16 md:py-24 container mx-auto px-4">
-            <h2 class="text-3xl md:text-5xl font-bold text-center mb-12 text-purple-400 glow-text">Key Metrics & Impact</h2>
+            <h2 class="text-3xl md:text-5xl font-bold text-center mb-12 text-purple-400 glow-text" style="color:var(--color-secondary-accent)">Key Metrics & Impact</h2>
 
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-8 text-center max-w-4xl mx-auto">
                 <div class="p-6 glass-card rounded-xl transform hover:scale-[1.02] transition duration-300">
-                    <div id="stat-ai-apps" class="text-6xl font-extrabold text-blue-400 mb-2">+10</div>
+                    <div id="stat-ai-apps" class="text-6xl font-extrabold mb-2" style="color:var(--color-primary-accent)">+10</div>
                     <div class="text-gray-400 font-medium">AI Apps & Demos Built</div>
                 </div>
                 <div class="p-6 glass-card rounded-xl transform hover:scale-[1.02] transition duration-300">
-                    <div id="stat-pipelines" class="text-6xl font-extrabold text-cyan-400 mb-2">+30</div>
+                    <div id="stat-pipelines" class="text-6xl font-extrabold mb-2" style="color:var(--color-primary-accent)">+30</div>
                     <div class="text-gray-400 font-medium">DevOps Pipelines Managed</div>
                 </div>
                 <div class="p-6 glass-card rounded-xl transform hover:scale-[1.02] transition duration-300">
-                    <div id="stat-blog-reads" class="text-6xl font-extrabold text-purple-400 mb-2">+1M</div>
+                    <div id="stat-blog-reads" class="text-6xl font-extrabold mb-2" style="color:var(--color-secondary-accent)">+1M</div>
                     <div class="text-gray-400 font-medium">Content Views / Blog Reads</div>
                 </div>
             </div>
@@ -353,23 +342,23 @@
 
         <!-- 7. Contact / Get in Touch -->
         <section id="contact" class="py-16 md:py-24 container mx-auto px-4">
-            <h2 class="text-3xl md:text-5xl font-bold text-center mb-12 text-blue-400 glow-text">Get in Touch</h2>
+            <h2 class="text-3xl md:text-5xl font-bold text-center mb-12 text-blue-400 glow-text" style="color:var(--color-primary-accent)">Get in Touch</h2>
 
             <div class="max-w-3xl mx-auto glass-card p-6 md:p-10 rounded-3xl shadow-2xl space-y-8">
-                <p class="text-lg text-gray-300 text-center">
+                <p class="text-lg text-gray-300 text-center" style="color:var(--color-text)">
                     I'm always open to discussing new projects, collaborations, or just talking shop about AI and automation. Drop me a message below or connect via social media.
                 </p>
 
                 <!-- Glassy Chat-Style Contact Form (Mock - client-side only) -->
                 <form onsubmit="handleContactSubmit(event)" class="space-y-4">
                     <div>
-                        <input type="text" placeholder="Your Name (Required)" required class="w-full px-4 py-3 rounded-xl bg-black/50 border border-indigo-400/50 focus:border-indigo-400 focus:ring-indigo-400 transition text-white placeholder-gray-400">
+                        <input type="text" placeholder="Your Name (Required)" required class="w-full px-4 py-3 rounded-xl border transition placeholder-gray-400" style="background-color:var(--color-bg); border-color:var(--color-border); color:var(--color-text)">
                     </div>
                     <div>
-                        <input type="email" placeholder="Your Email (Required)" required class="w-full px-4 py-3 rounded-xl bg-black/50 border border-indigo-400/50 focus:border-indigo-400 focus:ring-indigo-400 transition text-white placeholder-gray-400">
+                        <input type="email" placeholder="Your Email (Required)" required class="w-full px-4 py-3 rounded-xl border transition placeholder-gray-400" style="background-color:var(--color-bg); border-color:var(--color-border); color:var(--color-text)">
                     </div>
                     <div>
-                        <textarea placeholder="Your Message (Let's build something cool!)" rows="5" required class="w-full px-4 py-3 rounded-xl bg-black/50 border border-indigo-400/50 focus:border-indigo-400 focus:ring-indigo-400 transition text-white placeholder-gray-400"></textarea>
+                        <textarea placeholder="Your Message (Let's build something cool!)" rows="5" required class="w-full px-4 py-3 rounded-xl border transition placeholder-gray-400" style="background-color:var(--color-bg); border-color:var(--color-border); color:var(--color-text)"></textarea>
                     </div>
                     <div class="text-center">
                         <button type="submit" class="px-10 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold rounded-full shadow-lg hover:from-blue-600 hover:to-purple-700 transition duration-300 transform hover:scale-105">
@@ -379,20 +368,20 @@
                 </form>
 
                 <!-- Social Icons -->
-                <div class="flex justify-center space-x-6 pt-4 border-t border-purple-500/30">
-                    <a href="https://github.com/kosmos" target="_blank" title="GitHub" class="social-icon text-gray-300 hover:text-white">
+                <div class="flex justify-center space-x-6 pt-4 border-t" style="border-color:var(--color-border)">
+                    <a href="https://github.com/kosmos" target="_blank" title="GitHub" class="social-icon text-gray-300" style="color:var(--color-text)">
                         <i data-lucide="github" class="w-8 h-8"></i>
                     </a>
-                    <a href="https://kosmos.medium.com" target="_blank" title="Medium" class="social-icon text-gray-300 hover:text-white">
+                    <a href="https://kosmos.medium.com" target="_blank" title="Medium" class="social-icon text-gray-300" style="color:var(--color-text)">
                         <i data-lucide="book" class="w-8 h-8"></i>
                     </a>
-                    <a href="https://dev.to/kosmos" target="_blank" title="Dev.to" class="social-icon text-gray-300 hover:text-white">
+                    <a href="https://dev.to/kosmos" target="_blank" title="Dev.to" class="social-icon text-gray-300" style="color:var(--color-text)">
                         <i data-lucide="code-square" class="w-8 h-8"></i>
                     </a>
-                    <a href="#" target="_blank" title="YouTube" class="social-icon text-gray-300 hover:text-white">
+                    <a href="#" target="_blank" title="YouTube" class="social-icon text-gray-300" style="color:var(--color-text)">
                         <i data-lucide="youtube" class="w-8 h-8"></i>
                     </a>
-                    <a href="#" target="_blank" title="Instagram (Meme Page)" class="social-icon text-gray-300 hover:text-white">
+                    <a href="#" target="_blank" title="Instagram (Meme Page)" class="social-icon text-gray-300" style="color:var(--color-text)">
                         <i data-lucide="instagram" class="w-8 h-8"></i>
                     </a>
                 </div>
@@ -402,9 +391,9 @@
     </main>
 
     <!-- 8. Footer -->
-    <footer class="py-6 mt-12 text-center text-gray-500 text-sm border-t-2 border-indigo-600/30">
+    <footer class="py-6 mt-12 text-center text-sm border-t-2 border-indigo-600/30" style="border-top-color:var(--color-secondary-accent)">
         <div class="container mx-auto px-4">
-            <p class="text-white font-medium glow-text">© 2025 kosmos | Built with ❤️ and deployed on GitHub Pages.</p>
+            <p class="font-medium glow-text" style="color:var(--color-text)">© 2025 kosmos | Built with ❤️ and deployed on GitHub Pages.</p>
         </div>
     </footer>
 
@@ -519,19 +508,20 @@
             contentContainer.innerHTML = '';
 
             STORIES.forEach((story, index) => {
-                // Progress Bar
+                // Progress Bar (Reverted to blue accent)
                 const progress = document.createElement('div');
                 progress.className = 'h-1 bg-white/30 rounded-full flex-1 overflow-hidden';
-                progress.innerHTML = `<div id="story-progress-${index}" class="h-full bg-white transition-none" style="width: 0%;"></div>`;
+                progress.innerHTML = `<div id="story-progress-${index}" class="h-full bg-blue-400 transition-none" style="width: 0%;"></div>`;
                 progressContainer.appendChild(progress);
 
                 // Content Card
                 const content = document.createElement('div');
                 content.id = `story-card-${index}`;
-                content.className = 'absolute inset-0 bg-cover bg-center transition-opacity duration-500 flex flex-col justify-end p-6 text-white opacity-0';
+                // Backdrop filter on content for effect
+                content.className = 'absolute inset-0 bg-cover bg-center transition-opacity duration-500 flex flex-col justify-end p-6 text-white opacity-0 backdrop-filter backdrop-blur-sm';
                 content.style.backgroundImage = `url(${story.content})`;
                 content.innerHTML = `
-                    <div class="glass-card p-4 rounded-xl mb-12">
+                    <div class="glass-card p-4 rounded-xl mb-12 bg-black/50 border-blue-500/50">
                         <p class="text-lg font-semibold">${story.caption}</p>
                     </div>
                 `;
@@ -611,62 +601,27 @@
             });
         }
 
-        // --- PROJECT MODAL LOGIC ---
 
-        document.querySelectorAll('.project-card').forEach(card => {
-            card.addEventListener('click', () => {
-                const projectId = card.getAttribute('data-project-id');
-                openProjectModal(projectId);
-            });
-        });
-
-        function openProjectModal(id) {
-            const project = PROJECTS.find(p => p.id === id);
-            if (!project) return;
-
-            document.getElementById('modal-title').textContent = project.title;
-            document.getElementById('modal-description').textContent = project.shortDesc;
-            document.getElementById('modal-image').src = project.image;
-            document.getElementById('modal-link').href = project.link;
-            document.getElementById('modal-link').textContent = project.linkText;
-
-            const detailsHtml = project.details.map(detail => `
-                <div class="flex items-start space-x-2 text-gray-200">
-                    <i data-lucide="check-circle" class="w-5 h-5 text-green-400 mt-1 flex-shrink-0"></i>
-                    <span>${detail}</span>
-                </div>
-            `).join('');
-            document.getElementById('modal-details').innerHTML = detailsHtml;
-
-            // Re-render lucide icons inside the modal
-            lucide.createIcons();
-
-            const modal = document.getElementById('project-modal');
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-            gsap.from(modal.querySelector('.glass-card'), { y: 50, opacity: 0, duration: 0.4, ease: "power3.out" });
-        }
-
-        function closeProjectModal() {
-            const modal = document.getElementById('project-modal');
-            gsap.to(modal.querySelector('.glass-card'), {
-                y: 50,
-                opacity: 0,
-                duration: 0.3,
-                ease: "power3.in",
-                onComplete: () => {
-                    modal.classList.remove('flex');
-                    modal.classList.add('hidden');
-                    gsap.set(modal.querySelector('.glass-card'), { y: 0, opacity: 1 }); // Reset for next time
-                }
-            });
-        }
-
-
-        // --- GSAP ANIMATIONS ---
+        // --- GSAP ANIMATIONS & INITIALIZATION ---
 
         function initAnimations() {
             gsap.registerPlugin(ScrollTrigger);
+
+            // Vanta.js Background Initialization (Now Deep Indigo)
+            VANTA.WAVES({
+                el: "#vanta-background",
+                mouseControls: true,
+                touchControls: true,
+                minHeight: 200.00,
+                minWidth: 200.00,
+                scale: 1.00,
+                scaleMobile: 1.00,
+                color: 0x150b2e, /* Changed from 0x3b82f6 to a deep indigo/purple */
+                shininess: 30.00,
+                waveHeight: 15.00,
+                zoom: 0.85
+            });
+
 
             // 1. Hero Tagline Cycling Animation
             let taglineIndex = 0;
@@ -709,7 +664,7 @@
                 const iconHtml = `
                     <div class="flex flex-col items-center p-3 sm:p-4 rounded-xl glass-card transition transform hover:scale-110 duration-300 shadow-xl opacity-0" id="tech-icon-${index}">
                         <i data-lucide="${tech.icon}" class="w-8 h-8 sm:w-10 sm:h-10 ${tech.color}"></i>
-                        <span class="text-xs sm:text-sm mt-2 text-gray-300">${tech.name}</span>
+                        <span class="text-xs sm:text-sm mt-2 text-gray-300" style="color:var(--color-text)">${tech.name}</span>
                     </div>
                 `;
                 document.getElementById('tech-icons').innerHTML += iconHtml;
@@ -788,7 +743,7 @@
                 });
             });
 
-            // 6. Story Swipe Gestures (Mobile)
+            // 6. Story Swipe Gestures (Mobile) - Attach to storyContainer
             storyContainer.addEventListener('touchstart', (e) => {
                 startX = e.touches[0].clientX;
                 isSwiping = true;
@@ -801,38 +756,20 @@
                 const diffX = startX - endX;
 
                 if (Math.abs(diffX) > 50) { // Threshold for a swipe
-                    if (diffX > 0) { // Swiped left -> Next story
-                        nextStory();
-                    } else { // Swiped right -> Previous story
+                    if (diffX < 0) { // Swiped right -> Previous story
                         prevStory();
+                    } else { // Swiped left -> Next story
+                        nextStory();
                     }
                 }
                 isSwiping = false;
             });
-
-            // Re-render lucide icons after they are dynamically added
-            lucide.createIcons();
         }
 
         // --- INITIALIZATION ---
 
         window.onload = function() {
-            // Vanta.js Background Initialization (WAVES effect)
-            VANTA.WAVES({
-                el: "#vanta-background",
-                mouseControls: true,
-                touchControls: true,
-                minHeight: 200.00,
-                minWidth: 200.00,
-                scale: 1.00,
-                scaleMobile: 1.00,
-                color: 0x3b82f6, // Blue
-                shininess: 30.00,
-                waveHeight: 15.00,
-                zoom: 0.85
-            });
-
-            // Initialize GSAP and all custom animations
+            // Initialize GSAP and all custom animations, including Vanta.js
             initAnimations();
 
             // Re-render lucide icons for all static content
