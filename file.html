@@ -1,536 +1,844 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence, useInView, useAnimation, animate } from 'framer-motion';
-
-// Helper components & data moved inside the App component or defined before use 
-// This ensures everything is self-contained in a single file structure.
-
-// --- SVG Icon Components ---
-const KubernetesIcon = () => <svg viewBox="0 0 24 24" fill="currentColor" className="w-8 h-8 text-blue-400"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-.5 15.5l-5-2.5v-5l5 2.5v5zm1 0v-5l5-2.5v5l-5 2.5zM12 4.5l5 2.5-5 2.5-5-2.5L12 4.5z"/></svg>;
-const DockerIcon = () => <svg viewBox="0 0 24 24" fill="currentColor" className="w-8 h-8 text-blue-500"><path d="M22.1 9.5c-.5-2.8-2.6-5-5.3-5.5H7.2c-2.7.5-4.8 2.7-5.3 5.5v5c.5 2.8 2.6 5 5.3 5.5h9.6c2.7-.5 4.8-2.7 5.3-5.5v-5zM8 12.5c0-.8.7-1.5 1.5-1.5s1.5.7 1.5 1.5-.7 1.5-1.5 1.5-1.5-.7-1.5-1.5zm3 0c0-.8.7-1.5 1.5-1.5s1.5.7 1.5 1.5-.7 1.5-1.5 1.5-1.5-.7-1.5-1.5zm3 0c0-.8.7-1.5 1.5-1.5s1.5.7 1.5 1.5-.7 1.5-1.5 1.5-1.5-.7-1.5-1.5z"/></svg>;
-const PythonIcon = () => <svg viewBox="0 0 24 24" fill="currentColor" className="w-8 h-8 text-yellow-400"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 16.5v-3.5h2v-1h-2v-3h3v-1h-3V7.5h1v-2h-2v2.5H7.5v1H10v3H7.5v1H10v3.5h1z"/></svg>;
-const GeminiIcon = () => <svg viewBox="0 0 24 24" fill="currentColor" className="w-8 h-8 text-purple-400"><path d="M12 2c5.52 0 10 4.48 10 10s-4.48 10-10 10S2 17.52 2 12 6.48 2 12 2zm3.2 6.2l-3.2 3.2-3.2-3.2-1.4 1.4 3.2 3.2-3.2 3.2 1.4 1.4 3.2-3.2 3.2 3.2 1.4-1.4-3.2-3.2 3.2-3.2-1.4-1.4z"/></svg>;
-const TerraformIcon = () => <svg viewBox="0 0 24 24" fill="currentColor" className="w-8 h-8 text-indigo-500"><path d="M2 2h8v8H2V2zm12 0h8v8h-8V2zM2 14h8v8H2v-8zm12 0h8v8h-8v-8z"/></svg>;
-
-const GithubIcon = ({ className }) => <svg className={className} viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>;
-const YoutubeIcon = ({ className }) => <svg className={className} viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>;
-const InstagramIcon = ({ className }) => <svg className={className} viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.85s-.011 3.584-.069 4.85c-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07s-3.584-.012-4.85-.07c-3.252-.148-4.771-1.691-4.919-4.919-.058-1.265-.069-1.645-.069-4.85s.011-3.584.069-4.85c.149-3.225 1.664-4.771 4.919-4.919 1.266.058 1.644.07 4.85.07zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948s.014 3.667.072 4.947c.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072s3.667-.014 4.947-.072c4.358-.2 6.78-2.618 6.98-6.98.059-1.281.073-1.689.073-4.948s-.014-3.667-.072-4.947c-.2-4.358-2.618-6.78-6.98-6.98-1.281-.059-1.689-.073-4.948-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.162 6.162 6.162 6.162-2.759 6.162-6.162-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4s1.791-4 4-4 4 1.79 4 4-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44 1.441-.645 1.441-1.44-.645-1.44-1.441-1.44z"/></svg>;
-const MediumIcon = ({ className }) => <svg className={className} viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-3.6 6.3c.66 0 1.2.54 1.2 1.2s-.54 1.2-1.2 1.2-1.2-.54-1.2-1.2.54-1.2 1.2-1.2zm3.6 0c.66 0 1.2.54 1.2 1.2s-.54 1.2-1.2 1.2-1.2-.54-1.2-1.2.54-1.2 1.2-1.2zm3.6 0c.66 0 1.2.54 1.2 1.2s-.54 1.2-1.2 1.2-1.2-.54-1.2-1.2.54-1.2 1.2-1.2z"/></svg>;
-const DevToIcon = ({ className }) => <svg className={className} viewBox="0 0 24 24" fill="currentColor"><path d="M22.5 4H1.5C.67 4 0 4.67 0 5.5v13c0 .83.67 1.5 1.5 1.5h21c.83 0 1.5-.67 1.5-1.5v-13c0-.83-.67-1.5-1.5-1.5zM8 17H5V7h3v10zm6.5-5.2H11v-1.6h3.5v1.6zm-1.7 3.4h-1.6v1.6H11v-1.6h1.8v-1.6h1.6v3.2zM19 17h-3V7h3v10z"/></svg>;
-const MailIcon = ({ className }) => <svg className={className} viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>;
-
-const App = () => {
-    const [theme, setTheme] = useState('dark');
-    const [isStoryOpen, setStoryOpen] = useState(false);
-    const [selectedProject, setSelectedProject] = useState(null);
-    const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-    const vantaRef = useRef(null);
-
-    // Toggle theme
-    useEffect(() => {
-        if (theme === 'dark') {
-            document.documentElement.classList.add('dark');
-        } else {
-            document.documentElement.classList.remove('dark');
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>kosmos — DevOps & Generative AI Engineer</title>
+    <meta name="description" content="kosmos: DevOps Engineer and Generative AI specialist. Automation, AI, and creative systems.">
+    <meta property="og:title" content="kosmos — DevOps & Generative AI Engineer">
+    <meta property="og:description" content="Automation • AI • Innovation • Creativity">
+    <meta property="og:type" content="website">
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load GSAP and ScrollTrigger for animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <!-- Load Vanta.js dependencies for background -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.waves.min.js"></script>
+    <!-- Load Lucide icons for clean UI elements -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* Define Inter font and custom scrollbar for futuristic feel */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+        :root {
+            --primary-glow: 0 0 10px rgba(59, 130, 246, 0.7), 0 0 20px rgba(59, 130, 246, 0.5);
+            --secondary-glow: 0 0 8px rgba(192, 132, 252, 0.7), 0 0 15px rgba(192, 132, 252, 0.5);
         }
-    }, [theme]);
-    
-    // Load Vanta.js dynamically and only once
-    useEffect(() => {
-        const loadScripts = () => {
-            if (document.getElementById('three-script')) return; // Prevent re-adding scripts
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #080410; /* Dark space background */
+            color: #E2E8F0;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+        /* Custom Scrollbar for a cleaner look */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0f0724; }
+        ::-webkit-scrollbar-thumb { background: #3b82f6; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #60a5fa; }
 
-            const threeScript = document.createElement('script');
-            threeScript.id = 'three-script';
-            threeScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js';
-            threeScript.async = true;
-            document.body.appendChild(threeScript);
-
-            const vantaScript = document.createElement('script');
-            vantaScript.id = 'vanta-script';
-            vantaScript.src = 'https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js';
-            vantaScript.async = true;
-            document.body.appendChild(vantaScript);
-        };
-        loadScripts();
-    }, []);
-
-    // Consolidated Vanta.js initialization and management effect
-    useEffect(() => {
-        let vantaEffect = null;
-        
-        const initVanta = () => {
-            if (window.VANTA && vantaRef.current) {
-                vantaEffect = window.VANTA.NET({
-                    el: vantaRef.current,
-                    mouseControls: true,
-                    touchControls: true,
-                    gyroControls: false,
-                    minHeight: 200.00,
-                    minWidth: 200.00,
-                    scale: 1.00,
-                    scaleMobile: 1.00,
-                    color: theme === 'dark' ? 0x6b21a8 : 0x3b82f6,
-                    backgroundColor: theme === 'dark' ? 0x020617 : 0xf1f5f9,
-                    points: 12.00,
-                    maxDistance: 22.00,
-                    spacing: 18.00
-                });
-            }
-        };
-
-        // Vanta script might load after the initial render. We check for it.
-        if (window.VANTA) {
-            initVanta();
-        } else {
-            const checkInterval = setInterval(() => {
-                if (window.VANTA) {
-                    clearInterval(checkInterval);
-                    initVanta();
-                }
-            }, 500); // Check for Vanta every 500ms
+        #vanta-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -10;
+        }
+        .glass-card {
+            background-color: rgba(15, 7, 36, 0.6); /* Dark purple glass */
+            border: 1px solid rgba(59, 130, 246, 0.3); /* Blue border glow */
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+        .glow-text {
+            text-shadow: 0 0 8px rgba(59, 130, 246, 0.8);
+        }
+        .profile-pic-container {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            /* Initial blue pulse glow */
+            box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7);
+            animation: pulse-glow 2s infinite;
         }
 
-        // Cleanup function: This is crucial. It runs when the component unmounts OR when `theme` changes.
-        return () => {
-            if (vantaEffect) {
-                vantaEffect.destroy();
-            }
-        };
-    }, [theme]); // This effect re-runs ONLY when the theme changes.
-
-
-    // Cursor trail effect
-    useEffect(() => {
-        const handleMouseMove = (e) => {
-            setMousePosition({ x: e.clientX, y: e.clientY });
-        };
-        window.addEventListener('mousemove', handleMouseMove);
-        return () => window.removeEventListener('mousemove', handleMouseMove);
-    }, []);
-
-    const toggleTheme = () => {
-        setTheme(prevTheme => (prevTheme === 'dark' ? 'light' : 'dark'));
-    };
-
-    // --- Data ---
-    const taglines = ['Automation', 'AI', 'Innovation', 'Creativity'];
-    const [taglineIndex, setTaglineIndex] = useState(0);
-
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setTaglineIndex((prevIndex) => (prevIndex + 1) % taglines.length);
-        }, 2000);
-        return () => clearInterval(interval);
-    }, []);
-
-
-    const stories = [
-        { id: 1, type: 'image', url: 'https://placehold.co/1080x1920/1e293b/94a3b8?text=Deploying+to+Prod\\non+Friday', duration: 5000 },
-        { id: 2, type: 'text', content: 'Debugging a Kubernetes pod at 2 AM. #DevOpsLife', duration: 5000 },
-        { id: 3, type: 'image', url: 'https://placehold.co/1080x1920/4a044e/f0abfc?text=My+GenAI+model\\nfinally+worked!', duration: 5000 },
-        { id: 4, type: 'text', content: 'The best part of my job? The tech memes, of course.', duration: 5000 },
-    ];
-    
-    const projects = [
-        {
-            title: "AIX Beats – Monitoring for IBM AIX",
-            description: "A comprehensive monitoring solution for IBM AIX servers, using the Elastic Stack. It provides real-time insights into system performance, security, and availability.",
-            tags: ["DevOps", "Elastic", "IBM AIX", "Monitoring"],
-            imageUrl: "https://placehold.co/600x400/1e40af/ffffff?text=AIX+Beats"
-        },
-        {
-            title: "Generative AI RAG Chatbot",
-            description: "A Retrieval-Augmented Generation chatbot for the healthcare industry, providing accurate and context-aware answers from a vast medical knowledge base.",
-            tags: ["GenAI", "RAG", "Python", "Healthcare"],
-            imageUrl: "https://placehold.co/600x400/7e22ce/ffffff?text=RAG+Chatbot"
-        },
-        {
-            title: "Selenium Test Automation Pipeline",
-            description: "A fully automated CI/CD pipeline for browser-based testing using Selenium, Docker, and Jenkins, reducing manual testing effort by over 80%.",
-            tags: ["Automation", "Selenium", "CI/CD", "Docker"],
-            imageUrl: "https://placehold.co/600x400/15803d/ffffff?text=Selenium+Pipeline"
+        @keyframes pulse-glow {
+            0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7); }
+            70% { box-shadow: 0 0 0 20px rgba(59, 130, 246, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
         }
-    ];
-    
-    const blogPosts = [
-        { platform: 'Medium', title: 'The Rise of AIOps: A DevOps Game Changer', link: '#' },
-        { platform: 'Dev.to', title: 'Building a RAG model from Scratch with Gemini', link: '#' },
-        { platform: 'Medium', title: 'Kubernetes Best Practices in 2025', link: '#' },
-        { platform: 'Dev.to', title: 'Terraform Modules for Reusable Infrastructure', link: '#' },
-    ];
 
-    // --- Components ---
-    const AnimatedCursor = () => (
-        <motion.div
-            className="fixed top-0 left-0 w-8 h-8 rounded-full bg-purple-500/50 dark:bg-cyan-400/50 backdrop-filter backdrop-blur-sm pointer-events-none z-[9999] border-2 border-purple-400 dark:border-cyan-300"
-            style={{
-                translateX: mousePosition.x - 16,
-                translateY: mousePosition.y - 16,
-            }}
-            transition={{ type: 'spring', stiffness: 500, damping: 30 }}
-        />
-    );
-    
-    const Section = ({ children, id }) => {
-        const ref = useRef(null);
-        const isInView = useInView(ref, { once: true, amount: 0.3 });
-        return (
-            <section ref={ref} id={id} className="min-h-screen w-full max-w-5xl mx-auto py-20 px-4 md:px-8 flex items-center justify-center">
-                <motion.div 
-                    className="w-full"
-                    initial={{ opacity: 0, y: 50 }}
-                    animate={isInView ? { opacity: 1, y: 0 } : {}}
-                    transition={{ duration: 0.8, ease: "easeOut" }}
-                >
-                    {children}
-                </motion.div>
-            </section>
-        );
-    };
-    
-    const AnimatedCounter = ({ to, text }) => {
-        const ref = useRef(null);
-        const inView = useInView(ref, { once: true, amount: 0.5 });
-        const [displayValue, setDisplayValue] = useState(0);
+        .profile-pic {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #3b82f6;
+            transition: transform 0.3s;
+        }
+        .social-icon {
+            transition: color 0.3s, transform 0.3s;
+        }
+        .social-icon:hover {
+            color: #60a5fa;
+            transform: scale(1.2);
+            filter: drop-shadow(0 0 5px #60a5fa);
+        }
+        .project-card:hover .project-title {
+            text-shadow: var(--secondary-glow);
+        }
+    </style>
+</head>
 
-        useEffect(() => {
-            if (inView) {
-                const controls = animate(0, to, {
-                    duration: 2,
-                    ease: "easeOut",
-                    onUpdate: (latest) => {
-                        setDisplayValue(Math.round(latest));
-                    }
-                });
-                return () => controls.stop();
-            }
-        }, [inView, to]);
+<body>
+    <!-- Vanta.js Background Container -->
+    <div id="vanta-background"></div>
 
-        return (
-            <div ref={ref} className="text-center">
-                <p className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-cyan-400 mb-2">{displayValue}+</p>
-                <p className="text-sm text-slate-500 dark:text-slate-400">{text}</p>
-            </div>
-        );
-    };
+    <!-- Main Content Container -->
+    <main class="relative z-10">
 
-    const StoryViewer = ({ stories, onClose }) => {
-        const [currentIndex, setCurrentIndex] = useState(0);
-        const [isPaused, setPaused] = useState(false);
-    
-        useEffect(() => {
-            if (!isPaused) {
-                const timer = setTimeout(() => {
-                    if (currentIndex < stories.length - 1) {
-                        setCurrentIndex(currentIndex + 1);
-                    } else {
-                        onClose();
-                    }
-                }, stories[currentIndex].duration);
-                return () => clearTimeout(timer);
-            }
-        }, [currentIndex, stories, onClose, isPaused]);
-    
-        const goToNext = () => {
-            if (currentIndex < stories.length - 1) {
-                setCurrentIndex(currentIndex + 1);
-            } else {
-                onClose();
-            }
-        };
-    
-        const goToPrevious = () => {
-            if (currentIndex > 0) {
-                setCurrentIndex(currentIndex - 1);
-            }
-        };
-
-        const currentStory = stories[currentIndex];
-    
-        return (
-            <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="fixed inset-0 bg-black/80 backdrop-blur-lg flex items-center justify-center z-50"
-                onClick={onClose}
-            >
-                <div 
-                    className="relative w-full max-w-[400px] h-[85vh] bg-slate-900 rounded-2xl overflow-hidden shadow-2xl shadow-purple-500/20"
-                    onClick={(e) => e.stopPropagation()}
-                    onMouseDown={() => setPaused(true)}
-                    onMouseUp={() => setPaused(false)}
-                    onTouchStart={() => setPaused(true)}
-                    onTouchEnd={() => setPaused(false)}
-                >
-                    {/* Progress Bars */}
-                    <div className="absolute top-2 left-2 right-2 flex space-x-1 h-1 z-20">
-                        {stories.map((story, index) => (
-                            <div key={story.id} className="flex-1 bg-white/30 rounded-full overflow-hidden">
-                                {index < currentIndex && <div className="h-full bg-white w-full"></div>}
-                                {index === currentIndex && (
-                                    <motion.div
-                                        className="h-full bg-white"
-                                        initial={{ width: "0%" }}
-                                        animate={{ width: isPaused ? "auto" : "100%" }}
-                                        transition={{ duration: story.duration / 1000, ease: 'linear' }}
-                                    />
-                                )}
-                            </div>
-                        ))}
-                    </div>
-    
-                    {/* Content */}
-                    <div className="absolute inset-0">
-                       <AnimatePresence initial={false}>
-                          <motion.div
-                            key={currentStory.id}
-                            className="w-full h-full"
-                            initial={{ x: '100%', opacity: 0 }}
-                            animate={{ x: '0%', opacity: 1 }}
-                            exit={{ x: '-100%', opacity: 0 }}
-                            transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-                          >
-                            {currentStory.type === 'image' ? (
-                                <img src={currentStory.url} className="w-full h-full object-cover" alt="Story content"/>
-                            ) : (
-                                <div className="w-full h-full flex items-center justify-center p-8 bg-gradient-to-br from-purple-600 to-blue-800">
-                                    <p className="text-white text-2xl font-semibold text-center">{currentStory.content}</p>
-                                </div>
-                            )}
-                          </motion.div>
-                       </AnimatePresence>
-                    </div>
-
-                     {/* Navigation */}
-                    <button onClick={goToPrevious} className="absolute left-0 top-0 bottom-0 w-1/3 z-30"></button>
-                    <button onClick={goToNext} className="absolute right-0 top-0 bottom-0 w-2/3 z-30"></button>
-                    <button onClick={onClose} className="absolute top-4 right-4 text-white text-3xl z-30">&times;</button>
+        <!-- 1. Hero Section -->
+        <section id="hero" class="min-h-screen flex items-center justify-center p-4 text-center">
+            <div class="space-y-8 max-w-4xl mx-auto">
+                <!-- Profile Picture (Interactive) -->
+                <div id="profile-pic-trigger" class="profile-pic-container mx-auto" onclick="openStories()">
+                    <img src="https://placehold.co/200x200/5e009a/ffffff?text=K" alt="kosmos Profile" class="profile-pic">
+                    <span class="absolute top-0 right-0 p-2 bg-blue-500 rounded-full text-xs font-bold shadow-lg" style="box-shadow: 0 0 10px #3b82f6;">NEW</span>
                 </div>
-            </motion.div>
-        );
-    };
-    
-    const ProjectModal = ({ project, onClose }) => {
-        if (!project) return null;
-        return (
-            <motion.div 
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="fixed inset-0 bg-black/80 backdrop-blur-lg flex items-center justify-center z-50 p-4"
-                onClick={onClose}
-            >
-                <motion.div
-                    initial={{ scale: 0.9, y: 20 }}
-                    animate={{ scale: 1, y: 0 }}
-                    exit={{ scale: 0.9, y: 20 }}
-                    className="relative w-full max-w-2xl bg-slate-900/50 dark:bg-slate-800/50 backdrop-blur-xl border border-white/10 rounded-2xl overflow-hidden p-8 text-white"
-                    onClick={(e) => e.stopPropagation()}
-                >
-                    <img src={project.imageUrl} alt={project.title} className="w-full h-60 object-cover rounded-lg mb-6"/>
-                    <h3 className="text-3xl font-bold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-cyan-400">{project.title}</h3>
-                    <p className="text-slate-300 dark:text-slate-400 mb-4">{project.description}</p>
-                    <div className="flex flex-wrap gap-2 mb-6">
-                        {project.tags.map(tag => (
-                            <span key={tag} className="bg-white/10 text-xs px-3 py-1 rounded-full">{tag}</span>
-                        ))}
-                    </div>
-                    <button onClick={onClose} className="absolute top-4 right-4 text-white/50 hover:text-white transition-colors">&times;</button>
-                </motion.div>
-            </motion.div>
-        );
-    };
 
-    return (
-        <div className={`min-h-screen font-sans bg-slate-100 dark:bg-slate-950 text-slate-800 dark:text-slate-200 transition-colors duration-500`}>
-            <div ref={vantaRef} className="fixed top-0 left-0 w-full h-full z-0"></div>
-            
-            <AnimatedCursor />
+                <!-- Headline -->
+                <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight leading-snug">
+                    Hi, I’m <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500 glow-text">kosmos</span>
+                    — <span class="block mt-2">DevOps & Generative AI Engineer.</span>
+                </h1>
 
-            <header className="fixed top-0 left-0 right-0 z-40 p-4 flex justify-between items-center">
-                <h1 className="font-bold text-xl tracking-wider">kosmos</h1>
-                <button
-                    onClick={toggleTheme}
-                    className="w-12 h-12 flex items-center justify-center rounded-full bg-white/10 backdrop-blur-md border border-white/10 hover:bg-white/20 transition-all duration-300"
-                >
-                    {theme === 'dark' ? '☀️' : '🌙'}
+                <!-- Animated Tagline -->
+                <div class="text-xl md:text-3xl text-gray-300 font-medium">
+                    <span class="mr-2">I create:</span>
+                    <span id="tagline-anim" class="text-cyan-400 font-bold glow-text">Automation</span>
+                </div>
+
+                <!-- Explore Button -->
+                <a href="#about" class="inline-flex items-center space-x-2 px-8 py-3 bg-indigo-600 text-white font-semibold rounded-full shadow-lg hover:bg-indigo-700 transition duration-300 transform hover:scale-105" onclick="scrollToSection(event, 'about')">
+                    <span>Explore My World</span>
+                    <i data-lucide="arrow-down-circle" class="w-5 h-5"></i>
+                </a>
+            </div>
+        </section>
+
+        <!-- 2. Interactive Profile Picture Overlay (Stories) -->
+        <div id="stories-overlay" class="fixed inset-0 z-[100] bg-black bg-opacity-90 backdrop-blur-md hidden justify-center items-center" onclick="closeStories()">
+            <div class="relative w-11/12 max-w-md h-[80vh] rounded-xl overflow-hidden shadow-2xl transition-all duration-500" onclick="event.stopPropagation()">
+                <!-- Close Button -->
+                <button onclick="closeStories()" class="absolute top-4 right-4 text-white z-50 p-2 bg-black/50 rounded-full hover:bg-black/80 transition">
+                    <i data-lucide="x" class="w-6 h-6"></i>
                 </button>
-            </header>
 
-            <main className="relative z-10">
-                {/* Hero Section */}
-                <section id="hero" className="min-h-screen flex flex-col items-center justify-center text-center p-4">
-                    <motion.div
-                        className="relative mb-6 cursor-pointer group"
-                        onClick={() => setStoryOpen(true)}
-                        whileHover={{ scale: 1.05 }}
-                        transition={{ type: 'spring', stiffness: 300 }}
-                    >
-                        <img 
-                            src="https://placehold.co/150x150/020617/a5b4fc?text=k" 
-                            alt="kosmos profile" 
-                            className="w-36 h-36 rounded-full object-cover border-4 border-white/20 shadow-lg"
-                        />
-                        <div className="absolute inset-0 rounded-full bg-purple-500/50 blur-2xl group-hover:blur-3xl transition-all duration-500 animate-pulse"></div>
-                        <div className="absolute inset-0 rounded-full border-2 border-purple-400 animate-spin-slow"></div>
-                    </motion.div>
-                    <motion.h2 
-                        className="text-3xl md:text-5xl font-bold mb-3"
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, delay: 0.2 }}
-                    >
-                        Hi, I’m kosmos
-                    </motion.h2>
-                    <motion.p 
-                        className="text-xl md:text-2xl text-slate-600 dark:text-slate-400 mb-6"
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, delay: 0.4 }}
-                    >
-                        DevOps & Generative AI Engineer
-                    </motion.p>
-                    <motion.div 
-                        className="text-lg font-mono p-2 bg-white/10 rounded-md h-8 flex items-center justify-center"
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, delay: 0.6 }}
-                    >
-                         <AnimatePresence mode="wait">
-                            <motion.span
-                                key={taglines[taglineIndex]}
-                                initial={{ opacity: 0, y: -20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                exit={{ opacity: 0, y: 20 }}
-                                transition={{ duration: 0.5 }}
-                            >
-                                {taglines[taglineIndex]}
-                            </motion.span>
-                         </AnimatePresence>
-                    </motion.div>
-                     <motion.a 
-                        href="#about"
-                        className="mt-10 px-6 py-3 rounded-full bg-purple-600/50 dark:bg-cyan-500/50 text-white backdrop-blur-md border border-white/20 hover:bg-purple-600/80 dark:hover:bg-cyan-500/80 transition-all duration-300"
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, delay: 0.8 }}
-                    >
-                        Explore My World
-                    </motion.a>
-                </section>
-                
-                {/* About Section */}
-                <Section id="about">
-                    <div className="bg-black/10 dark:bg-white/5 backdrop-blur-xl p-8 md:p-12 rounded-3xl border border-white/10">
-                        <h2 className="text-3xl font-bold mb-8 text-center bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-cyan-400">About Me</h2>
-                        <div className="grid md:grid-cols-3 gap-8 items-center">
-                            <div className="md:col-span-2">
-                                <p className="mb-4">
-                                    I'm a passionate engineer at the intersection of robust infrastructure and intelligent systems. As a DevOps Engineer, I specialize in building scalable, automated CI/CD pipelines and managing cloud-native infrastructure with tools like Kubernetes, Docker, and Terraform.
-                                </p>
-                                <p>
-                                    My curiosity then led me to the fascinating world of Generative AI. I now build and deploy intelligent applications, from advanced RAG chatbots to creative content generation tools, leveraging the power of models like Gemini to solve real-world problems.
-                                </p>
-                                <div className="flex justify-center md:justify-start gap-4 mt-8">
-                                    <KubernetesIcon /> <DockerIcon /> <TerraformIcon /> <PythonIcon /> <GeminiIcon />
-                                </div>
-                            </div>
-                            <div className="space-y-6">
-                                <AnimatedCounter to={5} text="Years of Experience" />
-                                <AnimatedCounter to={150} text="Projects Deployed" />
-                                <AnimatedCounter to={12} text="AI Models Built" />
-                            </div>
-                        </div>
-                    </div>
-                </Section>
-                
-                {/* Featured Work Section */}
-                <Section id="work">
-                    <div className="text-center">
-                        <h2 className="text-3xl font-bold mb-12 bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-cyan-400">Featured Work</h2>
-                        <div className="grid md:grid-cols-3 gap-8">
-                            {projects.map((project, i) => (
-                                <motion.div
-                                    key={i}
-                                    className="bg-black/10 dark:bg-white/5 backdrop-blur-xl p-6 rounded-3xl border border-white/10 cursor-pointer"
-                                    whileHover={{ y: -10, scale: 1.03, transition: { type: 'spring', stiffness: 300 } }}
-                                    onClick={() => setSelectedProject(project)}
-                                >
-                                    <img src={project.imageUrl} alt={project.title} className="w-full h-40 object-cover rounded-xl mb-4"/>
-                                    <h3 className="font-bold text-lg mb-2">{project.title}</h3>
-                                    <div className="flex flex-wrap gap-2">
-                                        {project.tags.map(tag => (
-                                            <span key={tag} className="bg-white/10 text-xs px-2 py-1 rounded-full">{tag}</span>
-                                        ))}
-                                    </div>
-                                </motion.div>
-                            ))}
-                        </div>
-                    </div>
-                </Section>
+                <!-- Story Progress Bars -->
+                <div id="story-progress-container" class="absolute top-0 left-0 right-0 flex p-2 space-x-1 z-40">
+                    <!-- Progress bars will be injected here by JS -->
+                </div>
 
-                {/* Blogs & Content Section */}
-                <Section id="content">
-                     <div className="text-center">
-                        <h2 className="text-3xl font-bold mb-12 bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-cyan-400">Blogs & Content</h2>
-                        <div className="grid md:grid-cols-2 gap-8">
-                            {blogPosts.map((post, i) => (
-                                <a href={post.link} key={i} target="_blank" rel="noopener noreferrer" className="block bg-black/10 dark:bg-white/5 backdrop-blur-xl p-6 rounded-3xl border border-white/10 text-left hover:border-purple-400/50 transition-all duration-300">
-                                    <span className="text-sm font-semibold text-purple-400 dark:text-cyan-400">{post.platform}</span>
-                                    <h3 className="font-bold text-lg mt-1">{post.title}</h3>
-                                </a>
-                            ))}
-                        </div>
-                        <div className="mt-12">
-                             <h3 className="text-2xl font-bold mb-6">YouTube & Instagram</h3>
-                             <div className="grid md:grid-cols-2 gap-8">
-                                <div className="aspect-video bg-black/10 dark:bg-white/5 rounded-2xl flex items-center justify-center">
-                                    <p>YouTube Video Embed</p>
-                                </div>
-                                <div className="aspect-video bg-black/10 dark:bg-white/5 rounded-2xl flex items-center justify-center">
-                                    <p>Instagram Reel Embed</p>
-                                </div>
-                             </div>
-                        </div>
-                    </div>
-                </Section>
-                
-                 {/* Contact Section */}
-                <Section id="contact">
-                    <div className="bg-black/10 dark:bg-white/5 backdrop-blur-xl p-8 md:p-12 rounded-3xl border border-white/10 max-w-2xl mx-auto">
-                        <h2 className="text-3xl font-bold mb-8 text-center bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-cyan-400">Get In Touch</h2>
-                        <form className="space-y-6">
-                             <input type="text" placeholder="Your Name" className="w-full p-4 bg-white/5 border border-white/10 rounded-lg backdrop-blur-lg focus:ring-2 focus:ring-purple-500 outline-none transition-all" />
-                            <input type="email" placeholder="Your Email" className="w-full p-4 bg-white/5 border border-white/10 rounded-lg backdrop-blur-lg focus:ring-2 focus:ring-purple-500 outline-none transition-all" />
-                            <textarea placeholder="Your Message" rows="5" className="w-full p-4 bg-white/5 border border-white/10 rounded-lg backdrop-blur-lg focus:ring-2 focus:ring-purple-500 outline-none transition-all"></textarea>
-                            <button type="submit" className="w-full px-6 py-4 rounded-lg bg-purple-600/80 dark:bg-cyan-500/80 text-white backdrop-blur-md border border-white/20 hover:bg-purple-600/100 dark:hover:bg-cyan-500/100 transition-all duration-300 font-bold">
-                                Send Message
-                            </button>
-                        </form>
-                         <div className="flex justify-center gap-6 mt-8">
-                            <a href="https://kosmos.github.io" target="_blank" rel="noopener noreferrer"><GithubIcon className="w-6 h-6 hover:text-purple-400 transition-colors" /></a>
-                            <a href="https://kosmos.medium.com" target="_blank" rel="noopener noreferrer"><MediumIcon className="w-6 h-6 hover:text-purple-400 transition-colors" /></a>
-                            <a href="https://dev.to/kosmos" target="_blank" rel="noopener noreferrer"><DevToIcon className="w-6 h-6 hover:text-purple-400 transition-colors" /></a>
-                            <a href="#" target="_blank" rel="noopener noreferrer"><YoutubeIcon className="w-6 h-6 hover:text-purple-400 transition-colors" /></a>
-                            <a href="#" target="_blank" rel="noopener noreferrer"><InstagramIcon className="w-6 h-6 hover:text-purple-400 transition-colors" /></a>
-                            <a href="mailto:kosmos.devops.ai@gmail.com"><MailIcon className="w-6 h-6 hover:text-purple-400 transition-colors" /></a>
-                        </div>
-                    </div>
-                </Section>
-            </main>
-            
-            <footer className="relative z-10 text-center p-8 text-sm text-slate-500 dark:text-slate-400">
-                <p>Built with ❤️ by kosmos | Powered by GitHub Pages</p>
-            </footer>
+                <!-- Story Content Area -->
+                <div id="story-content-container" class="w-full h-full relative">
+                    <!-- Stories will be injected here -->
+                </div>
 
-            <AnimatePresence>
-                {isStoryOpen && <StoryViewer stories={stories} onClose={() => setStoryOpen(false)} />}
-                {selectedProject && <ProjectModal project={selectedProject} onClose={() => setSelectedProject(null)} />}
-            </AnimatePresence>
+                <!-- Navigation Buttons -->
+                <button id="prev-story-btn" class="absolute left-0 top-1/2 -translate-y-1/2 p-4 text-white z-50 transition opacity-0 md:opacity-100 hover:bg-black/30 h-full w-1/4 flex items-center justify-start" onclick="prevStory()">
+                    <i data-lucide="chevron-left" class="w-8 h-8 drop-shadow-lg"></i>
+                </button>
+                <button id="next-story-btn" class="absolute right-0 top-1/2 -translate-y-1/2 p-4 text-white z-50 transition opacity-0 md:opacity-100 hover:bg-black/30 h-full w-1/4 flex items-center justify-end" onclick="nextStory()">
+                    <i data-lucide="chevron-right" class="w-8 h-8 drop-shadow-lg"></i>
+                </button>
+            </div>
         </div>
-    );
-};
 
-export default App;
 
+        <!-- 3. About Me Section -->
+        <section id="about" class="py-16 md:py-24 container mx-auto px-4">
+            <h2 class="text-3xl md:text-5xl font-bold text-center mb-12 text-cyan-400 glow-text">About Me / The Fusion</h2>
+
+            <div class="glass-card p-6 md:p-12 rounded-3xl shadow-xl space-y-12">
+                <!-- Core Description -->
+                <div class="grid md:grid-cols-2 gap-8 items-center">
+                    <div class="order-2 md:order-1 space-y-6">
+                        <p class="text-lg text-gray-200 leading-relaxed">
+                            I am <span class="font-bold text-blue-300">kosmos</span>, an engineer operating at the nexus of reliable infrastructure and intelligent systems. My expertise spans classic **DevOps** methodologies (automation, CI/CD, cloud orchestration) and cutting-edge **Generative AI** development (RAG, prompt engineering, fine-tuning).
+                        </p>
+                        <p class="text-lg text-gray-200 leading-relaxed">
+                            I thrive on building creative systems—from auto-scaling, self-healing **Kubernetes** clusters to bespoke, enterprise-grade **Gemini-powered chatbots**. I believe that the future is automated, intelligent, and scalable.
+                        </p>
+                    </div>
+                    <div class="order-1 md:order-2 flex justify-center">
+                        <img src="https://placehold.co/400x400/1e0d37/9ca3af?text=AI+%2B+DevOps+Fusion" alt="Abstract Fusion Image" class="rounded-2xl shadow-2xl border-4 border-purple-500/50 max-w-full h-auto" />
+                    </div>
+                </div>
+
+                <!-- Stats Counters -->
+                <div class="border-t border-blue-500/30 pt-8 mt-8">
+                    <h3 class="text-2xl font-semibold mb-6 text-purple-400">Highlights</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 text-center">
+                        <div class="p-6 glass-card rounded-xl">
+                            <div id="counter-years" class="text-5xl font-extrabold text-blue-400 mb-2">0</div>
+                            <div class="text-gray-400">Years in Tech</div>
+                        </div>
+                        <div class="p-6 glass-card rounded-xl">
+                            <div id="counter-projects" class="text-5xl font-extrabold text-cyan-400 mb-2">0</div>
+                            <div class="text-gray-400">Projects Deployed</div>
+                        </div>
+                        <div class="p-6 glass-card rounded-xl">
+                            <div id="counter-ai-models" class="text-5xl font-extrabold text-purple-400 mb-2">0</div>
+                            <div class="text-gray-400">AI Models Built</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Animated Icons / Tech Stack -->
+                <div class="border-t border-blue-500/30 pt-8 mt-8">
+                    <h3 class="text-2xl font-semibold mb-6 text-blue-400">Core Stack</h3>
+                    <div id="tech-icons" class="flex flex-wrap justify-center gap-6 md:gap-10">
+                        <!-- Icons will be animated in via JS -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. Projects / Work -->
+        <section id="projects" class="py-16 md:py-24 container mx-auto px-4">
+            <h2 class="text-3xl md:text-5xl font-bold text-center mb-12 text-purple-400 glow-text">Select Projects</h2>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Project 1 -->
+                <div class="project-card glass-card rounded-2xl p-6 cursor-pointer transform transition-all duration-300 hover:shadow-[0_0_20px_rgba(192,132,252,0.5)]" data-project-id="ai-beats">
+                    <i data-lucide="cloud-cog" class="w-10 h-10 text-cyan-400 mb-4"></i>
+                    <h3 class="project-title text-2xl font-bold mb-2 text-white transition-all duration-300">AIX Beats – Monitoring</h3>
+                    <p class="text-gray-400 mb-4">A custom observability agent for legacy IBM AIX systems, streaming metrics to a modern stack.</p>
+                    <span class="inline-block text-sm font-medium px-3 py-1 rounded-full bg-blue-600/50 text-white">DevOps</span>
+                    <span class="inline-block text-sm font-medium px-3 py-1 rounded-full bg-purple-600/50 text-white">Go/Docker</span>
+                </div>
+
+                <!-- Project 2 -->
+                <div class="project-card glass-card rounded-2xl p-6 cursor-pointer transform transition-all duration-300 hover:shadow-[0_0_20px_rgba(59,130,246,0.5)]" data-project-id="rag-chatbot">
+                    <i data-lucide="message-square-text" class="w-10 h-10 text-blue-400 mb-4"></i>
+                    <h3 class="project-title text-2xl font-bold mb-2 text-white transition-all duration-300">GenAI RAG Chatbot</h3>
+                    <p class="text-gray-400 mb-4">A private, secure RAG system for querying internal healthcare documentation using the Gemini API.</p>
+                    <span class="inline-block text-sm font-medium px-3 py-1 rounded-full bg-indigo-600/50 text-white">Gen AI</span>
+                    <span class="inline-block text-sm font-medium px-3 py-1 rounded-full bg-green-600/50 text-white">Python/VectorDB</span>
+                </div>
+
+                <!-- Project 3 -->
+                <div class="project-card glass-card rounded-2xl p-6 cursor-pointer transform transition-all duration-300 hover:shadow-[0_0_20px_rgba(252,165,165,0.5)]" data-project-id="selenium-pipeline">
+                    <i data-lucide="file-check" class="w-10 h-10 text-red-400 mb-4"></i>
+                    <h3 class="project-title text-2xl font-bold mb-2 text-white transition-all duration-300">Selenium Automation Pipeline</h3>
+                    <p class="text-gray-400 mb-4">Fully containerized, scheduled CI/CD pipeline for end-to-end web testing across multiple browsers.</p>
+                    <span class="inline-block text-sm font-medium px-3 py-1 rounded-full bg-yellow-600/50 text-white">Automation</span>
+                    <span class="inline-block text-sm font-medium px-3 py-1 rounded-full bg-blue-600/50 text-white">Jenkins/Terraform</span>
+                </div>
+
+                <!-- Project 4 -->
+                <div class="project-card glass-card rounded-2xl p-6 cursor-pointer transform transition-all duration-300 hover:shadow-[0_0_20px_rgba(52,211,153,0.5)]" data-project-id="ai-meme-generator">
+                    <i data-lucide="sparkles" class="w-10 h-10 text-green-400 mb-4"></i>
+                    <h3 class="project-title text-2xl font-bold mb-2 text-white transition-all duration-300">AI Meme Generator</h3>
+                    <p class="text-gray-400 mb-4">A fun side project using image generation models to create tech-specific, viral content.</p>
+                    <span class="inline-block text-sm font-medium px-3 py-1 rounded-full bg-pink-600/50 text-white">Content</span>
+                    <span class="inline-block text-sm font-medium px-3 py-1 rounded-full bg-green-600/50 text-white">Imagen/React</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Project Modal (Single, Reusable) -->
+        <div id="project-modal" class="fixed inset-0 z-50 bg-black bg-opacity-80 backdrop-blur-md hidden justify-center items-center p-4">
+            <div class="glass-card w-full max-w-3xl rounded-3xl p-6 md:p-10 shadow-2xl relative">
+                <button onclick="closeProjectModal()" class="absolute top-4 right-4 text-white z-10 p-2 bg-indigo-600 rounded-full hover:bg-indigo-700 transition">
+                    <i data-lucide="x" class="w-6 h-6"></i>
+                </button>
+                <h3 id="modal-title" class="text-3xl md:text-4xl font-bold mb-4 text-cyan-400 glow-text"></h3>
+                <p id="modal-description" class="text-gray-300 mb-6"></p>
+                <img id="modal-image" src="" alt="Project Image" class="w-full h-auto rounded-xl mb-6 border border-purple-500/50" />
+                <div id="modal-details" class="space-y-4">
+                    <!-- Dynamic details will be inserted here -->
+                </div>
+                <a id="modal-link" href="#" target="_blank" class="mt-8 inline-block px-6 py-2 bg-purple-600 text-white font-semibold rounded-full hover:bg-purple-700 transition duration-300">View Live Demo</a>
+            </div>
+        </div>
+
+
+        <!-- 5. Blogs & Content -->
+        <section id="content" class="py-16 md:py-24 container mx-auto px-4">
+            <h2 class="text-3xl md:text-5xl font-bold text-center mb-12 text-cyan-400 glow-text">Blogs & Content</h2>
+
+            <div class="space-y-12">
+                <!-- Medium & Dev.to -->
+                <div class="grid md:grid-cols-2 gap-8">
+                    <!-- Medium Card -->
+                    <div class="glass-card p-6 rounded-2xl border-l-4 border-l-green-400">
+                        <div class="flex items-center space-x-3 mb-4">
+                            <i data-lucide="book-open" class="w-8 h-8 text-green-400"></i>
+                            <h3 class="text-2xl font-bold text-white">Medium Articles</h3>
+                        </div>
+                        <p class="text-gray-400 mb-4 italic">Latest: "Scaling Kubernetes with Generative AI Predictions"</p>
+                        <a href="https://kosmos.medium.com" target="_blank" class="text-green-400 font-semibold hover:text-green-300 transition flex items-center space-x-1">
+                            <span>Read More on Medium</span>
+                            <i data-lucide="external-link" class="w-4 h-4"></i>
+                        </a>
+                    </div>
+
+                    <!-- Dev.to Card -->
+                    <div class="glass-card p-6 rounded-2xl border-l-4 border-l-blue-400">
+                        <div class="flex items-center space-x-3 mb-4">
+                            <i data-lucide="code" class="w-8 h-8 text-blue-400"></i>
+                            <h3 class="text-2xl font-bold text-white">Dev.to Deep Dives</h3>
+                        </div>
+                        <p class="text-gray-400 mb-4 italic">Latest: "Terraform Best Practices for Multi-Cloud Deployments"</p>
+                        <a href="https://dev.to/kosmos" target="_blank" class="text-blue-400 font-semibold hover:text-blue-300 transition flex items-center space-x-1">
+                            <span>Read More on Dev.to</span>
+                            <i data-lucide="external-link" class="w-4 h-4"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- YouTube/Reels -->
+                <div class="pt-8 border-t border-purple-500/30">
+                    <h3 class="text-2xl font-bold mb-6 text-purple-400 text-center">Video Content & Reels</h3>
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div class="glass-card p-4 rounded-2xl">
+                            <div class="aspect-video bg-gray-900 flex items-center justify-center rounded-xl mb-4">
+                                <i data-lucide="youtube" class="w-12 h-12 text-red-500"></i>
+                                <span class="ml-3 text-gray-400">YouTube Channel Video Placeholder</span>
+                            </div>
+                            <p class="text-gray-300 font-medium">Weekly Tech Deep Dive: CI/CD with GitHub Actions.</p>
+                        </div>
+                        <div class="glass-card p-4 rounded-2xl">
+                            <div class="aspect-video bg-gray-900 flex items-center justify-center rounded-xl mb-4">
+                                <i data-lucide="instagram" class="w-12 h-12 text-pink-500"></i>
+                                <span class="ml-3 text-gray-400">Instagram Reel/Meme Placeholder</span>
+                            </div>
+                            <p class="text-gray-300 font-medium">Daily AI Meme: When your LLM hallucinates production logs.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. Stats & Highlights (Repetition with emphasis) -->
+        <section id="stats" class="py-16 md:py-24 container mx-auto px-4">
+            <h2 class="text-3xl md:text-5xl font-bold text-center mb-12 text-purple-400 glow-text">Key Metrics & Impact</h2>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-8 text-center max-w-4xl mx-auto">
+                <div class="p-6 glass-card rounded-xl transform hover:scale-[1.02] transition duration-300">
+                    <div id="stat-ai-apps" class="text-6xl font-extrabold text-blue-400 mb-2">+10</div>
+                    <div class="text-gray-400 font-medium">AI Apps & Demos Built</div>
+                </div>
+                <div class="p-6 glass-card rounded-xl transform hover:scale-[1.02] transition duration-300">
+                    <div id="stat-pipelines" class="text-6xl font-extrabold text-cyan-400 mb-2">+30</div>
+                    <div class="text-gray-400 font-medium">DevOps Pipelines Managed</div>
+                </div>
+                <div class="p-6 glass-card rounded-xl transform hover:scale-[1.02] transition duration-300">
+                    <div id="stat-blog-reads" class="text-6xl font-extrabold text-purple-400 mb-2">+1M</div>
+                    <div class="text-gray-400 font-medium">Content Views / Blog Reads</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 7. Contact / Get in Touch -->
+        <section id="contact" class="py-16 md:py-24 container mx-auto px-4">
+            <h2 class="text-3xl md:text-5xl font-bold text-center mb-12 text-blue-400 glow-text">Get in Touch</h2>
+
+            <div class="max-w-3xl mx-auto glass-card p-6 md:p-10 rounded-3xl shadow-2xl space-y-8">
+                <p class="text-lg text-gray-300 text-center">
+                    I'm always open to discussing new projects, collaborations, or just talking shop about AI and automation. Drop me a message below or connect via social media.
+                </p>
+
+                <!-- Glassy Chat-Style Contact Form (Mock - client-side only) -->
+                <form onsubmit="handleContactSubmit(event)" class="space-y-4">
+                    <div>
+                        <input type="text" placeholder="Your Name (Required)" required class="w-full px-4 py-3 rounded-xl bg-black/50 border border-indigo-400/50 focus:border-indigo-400 focus:ring-indigo-400 transition text-white placeholder-gray-400">
+                    </div>
+                    <div>
+                        <input type="email" placeholder="Your Email (Required)" required class="w-full px-4 py-3 rounded-xl bg-black/50 border border-indigo-400/50 focus:border-indigo-400 focus:ring-indigo-400 transition text-white placeholder-gray-400">
+                    </div>
+                    <div>
+                        <textarea placeholder="Your Message (Let's build something cool!)" rows="5" required class="w-full px-4 py-3 rounded-xl bg-black/50 border border-indigo-400/50 focus:border-indigo-400 focus:ring-indigo-400 transition text-white placeholder-gray-400"></textarea>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="px-10 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold rounded-full shadow-lg hover:from-blue-600 hover:to-purple-700 transition duration-300 transform hover:scale-105">
+                            Send Message
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Social Icons -->
+                <div class="flex justify-center space-x-6 pt-4 border-t border-purple-500/30">
+                    <a href="https://github.com/kosmos" target="_blank" title="GitHub" class="social-icon text-gray-300 hover:text-white">
+                        <i data-lucide="github" class="w-8 h-8"></i>
+                    </a>
+                    <a href="https://kosmos.medium.com" target="_blank" title="Medium" class="social-icon text-gray-300 hover:text-white">
+                        <i data-lucide="book" class="w-8 h-8"></i>
+                    </a>
+                    <a href="https://dev.to/kosmos" target="_blank" title="Dev.to" class="social-icon text-gray-300 hover:text-white">
+                        <i data-lucide="code-square" class="w-8 h-8"></i>
+                    </a>
+                    <a href="#" target="_blank" title="YouTube" class="social-icon text-gray-300 hover:text-white">
+                        <i data-lucide="youtube" class="w-8 h-8"></i>
+                    </a>
+                    <a href="#" target="_blank" title="Instagram (Meme Page)" class="social-icon text-gray-300 hover:text-white">
+                        <i data-lucide="instagram" class="w-8 h-8"></i>
+                    </a>
+                </div>
+                <p class="text-center text-gray-400 text-sm">Or email me directly: <a href="mailto:kosmos.devops.ai@gmail.com" class="text-blue-400 hover:underline">kosmos.devops.ai@gmail.com</a></p>
+            </div>
+        </section>
+    </main>
+
+    <!-- 8. Footer -->
+    <footer class="py-6 mt-12 text-center text-gray-500 text-sm border-t-2 border-indigo-600/30">
+        <div class="container mx-auto px-4">
+            <p class="text-white font-medium glow-text">© 2025 kosmos | Built with ❤️ and deployed on GitHub Pages.</p>
+        </div>
+    </footer>
+
+    <!-- Message Box for Alerts/Confirmations (Replaces alert()/confirm()) -->
+    <div id="message-box" class="fixed bottom-4 right-4 z-[101] hidden p-4 rounded-xl shadow-2xl text-white font-medium transition-all duration-300 transform translate-x-full">
+        <p id="message-content"></p>
+    </div>
+
+
+    <script>
+        // --- DATA STRUCTURES ---
+
+        const TAGLINES = ["Automation", "AI", "Innovation", "Creativity"];
+        const TECH_STACK = [
+            { name: "Kubernetes", icon: "cloud", color: "text-blue-500" },
+            { name: "Docker", icon: "box", color: "text-cyan-500" },
+            { name: "Python", icon: "flame", color: "text-yellow-500" },
+            { name: "Terraform", icon: "zap", color: "text-purple-500" },
+            { name: "Gemini API", icon: "sparkles", color: "text-green-500" },
+            { name: "AWS/GCP", icon: "cloud-fog", color: "text-orange-500" },
+            { name: "CI/CD", icon: "git-fork", color: "text-indigo-500" },
+        ];
+        const PROJECTS = [
+            {
+                id: "ai-beats",
+                title: "AIX Beats – Monitoring for IBM AIX",
+                shortDesc: "A custom observability agent for legacy IBM AIX systems, streaming metrics to a modern stack (Prometheus/Grafana).",
+                details: ["Built with Go and deployed via Docker containers.", "Reduced MTTR for AIX hosts by 40% using proactive alerting.", "Designed a custom metric scraping pipeline."],
+                image: "https://placehold.co/800x400/150736/ffffff?text=AIX+Monitoring+Dashboard",
+                link: "https://github.com/kosmos/aix-beats-demo",
+                linkText: "View on GitHub",
+            },
+            {
+                id: "rag-chatbot",
+                title: "Generative AI RAG Chatbot for Healthcare",
+                shortDesc: "A secure, Retrieval-Augmented Generation (RAG) system for internal documents, ensuring data privacy and accuracy.",
+                details: ["Uses the Gemini API for natural language understanding and generation.", "Integrated with a private vector database (Pinecone/Chroma).", "Deployed via Kubernetes for high availability and scalability."],
+                image: "https://placehold.co/800x400/0a0320/ffffff?text=Healthcare+Chatbot+RAG",
+                link: "https://rahu.io/rag-chatbot",
+                linkText: "View Live Demo",
+            },
+            {
+                id: "selenium-pipeline",
+                title: "Selenium Test Automation Pipeline",
+                shortDesc: "A fully containerized CI/CD pipeline for reliable, scheduled, cross-browser End-to-End (E2E) web testing.",
+                details: ["Automated deployment of test environment using Terraform.", "Jenkins orchestration for nightly test runs.", "Reduced test time by parallelizing execution across Docker containers."],
+                image: "https://placehold.co/800x400/10052c/ffffff?text=Automation+Pipeline+Diagram",
+                link: "https://github.com/kosmos/selenium-pipeline-template",
+                linkText: "View on GitHub",
+            },
+            {
+                id: "ai-meme-generator",
+                title: "AI Meme Generator",
+                shortDesc: "A playful side project using Imagen models to generate context-specific tech memes for the Instagram page.",
+                details: ["Uses prompt engineering to maintain a consistent comedic tone.", "Deployed as a simple React/Node application.", "Generated content led to a 150% increase in social media engagement."],
+                image: "https://placehold.co/800x400/1e0d37/ffffff?text=AI+Meme+Placeholder",
+                link: "https://rahu.io/ai-meme-app",
+                linkText: "Visit App",
+            }
+        ];
+        const STORIES = [
+            { type: 'meme', content: "https://placehold.co/400x700/805ad5/ffffff?text=Tech+Meme+1", caption: "When prod finally works after 3 hours. #DevOpsLife" },
+            { type: 'project', content: "https://placehold.co/400x700/3b82f6/ffffff?text=Project+Snapshot", caption: "Just pushed the new RAG system to staging. It's blazing fast! 🚀" },
+            { type: 'blog', content: "https://placehold.co/400x700/06b6d4/ffffff?text=Blog+Promo", caption: "My latest article on Terraform best practices is live on Dev.to. Check it out!" },
+            { type: 'quote', content: "https://placehold.co/400x700/1e0d37/ffffff?text='AI+is+just+really+fast+automation.'", caption: "A quote to live by. Embrace the future. #GenAI" },
+        ];
+
+
+        // --- UTILITY FUNCTIONS ---
+
+        function showMessage(message, duration = 3000) {
+            const box = document.getElementById('message-box');
+            document.getElementById('message-content').textContent = message;
+            box.style.backgroundColor = '#10B981'; // Green for success
+
+            // Show animation
+            gsap.to(box, { x: 0, opacity: 1, duration: 0.3, display: 'block' });
+
+            // Hide animation after duration
+            gsap.to(box, {
+                x: '100%',
+                opacity: 0,
+                duration: 0.3,
+                delay: duration / 1000,
+                onComplete: () => box.style.display = 'none'
+            });
+        }
+
+        function scrollToSection(event, id) {
+            event.preventDefault();
+            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function handleContactSubmit(event) {
+            event.preventDefault();
+            showMessage("Message Sent! Thanks for reaching out to kosmos.", 4000);
+            event.target.reset(); // Clear form fields
+        }
+
+        // --- STORY/PROFILE INTERACTION LOGIC ---
+
+        let currentStoryIndex = 0;
+        let storyInterval;
+        let isSwiping = false;
+        let startX = 0;
+        const storyContainer = document.getElementById('story-content-container');
+
+        function renderStories() {
+            const progressContainer = document.getElementById('story-progress-container');
+            const contentContainer = document.getElementById('story-content-container');
+            progressContainer.innerHTML = '';
+            contentContainer.innerHTML = '';
+
+            STORIES.forEach((story, index) => {
+                // Progress Bar
+                const progress = document.createElement('div');
+                progress.className = 'h-1 bg-white/30 rounded-full flex-1 overflow-hidden';
+                progress.innerHTML = `<div id="story-progress-${index}" class="h-full bg-white transition-none" style="width: 0%;"></div>`;
+                progressContainer.appendChild(progress);
+
+                // Content Card
+                const content = document.createElement('div');
+                content.id = `story-card-${index}`;
+                content.className = 'absolute inset-0 bg-cover bg-center transition-opacity duration-500 flex flex-col justify-end p-6 text-white opacity-0';
+                content.style.backgroundImage = `url(${story.content})`;
+                content.innerHTML = `
+                    <div class="glass-card p-4 rounded-xl mb-12">
+                        <p class="text-lg font-semibold">${story.caption}</p>
+                    </div>
+                `;
+                contentContainer.appendChild(content);
+            });
+            showStory(currentStoryIndex);
+        }
+
+        function startStoryTimer() {
+            clearInterval(storyInterval);
+            const duration = 5000; // 5 seconds per story
+            const progressElement = document.getElementById(`story-progress-${currentStoryIndex}`);
+
+            // Reset all progress bars
+            STORIES.forEach((_, index) => {
+                const p = document.getElementById(`story-progress-${index}`);
+                gsap.set(p, { width: index <= currentStoryIndex ? '100%' : '0%' });
+            });
+
+            // Animate current progress bar
+            gsap.to(progressElement, {
+                width: '100%',
+                duration: duration / 1000,
+                ease: 'linear',
+                onComplete: nextStory
+            });
+
+            storyInterval = setTimeout(nextStory, duration);
+        }
+
+        function showStory(index) {
+            currentStoryIndex = (index + STORIES.length) % STORIES.length;
+            STORIES.forEach((_, i) => {
+                const card = document.getElementById(`story-card-${i}`);
+                gsap.to(card, { opacity: i === currentStoryIndex ? 1 : 0, duration: 0.3 });
+            });
+            startStoryTimer();
+        }
+
+        function nextStory() {
+            const nextIndex = currentStoryIndex + 1;
+            if (nextIndex < STORIES.length) {
+                showStory(nextIndex);
+            } else {
+                closeStories();
+            }
+        }
+
+        function prevStory() {
+            const prevIndex = currentStoryIndex - 1;
+            if (prevIndex >= 0) {
+                showStory(prevIndex);
+            } else {
+                showStory(0); // Stay on first story or loop back
+            }
+        }
+
+        function openStories() {
+            currentStoryIndex = 0;
+            const overlay = document.getElementById('stories-overlay');
+            overlay.classList.remove('hidden');
+            overlay.classList.add('flex');
+            renderStories(); // Rerender to reset progress
+            gsap.from(overlay, { opacity: 0, duration: 0.3 });
+        }
+
+        function closeStories() {
+            clearInterval(storyInterval);
+            const overlay = document.getElementById('stories-overlay');
+            gsap.to(overlay, {
+                opacity: 0,
+                duration: 0.3,
+                onComplete: () => {
+                    overlay.classList.remove('flex');
+                    overlay.classList.add('hidden');
+                }
+            });
+        }
+
+        // --- PROJECT MODAL LOGIC ---
+
+        document.querySelectorAll('.project-card').forEach(card => {
+            card.addEventListener('click', () => {
+                const projectId = card.getAttribute('data-project-id');
+                openProjectModal(projectId);
+            });
+        });
+
+        function openProjectModal(id) {
+            const project = PROJECTS.find(p => p.id === id);
+            if (!project) return;
+
+            document.getElementById('modal-title').textContent = project.title;
+            document.getElementById('modal-description').textContent = project.shortDesc;
+            document.getElementById('modal-image').src = project.image;
+            document.getElementById('modal-link').href = project.link;
+            document.getElementById('modal-link').textContent = project.linkText;
+
+            const detailsHtml = project.details.map(detail => `
+                <div class="flex items-start space-x-2 text-gray-200">
+                    <i data-lucide="check-circle" class="w-5 h-5 text-green-400 mt-1 flex-shrink-0"></i>
+                    <span>${detail}</span>
+                </div>
+            `).join('');
+            document.getElementById('modal-details').innerHTML = detailsHtml;
+
+            // Re-render lucide icons inside the modal
+            lucide.createIcons();
+
+            const modal = document.getElementById('project-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            gsap.from(modal.querySelector('.glass-card'), { y: 50, opacity: 0, duration: 0.4, ease: "power3.out" });
+        }
+
+        function closeProjectModal() {
+            const modal = document.getElementById('project-modal');
+            gsap.to(modal.querySelector('.glass-card'), {
+                y: 50,
+                opacity: 0,
+                duration: 0.3,
+                ease: "power3.in",
+                onComplete: () => {
+                    modal.classList.remove('flex');
+                    modal.classList.add('hidden');
+                    gsap.set(modal.querySelector('.glass-card'), { y: 0, opacity: 1 }); // Reset for next time
+                }
+            });
+        }
+
+
+        // --- GSAP ANIMATIONS ---
+
+        function initAnimations() {
+            gsap.registerPlugin(ScrollTrigger);
+
+            // 1. Hero Tagline Cycling Animation
+            let taglineIndex = 0;
+            const taglineElement = document.getElementById('tagline-anim');
+            function animateTagline() {
+                gsap.to(taglineElement, {
+                    opacity: 0,
+                    y: -20,
+                    duration: 0.3,
+                    onComplete: () => {
+                        taglineIndex = (taglineIndex + 1) % TAGLINES.length;
+                        taglineElement.textContent = TAGLINES[taglineIndex];
+                        gsap.fromTo(taglineElement,
+                            { opacity: 0, y: 20 },
+                            { opacity: 1, y: 0, duration: 0.5, delay: 0.1 }
+                        );
+                    }
+                });
+            }
+            setInterval(animateTagline, 2500);
+
+            // 2. Scroll Triggered Fade-ins for Sections
+            document.querySelectorAll('section').forEach(section => {
+                if (section.id !== 'hero') {
+                    gsap.from(section, {
+                        opacity: 0,
+                        y: 50,
+                        duration: 1,
+                        scrollTrigger: {
+                            trigger: section,
+                            start: "top 85%",
+                            toggleActions: "play none none none"
+                        }
+                    });
+                }
+            });
+
+            // 3. Tech Stack Icons Staggered Animation
+            TECH_STACK.forEach((tech, index) => {
+                const iconHtml = `
+                    <div class="flex flex-col items-center p-3 sm:p-4 rounded-xl glass-card transition transform hover:scale-110 duration-300 shadow-xl opacity-0" id="tech-icon-${index}">
+                        <i data-lucide="${tech.icon}" class="w-8 h-8 sm:w-10 sm:h-10 ${tech.color}"></i>
+                        <span class="text-xs sm:text-sm mt-2 text-gray-300">${tech.name}</span>
+                    </div>
+                `;
+                document.getElementById('tech-icons').innerHTML += iconHtml;
+            });
+            // Animate icons when 'About Me' section comes into view
+            gsap.from(document.querySelectorAll('#tech-icons > div'), {
+                opacity: 0,
+                y: 20,
+                duration: 0.5,
+                stagger: 0.1,
+                scrollTrigger: {
+                    trigger: "#tech-icons",
+                    start: "top 80%",
+                    toggleActions: "play none none none"
+                }
+            });
+
+            // 4. Counter Animations
+            function animateCounter(id, endValue) {
+                const obj = { val: 0 };
+                gsap.to(obj, {
+                    val: endValue,
+                    duration: 1.5,
+                    scrollTrigger: {
+                        trigger: `#${id}`,
+                        start: "top 90%",
+                        toggleActions: "play none none none"
+                    },
+                    onUpdate: () => {
+                        let displayValue = Math.ceil(obj.val);
+                        // Add + sign for final stats section
+                        if (id.startsWith('stat')) {
+                            displayValue = '+' + displayValue + (id === 'stat-blog-reads' ? 'M' : '');
+                        }
+                        document.getElementById(id).textContent = displayValue;
+                    }
+                });
+            }
+
+            animateCounter('counter-years', 7);
+            animateCounter('counter-projects', 150);
+            animateCounter('counter-ai-models', 12);
+            animateCounter('stat-ai-apps', 10);
+            animateCounter('stat-pipelines', 30);
+            animateCounter('stat-blog-reads', 1); // 1M+
+
+            // 5. Project Card Tilt/Hover Effect (simple mouse follow)
+            document.querySelectorAll('.project-card').forEach(card => {
+                const maxTilt = 5; // degrees
+
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = (e.clientX - rect.left) / rect.width; // 0 to 1
+                    const y = (e.clientY - rect.top) / rect.height; // 0 to 1
+
+                    const xTilt = (0.5 - y) * maxTilt * 2;
+                    const yTilt = (x - 0.5) * maxTilt * 2;
+
+                    gsap.to(card, {
+                        rotationX: xTilt,
+                        rotationY: yTilt,
+                        scale: 1.03,
+                        ease: "power2.out",
+                        duration: 0.3
+                    });
+                });
+
+                card.addEventListener('mouseleave', () => {
+                    gsap.to(card, {
+                        rotationX: 0,
+                        rotationY: 0,
+                        scale: 1,
+                        ease: "elastic.out(1, 0.3)",
+                        duration: 0.7
+                    });
+                });
+            });
+
+            // 6. Story Swipe Gestures (Mobile)
+            storyContainer.addEventListener('touchstart', (e) => {
+                startX = e.touches[0].clientX;
+                isSwiping = true;
+            });
+
+            storyContainer.addEventListener('touchend', (e) => {
+                if (!isSwiping) return;
+
+                const endX = e.changedTouches[0].clientX;
+                const diffX = startX - endX;
+
+                if (Math.abs(diffX) > 50) { // Threshold for a swipe
+                    if (diffX > 0) { // Swiped left -> Next story
+                        nextStory();
+                    } else { // Swiped right -> Previous story
+                        prevStory();
+                    }
+                }
+                isSwiping = false;
+            });
+
+            // Re-render lucide icons after they are dynamically added
+            lucide.createIcons();
+        }
+
+        // --- INITIALIZATION ---
+
+        window.onload = function() {
+            // Vanta.js Background Initialization (WAVES effect)
+            VANTA.WAVES({
+                el: "#vanta-background",
+                mouseControls: true,
+                touchControls: true,
+                minHeight: 200.00,
+                minWidth: 200.00,
+                scale: 1.00,
+                scaleMobile: 1.00,
+                color: 0x3b82f6, // Blue
+                shininess: 30.00,
+                waveHeight: 15.00,
+                zoom: 0.85
+            });
+
+            // Initialize GSAP and all custom animations
+            initAnimations();
+
+            // Re-render lucide icons for all static content
+            lucide.createIcons();
+        };
+
+    </script>
+</body>
+</html>
