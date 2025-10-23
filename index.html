@@ -144,6 +144,18 @@
     @media (prefers-reduced-motion: reduce) {
       * { transition: none !important; animation: none !important; }
     }
+	
+	
+	@keyframes wave {
+	0%   { transform: rotate(0deg); }
+	15%  { transform: rotate(14deg); }
+	30%  { transform: rotate(-8deg); }
+	45%  { transform: rotate(14deg); }
+	60%  { transform: rotate(-4deg); }
+	75%  { transform: rotate(8deg); }
+	100% { transform: rotate(0deg); }
+	}
+
   </style>
 </head>
 <body class="font-sans text-text bg-bg">
@@ -183,7 +195,7 @@
       <!-- Hero text content -->
       <div class="hero-content order-2 md:order-1">
         <div class="inline-flex items-center gap-2 py-1 px-2.5 rounded-full border border-slate-500/25 bg-panel/80 text-xs text-muted">🚀 DevOps × Generative AI</div>
-        <h1 class="text-3xl sm:text-4xl lg:text-5xl leading-tight my-2.5 font-extrabold tracking-tight">Hi, I’m <span class="bg-gradient-to-r from-brand to-brand-2 bg-clip-text text-transparent">kaustubh</span> building resilient cloud systems and <span class="bg-gradient-to-r from-brand to-brand-2 bg-clip-text text-transparent">AI products</span> that ship.</h1>
+        <h1 class="text-3xl sm:text-4xl lg:text-5xl leading-tight my-2.5 font-extrabold tracking-tight">Hi<span style="display:inline-block; animation:wave 1.2s infinite; transform-origin:70% 70%;">👋🏻</span>...I’m <span class="bg-gradient-to-r from-brand to-brand-2 bg-clip-text text-transparent">kaustubh</span><br>building resilient cloud systems and <span class="bg-gradient-to-r from-brand to-brand-2 bg-clip-text text-transparent">AI products</span> that ship.</h1>
         <p class="text-base sm:text-lg text-muted max-w-prose mx-auto md:mx-0">DevOps engineer with a knack for GenAI. I automate deployments, craft scalable cloud architectures, and build practical AI features like RAG chatbots, smart product navigation, and risk scoring tools. Currently exploring Google Cloud Architect patterns and AI-first UX on the web.</p>
         <div class="flex gap-3 mt-5 flex-wrap justify-center md:justify-start">
           <a class="inline-flex items-center gap-2 py-2.5 px-3.5 rounded-2xl border border-slate-500/20 shadow-lg shadow-black/35 transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:shadow-2xl hover:shadow-black/50 bg-transparent border-dashed border-slate-500/35" href="#projects">View Projects</a>
@@ -239,7 +251,7 @@
         <!-- Project 1 -->
         <article class="p-4 rounded-2xl bg-card border border-slate-500/15 transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:border-brand/35 hover:shadow-2xl hover:shadow-black/40" aria-labelledby="p1-title">
           <div class="aspect-video w-full rounded-lg bg-gradient-to-tr from-brand/25 to-brand-2/15 grid place-items-center font-bold tracking-wider">Chemical Industry AI Website</div>
-          <h3 id="p1-title" class="text-lg font-semibold mt-3">Nova Healthcare: AI-first Product Website</h3>
+          <h3 id="p1-title" class="text-lg font-semibold mt-3">Nova Healthcare: AI-first Product</h3>
           <p class="text-muted my-2">Production-grade site using Carbon Design System with integrated AI: RAG chatbot, product metadata extraction (PubChem), smart product filters, and Ask-PDF assistant. Deployed on cloud with CI/CD and analytics.</p>
           <div class="flex flex-wrap gap-1.5 mt-3">
             <span class="inline-flex items-center gap-1.5 py-1 px-2.5 text-xs rounded-full border border-slate-500/25 text-muted bg-panel/80">Carbon Design</span>
@@ -288,29 +300,14 @@
           </div>
         </article>
 
-        <!-- Project 4 -->
-        <article class="p-4 rounded-2xl bg-card border border-slate-500/15 transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:border-brand/35 hover:shadow-2xl hover:shadow-black/40" aria-labelledby="p4-title">
-          <div class="aspect-video w-full rounded-lg bg-gradient-to-tr from-brand/25 to-brand-2/15 grid place-items-center font-bold tracking-wider">RAG Chatbot</div>
-          <h3 id="p4-title" class="text-lg font-semibold mt-3">Domain RAG Chatbot : AIX Expert</h3>
-          <p class="text-muted my-2">Retrieval-augmented assistant tailored for IBM AIX operations and troubleshooting, with citations, toolformer-style actions, and structured answers.</p>
-          <div class="flex flex-wrap gap-1.5 mt-3">
-            <span class="inline-flex items-center gap-1.5 py-1 px-2.5 text-xs rounded-full border border-slate-500/25 text-muted bg-panel/80">RAG</span>
-            <span class="inline-flex items-center gap-1.5 py-1 px-2.5 text-xs rounded-full border border-slate-500/25 text-muted bg-panel/80">Gemini Flash</span>
-            <span class="inline-flex items-center gap-1.5 py-1 px-2.5 text-xs rounded-full border border-slate-500/25 text-muted bg-panel/80">MCP</span>
-            <span class="inline-flex items-center gap-1.5 py-1 px-2.5 text-xs rounded-full border border-slate-500/25 text-muted bg-panel/80">Guardrails</span>
-          </div>
-          <div class="flex gap-3 mt-4 flex-wrap">
-            <a class="inline-flex items-center gap-2 py-2.5 px-3.5 rounded-2xl border border-slate-500/20 shadow-lg shadow-black/35 transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:shadow-2xl hover:shadow-black/50 bg-transparent border-dashed border-slate-500/35" href="#" target="_blank" rel="noopener">Live Demo</a>
-            <a class="inline-flex items-center gap-2 py-2.5 px-3.5 rounded-2xl border border-slate-500/20 shadow-lg shadow-black/35 transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:shadow-2xl hover:shadow-black/50 bg-transparent border-dashed border-slate-500/35" href="#" target="_blank" rel="noopener">Source</a>
-          </div>
-        </article>
+        
       </div>
     </section>
 
 
  <!-- 4. Projects Section -->
             <section id="projects" class="pt-16">
-                <h2 class="text-4xl font-bold mb-10 text-center border-b-4 border-accent-green/50 pb-2 inline-block mx-auto">Featured Projects</h2>
+                <h2 class="text-4xl font-bold mb-10 text-center border-b-4 border-accent-green/50 pb-2 inline-block mx-auto">Highlighted Projects</h2>
 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
 
@@ -487,7 +484,7 @@
         </article>
         <article class="p-4 rounded-2xl bg-card border border-slate-500/15 transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:border-brand/35 hover:shadow-2xl hover:shadow-black/40">
           <div class="aspect-video w-full rounded-lg bg-gradient-to-tr from-brand/25 to-brand-2/15 grid place-items-center font-bold tracking-wider">Writing & Talks</div>
-          <h3 class="text-lg font-semibold mt-3">Attention Is All You Need — Explained</h3>
+          <h3 class="text-lg font-semibold mt-3">Attention Is All You Need</h3>
           <p class="text-muted my-2">An intuitive walk‑through with diagrams, tokenization gotchas, and practical tips for builders.</p>
           <div class="flex gap-3 items-center flex-wrap">
             <a class="inline-flex items-center gap-2 py-2.5 px-3.5 rounded-2xl border border-slate-500/20 shadow-lg shadow-black/35 transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:shadow-2xl hover:shadow-black/50 bg-transparent border-dashed border-slate-500/35" href="#" target="_blank">Read Post</a>
@@ -505,19 +502,48 @@
             <a class="inline-flex items-center gap-2 py-2.5 px-3.5 rounded-2xl border border-slate-500/20 shadow-lg shadow-black/35 transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:shadow-2xl hover:shadow-black/50 bg-transparent border-dashed border-slate-500/35" href="https://medium.com/@your-username" target="_blank" rel="noopener">Medium</a>
           </div>
         </article>
-		<article class="p-4 rounded-2xl bg-card border border-slate-500/15 transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:border-brand/35 hover:shadow-2xl hover:shadow-black/40">
-          <div class="aspect-video w-full rounded-lg bg-gradient-to-tr from-brand/25 to-brand-2/15 grid place-items-center font-bold tracking-wider" style="font-size: 2.5rem; letter-spacing: normal;">👨‍💻😂</div>
-          <h3 class="text-lg font-semibold mt-3">Community & Content</h3>
-          <p class="text-muted my-2">Find me on social media and other platforms for more content, coding tips, and engineering memes.</p>
-          <div class="flex gap-3 items-center flex-wrap" style="margin-top:0.8rem">
-            <a class="inline-flex items-center gap-2 py-2.5 px-3.5 rounded-2xl border border-slate-500/20 shadow-lg shadow-black/35 transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:shadow-2xl hover:shadow-black/50 bg-transparent border-dashed border-slate-500/35" href="https://www.instagram.com/your-username/" target="_blank" rel="noopener">Instagram</a>
-            <a class="inline-flex items-center gap-2 py-2.5 px-3.5 rounded-2xl border border-slate-500/20 shadow-lg shadow-black/35 transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:shadow-2xl hover:shadow-black/50 bg-transparent border-dashed border-slate-500/35" href="https://dev.to/your-username" target="_blank" rel="noopener">Dev.to</a>
-            <a class="inline-flex items-center gap-2 py-2.5 px-3.5 rounded-2xl border border-slate-500/20 shadow-lg shadow-black/35 transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:shadow-2xl hover:shadow-black/50 bg-transparent border-dashed border-slate-500/35" href="https://medium.com/@your-username" target="_blank" rel="noopener">Medium</a>
-          </div>
-        </article>
+		
       </div>
     </section>
 	
+	<!-- Awards & Recognition -->
+    <section class="py-9" id="writing">
+      <div class="flex items-center justify-between gap-4 mb-4">
+        <h2 class="m-0 text-xl font-semibold tracking-wide">Awards & Recognition</h2>
+        <div class="h-px bg-gradient-to-r from-slate-500/40 to-slate-500/5 flex-1" aria-hidden="true"></div>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <article class="p-4 rounded-2xl bg-card border border-slate-500/15 transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:border-brand/35 hover:shadow-2xl hover:shadow-black/40">
+          <div class="aspect-video w-full rounded-lg bg-gradient-to-tr from-brand/25 to-brand-2/15 grid place-items-center font-bold tracking-wider">Silver Star Award</div>
+          <h3 class="text-lg font-semibold mt-3">Modern GenAI in Fintech</h3>
+          <p class="text-muted my-2">Slide deck + notes for leaders at hsbc‑style organizations: real use‑cases, ROI math, and risk controls.</p>
+          <div class="flex gap-3 items-center flex-wrap">
+            <a class="inline-flex items-center gap-2 py-2.5 px-3.5 rounded-2xl border border-slate-500/20 shadow-lg shadow-black/35 transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:shadow-2xl hover:shadow-black/50 bg-transparent border-dashed border-slate-500/35" href="#" target="_blank">View Slides</a>
+            <a class="inline-flex items-center gap-2 py-2.5 px-3.5 rounded-2xl border border-slate-500/20 shadow-lg shadow-black/35 transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:shadow-2xl hover:shadow-black/50 bg-transparent border-dashed border-slate-500/35" href="https://kaustubh.medium.com" target="_blank" rel="noopener">Medium</a>
+          </div>
+        </article>
+        <article class="p-4 rounded-2xl bg-card border border-slate-500/15 transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:border-brand/35 hover:shadow-2xl hover:shadow-black/40">
+          <div class="aspect-video w-full rounded-lg bg-gradient-to-tr from-brand/25 to-brand-2/15 grid place-items-center font-bold tracking-wider">Silver Star Award</div>
+          <h3 class="text-lg font-semibold mt-3">Attention Is All You Need</h3>
+          <p class="text-muted my-2">An intuitive walk‑through with diagrams, tokenization gotchas, and practical tips for builders.</p>
+          <div class="flex gap-3 items-center flex-wrap">
+            <a class="inline-flex items-center gap-2 py-2.5 px-3.5 rounded-2xl border border-slate-500/20 shadow-lg shadow-black/35 transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:shadow-2xl hover:shadow-black/50 bg-transparent border-dashed border-slate-500/35" href="#" target="_blank">Read Post</a>
+            <a class="inline-flex items-center gap-2 py-2.5 px-3.5 rounded-2xl border border-slate-500/20 shadow-lg shadow-black/35 transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:shadow-2xl hover:shadow-black/50 bg-transparent border-dashed border-slate-500/35" href="https://dev.to/kaustubh" target="_blank" rel="noopener">Dev.to</a>
+          </div>
+        </article>
+        <!-- New Card -->
+       <article class="p-4 rounded-2xl bg-card border border-slate-500/15 transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:border-brand/35 hover:shadow-2xl hover:shadow-black/40">
+          <div class="aspect-video w-full rounded-lg bg-gradient-to-tr from-brand/25 to-brand-2/15 grid place-items-center font-bold tracking-wider">Winner genAI spot award</div>
+          <h3 class="text-lg font-semibold mt-3">Attention Is All You Need</h3>
+          <p class="text-muted my-2">An intuitive walk‑through with diagrams, tokenization gotchas, and practical tips for builders.</p>
+          <div class="flex gap-3 items-center flex-wrap">
+            <a class="inline-flex items-center gap-2 py-2.5 px-3.5 rounded-2xl border border-slate-500/20 shadow-lg shadow-black/35 transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:shadow-2xl hover:shadow-black/50 bg-transparent border-dashed border-slate-500/35" href="#" target="_blank">Read Post</a>
+            <a class="inline-flex items-center gap-2 py-2.5 px-3.5 rounded-2xl border border-slate-500/20 shadow-lg shadow-black/35 transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:shadow-2xl hover:shadow-black/50 bg-transparent border-dashed border-slate-500/35" href="https://dev.to/kaustubh" target="_blank" rel="noopener">Dev.to</a>
+          </div>
+        </article>
+		
+      </div>
+    </section>
 	
 
     <!-- CONTACT -->
@@ -648,7 +674,7 @@
       const planetRatio = 0.15; // 15% planets
       const flyingObjectRatio = 0.1; // 10% flying objects
       
-      const flyingObjects = ['🚀', '🛸','🛰️','🪐','⭐','🌌','🌕','🌠']; // Emojis for the objects
+      const flyingObjects = ['🚀', '🛸','🛰️','🪐','⭐','🌕']; // Emojis for the objects
       const planetColors = [
         ['#8B4513', '#D2691E'], // Earthy
         ['#4682B4', '#5F9EA0'], // Ocean
