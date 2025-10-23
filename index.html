@@ -528,6 +528,69 @@
 <!-- SKILLS Section Ends -->
 
 
+<!-- dynamic blogs -->
+<section id="blogs" class="bg-transparent text-gray-100 py-20">
+  <div class="max-w-6xl mx-auto px-4">
+    <h2 class="text-3xl font-bold text-center mb-4 text-black tracking-tight">My Blogs & Articles</h2>
+    <p class="text-gray-400 text-center max-w-2xl mx-auto mb-12">
+      I share my learnings on DevOps, Cloud, and AI-driven automation — helping engineers build smarter, faster, and more reliable systems.
+    </p>
+
+    <!-- Blog Grid (Dynamic content will be injected here) -->
+    <div id="blogGrid" class="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-8"></div>
+
+    <!-- CTA -->
+    <div class="text-center mt-14">
+      <a href="https://dev.to/kaustubhyerkade" target="_blank"
+         class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-3 rounded-full shadow-md hover:shadow-blue-500/30 transition-all duration-300">
+        View All on Dev.to
+      </a>
+    </div>
+  </div>
+</section>
+
+<script>
+  const blogGrid = document.getElementById('blogGrid');
+
+  async function fetchDevToArticles(username) {
+    try {
+      const res = await fetch(`https://dev.to/api/articles?username=${username}`);
+      const data = await res.json();
+
+      if (!Array.isArray(data)) {
+        throw new Error("Invalid response format");
+      }
+
+      const latest = data.slice(0, 6); // Show latest 6 posts
+      blogGrid.innerHTML = latest.map(article => `
+        <a href="${article.url}" target="_blank"
+           class="group relative block bg-gray-800 rounded-2xl overflow-hidden shadow-lg hover:shadow-blue-500/20 transition-all duration-300">
+          <div class="h-48 bg-[url('${article.social_image}')] bg-cover bg-center group-hover:scale-105 transition-transform duration-500"></div>
+          <div class="p-6">
+            <h3 class="text-xl font-semibold text-white group-hover:text-blue-400 transition-colors">${article.title}</h3>
+            <p class="text-gray-400 mt-3 text-sm">${article.description || 'A new insight from my DevOps journey.'}</p>
+            <div class="mt-4 flex items-center justify-between text-sm text-gray-500">
+              <span>💻 Dev.to</span>
+              <span class="text-blue-400 group-hover:translate-x-1 transition-transform">→</span>
+            </div>
+          </div>
+        </a>
+      `).join('');
+    } catch (error) {
+      console.error("Error fetching Dev.to articles:", error);
+      blogGrid.innerHTML = `
+        <p class="text-center text-gray-400 col-span-full">
+          Unable to load Dev.to articles at the moment. Please try again later.
+        </p>`;
+    }
+  }
+
+  fetchDevToArticles('kaustubhyerkade');
+</script>
+
+<!--dynamic blog ends -->
+
+
 <!-- Writing & Social Media Section-->
     <section class="py-9" id="writing">
       <div class="flex items-center justify-between gap-4 mb-4">
@@ -606,6 +669,10 @@
 		
       </div>
     </section>
+	
+<!-- Insta Starts -->	
+
+<!-- Insta ends -->	
 	
 
     <!-- CONTACT -->
