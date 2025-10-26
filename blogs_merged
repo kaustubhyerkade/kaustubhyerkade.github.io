@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Blogs — Ragu</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Fade-in animation */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .fade-in {
+      opacity: 0;
+      animation: fadeInUp 0.8s ease-out forwards;
+    }
+
+    /* Smooth hover zoom */
+    .blog-card:hover img {
+      transform: scale(1.05);
+    }
+
+    .blog-card img {
+      transition: transform 0.5s ease;
+    }
+  </style>
+</head>
+
+<body class="bg-gradient-to-b from-gray-950 via-gray-900 to-gray-950 text-gray-100 min-h-screen font-sans">
+
+  <!-- Header -->
+  <header class="py-10 text-center border-b border-gray-800">
+    <h1 class="text-4xl font-extrabold tracking-tight bg-gradient-to-r from-indigo-400 to-pink-400 bg-clip-text text-transparent">
+      My Tech Blogs
+    </h1>
+    <p class="text-gray-400 mt-2">Auto-fetched from <span class="text-indigo-400">Dev.to</span> , <span class="text-pink-400">Medium</span> & <span class="text-blue-400">Hashnode</span></p>
+  </header>
+
+  <!-- Blog Grid -->
+  <main class="max-w-7xl mx-auto px-5 py-10">
+    <div id="blogs" class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3"></div>
+  </main>
+
+  <!-- JavaScript -->
+  <script>
+    const devtoUsername = "kaustubhyerkade"; // 🔧 Replace with your Dev.to username
+    const mediumUsername = "kaustubhyerkade"; // 🔧 Replace with your Medium username
+    const blogsContainer = document.getElementById("blogs");
+
+    async function fetchDevto() {
+      const res = await fetch(`https://dev.to/api/articles?username=${devtoUsername}`);
+      const data = await res.json();
+      return data.map(post => ({
+        title: post.title,
+        url: post.url,
+        image: post.cover_image || "https://res.cloudinary.com/practicaldev/image/fetch/s--oC1bI7vT--/c_imagga_scale,f_auto,fl_progressive,h_420,q_auto,w_1000/https://dev.to/assets/devlogo.png",
+        source: "Dev.to",
+        date: new Date(post.published_at).toLocaleDateString()
+      }));
+    }
+
+    async function fetchMedium() {
+      const res = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=https://medium.com/feed/@${mediumUsername}`);
+      const data = await res.json();
+      return data.items.map(post => ({
+        title: post.title,
+        url: post.link,
+        image: post.thumbnail || "https://cdn-icons-png.flaticon.com/512/5968/5968906.png",
+        source: "Medium",
+        date: new Date(post.pubDate).toLocaleDateString()
+      }));
+    }
+
+    async function loadBlogs() {
+      try {
+        const [devtoPosts, mediumPosts] = await Promise.all([fetchDevto(), fetchMedium()]);
+        const allPosts = [...devtoPosts, ...mediumPosts].sort((a, b) => new Date(b.date) - new Date(a.date));
+
+        blogsContainer.innerHTML = allPosts.map((post, i) => `
+          <a href="${post.url}" target="_blank" 
+             class="blog-card block bg-gray-900 border border-gray-800 rounded-2xl overflow-hidden hover:border-indigo-500 hover:shadow-lg hover:shadow-indigo-500/10 transition-all duration-300 fade-in"
+             style="animation-delay: ${i * 0.1}s">
+            <div class="w-full h-52 bg-gray-800 flex items-center justify-center overflow-hidden">
+              <img src="${post.image}" alt="${post.title}" class="w-full h-full object-contain object-center">
+            </div>
+            <div class="p-5">
+              <span class="text-xs uppercase font-semibold ${post.source === 'Dev.to' ? 'text-indigo-400' : 'text-pink-400'}">${post.source}</span>
+              <h2 class="text-lg font-semibold mt-2 line-clamp-2">${post.title}</h2>
+              <p class="text-xs text-gray-400 mt-2">${post.date}</p>
+            </div>
+          </a>
+        `).join('');
+      } catch (err) {
+        blogsContainer.innerHTML = `<p class="text-red-400 text-center mt-10">⚠️ Failed to load blogs. Please check your usernames.</p>`;
+        console.error(err);
+      }
+    }
+
+    loadBlogs();
+  </script>
+
+</body>
+</html>
