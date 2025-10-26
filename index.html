@@ -24,6 +24,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
   
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -210,11 +211,11 @@
         <h1 class="text-3xl sm:text-4xl lg:text-5xl leading-tight my-2.5 font-extrabold tracking-tight">Hi<span style="display:inline-block; animation:wave 1.2s infinite; transform-origin:70% 70%;">👋🏻</span>...I’m <span class="bg-gradient-to-r from-brand to-brand-2 bg-clip-text text-transparent">kaustubh</span><br>building resilient cloud systems and <span class="bg-gradient-to-r from-brand to-brand-2 bg-clip-text text-transparent">AI products</span> that ship.</h1>
         <p class="text-base sm:text-lg text-muted max-w-prose mx-auto md:mx-0">DevOps engineer with a knack for GenAI. I automate deployments, craft scalable cloud architectures, and build practical AI features like RAG chatbots, smart product navigation, and risk scoring tools. Currently exploring Google Cloud Architect patterns and AI-first UX on the web.</p>
         <div class="flex gap-3 mt-5 flex-wrap justify-center md:justify-start">
-          <a class="inline-flex items-center gap-2 py-2.5 px-3.5 rounded-2xl border border-slate-500/20 shadow-lg shadow-black/35 transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:shadow-2xl hover:shadow-black/50 bg-green-500 border-dashed border-slate-500/35" href="#projects">View Projects</a>
-          <a class="inline-flex items-center gap-2 py-2.5 px-3.5 rounded-2xl border border-slate-500/20 shadow-lg shadow-black/35 transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:shadow-2xl hover:shadow-black/50 bg-blue-500 border-dashed border-slate-500/35" href="#contact">Let’s Work Together</a>
-		  <a class="inline-flex items-center gap-2 py-2.5 px-3.5 rounded-2xl border border-slate-500/20 shadow-lg shadow-black/35 transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:shadow-2xl hover:shadow-black/50 bg-rose-500 border-dashed border-slate-500/35" href="#contact">Resume</a>
+          <a class="inline-flex items-center gap-2 py-2.5 px-3.5 rounded-2xl border border-slate-500/20 shadow-lg shadow-black/35 transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:shadow-2xl hover:shadow-black/50 bg-green-400 border-dashed border-slate-500/35" href="#projects">View Projects</a>
+          <a class="inline-flex items-center gap-2 py-2.5 px-3.5 rounded-2xl border border-slate-500/20 shadow-lg shadow-black/35 transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:shadow-2xl hover:shadow-black/50 bg-green-400 border-dashed border-slate-500/35" href="#contact">Let’s Work Together</a>
+		  <a class="inline-flex items-center gap-2 py-2.5 px-3.5 rounded-2xl border border-slate-500/20 shadow-lg shadow-black/35 transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:shadow-2xl hover:shadow-black/50 bg-green-400 border-dashed border-slate-500/35" href="#contact">Resume</a>
 		  
-		  <a class="inline-flex items-center gap-2 py-2.5 px-3.5 rounded-2xl border border-slate-500/20 shadow-lg shadow-black/35 transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:shadow-2xl hover:shadow-black/50 bg-yellow-500 border-dashed border-slate-500/35" href="#contact">Explore</a>
+		  <a class="inline-flex items-center gap-2 py-2.5 px-3.5 rounded-2xl border border-slate-500/20 shadow-lg shadow-black/35 transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:shadow-2xl hover:shadow-black/50 bg-green-400 border-dashed border-slate-500/35" href="#contact">Explore</a>
 		  
         </div>
         <div class="flex gap-3 items-center flex-wrap justify-center md:justify-start" style="margin-top:1rem">
@@ -227,7 +228,13 @@
       <div class="flex flex-col items-center md:items-stretch gap-6 order-1 md:order-2">
         <!-- Profile Picture -->
         <div class="mb-0">
-          <img src="portfolio.png" alt="kaustubh's profile picture" class="w-44 h-44 rounded-full border-4 border-brand shadow-[0_0_0_5px_rgba(14,165,233,0.2)] object-cover mx-auto">
+          
+		  <img src="portfolio.png" alt="kaustubh's profile picture" class="w-60 h-60 rounded border-4 border-brand shadow-[0_0_0_5px_rgba(14,165,233,0.2)] object-cover mx-auto">
+		  
+		  
+		  
+		   <!-- <img src="portfolio.png" alt="kaustubh's profile picture" class="w-60 h-60 rounded-full border-4 border-brand shadow-[0_0_0_5px_rgba(14,165,233,0.2)] object-cover mx-auto"> -->
+		   
         </div>
         <aside class="relative rounded-3xl p-4 bg-gradient-to-b from-brand/10 to-transparent border border-brand/25 flex flex-col gap-4 order-3" aria-label="Highlights">
           <div class="h-full rounded-2xl p-5 bg-card border border-slate-500/15">
@@ -523,9 +530,47 @@
             <span class="inline-flex items-center gap-1.5 py-1 px-2.5 text-xs rounded-full border border-slate-500/25 text-muted bg-panel/80">Performance</span>
           </div>
         </div>
+		<div class="p-4 rounded-2xl bg-card border border-slate-500/15">
+          <h3 class="text-lg font-semibold">Software</h3>
+          <p class="text-muted my-2">Python, Java, Flask, FastAPI, HTML/CSS/JS</p>
+          <div class="flex flex-wrap gap-1.5" style="margin-top:.5rem">
+            <span class="inline-flex items-center gap-1.5 py-1 px-2.5 text-xs rounded-full border border-slate-500/25 text-muted bg-panel/80">Design Systems</span>
+            <span class="inline-flex items-center gap-1.5 py-1 px-2.5 text-xs rounded-full border border-slate-500/25 text-muted bg-panel/80">Carbon</span>
+            <span class="inline-flex items-center gap-1.5 py-1 px-2.5 text-xs rounded-full border border-slate-500/25 text-muted bg-panel/80">Accessibility</span>
+            <span class="inline-flex items-center gap-1.5 py-1 px-2.5 text-xs rounded-full border border-slate-500/25 text-muted bg-panel/80">Performance</span>
+          </div>
+        </div>
+		<div class="p-4 rounded-2xl bg-card border border-slate-500/15">
+          <h3 class="text-lg font-semibold">Software</h3>
+          <p class="text-muted my-2">Python, Java, Flask, FastAPI, HTML/CSS/JS</p>
+          <div class="flex flex-wrap gap-1.5" style="margin-top:.5rem">
+            <span class="inline-flex items-center gap-1.5 py-1 px-2.5 text-xs rounded-full border border-slate-500/25 text-muted bg-panel/80">Design Systems</span>
+            <span class="inline-flex items-center gap-1.5 py-1 px-2.5 text-xs rounded-full border border-slate-500/25 text-muted bg-panel/80">Carbon</span>
+            <span class="inline-flex items-center gap-1.5 py-1 px-2.5 text-xs rounded-full border border-slate-500/25 text-muted bg-panel/80">Accessibility</span>
+            <span class="inline-flex items-center gap-1.5 py-1 px-2.5 text-xs rounded-full border border-slate-500/25 text-muted bg-panel/80">Performance</span>
+          </div>
+        </div>
+		<div class="p-4 rounded-2xl bg-card border border-slate-500/15">
+          <h3 class="text-lg font-semibold">Software</h3>
+          <p class="text-muted my-2">Python, Java, Flask, FastAPI, HTML/CSS/JS</p>
+          <div class="flex flex-wrap gap-1.5" style="margin-top:.5rem">
+            <span class="inline-flex items-center gap-1.5 py-1 px-2.5 text-xs rounded-full border border-slate-500/25 text-muted bg-panel/80">Design Systems</span>
+            <span class="inline-flex items-center gap-1.5 py-1 px-2.5 text-xs rounded-full border border-slate-500/25 text-muted bg-panel/80">Carbon</span>
+            <span class="inline-flex items-center gap-1.5 py-1 px-2.5 text-xs rounded-full border border-slate-500/25 text-muted bg-panel/80">Accessibility</span>
+            <span class="inline-flex items-center gap-1.5 py-1 px-2.5 text-xs rounded-full border border-slate-500/25 text-muted bg-panel/80">Performance</span>
+          </div>
+        </div>
       </div>
+	  
+	  
+	  
     </section>
 <!-- SKILLS Section Ends -->
+
+
+<!-- -->
+<!-- -->
+
 
 
 <!-- dynamic blogs -->
@@ -541,7 +586,7 @@
 
     <!-- CTA -->
     <div class="text-center mt-14">
-      <a href="https://dev.to/kaustubhyerkade" target="_blank"
+      <a href="blogs.html" target="_blank"
          class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-3 rounded-full shadow-md hover:shadow-blue-500/30 transition-all duration-300">
         View All on Dev.to
       </a>
@@ -708,6 +753,73 @@
         </div>
       </div>
     </section>
+	
+<!--Connect with me -->
+<section id="connect" class="bg-gray-50 py-16">
+  <div class="max-w-6xl mx-auto px-4 text-center">
+    <h2 class="text-3xl font-bold text-gray-800 mb-6">Connect with Me</h2>
+    <p class="text-gray-600 mb-12 max-w-2xl mx-auto">
+      Let’s connect and talk about DevOps, Cloud, or Open Source! I’m active on most platforms.
+    </p>
+
+    <div class="flex flex-wrap justify-center gap-6">
+      <!-- Discord -->
+      <a href="https://discord.com/users/your_discord_id" target="_blank"
+         class="group bg-white border border-gray-200 rounded-full p-4 shadow hover:bg-[#5865F2] hover:text-white transition">
+        <i class="fa-brands fa-discord text-2xl group-hover:scale-125 transition-transform"></i>
+      </a>
+
+      <!-- GitHub -->
+      <a href="https://github.com/your_github_username" target="_blank"
+         class="group bg-white border border-gray-200 rounded-full p-4 shadow hover:bg-black hover:text-white transition">
+        <i class="fa-brands fa-github text-2xl group-hover:scale-125 transition-transform"></i>
+      </a>
+
+      <!-- LinkedIn -->
+      <a href="https://linkedin.com/in/your_linkedin_id" target="_blank"
+         class="group bg-white border border-gray-200 rounded-full p-4 shadow hover:bg-[#0A66C2] hover:text-white transition">
+        <i class="fa-brands fa-linkedin text-2xl group-hover:scale-125 transition-transform"></i>
+      </a>
+
+      <!-- Instagram -->
+      <a href="https://instagram.com/your_instagram" target="_blank"
+         class="group bg-white border border-gray-200 rounded-full p-4 shadow hover:bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600 hover:text-white transition">
+        <i class="fa-brands fa-instagram text-2xl group-hover:scale-125 transition-transform"></i>
+      </a>
+
+      <!-- Gmail -->
+      <a href="mailto:yourname@gmail.com"
+         class="group bg-white border border-gray-200 rounded-full p-4 shadow hover:bg-red-500 hover:text-white transition">
+        <i class="fa-solid fa-envelope text-2xl group-hover:scale-125 transition-transform"></i>
+      </a>
+
+      <!-- YouTube -->
+      <a href="https://www.youtube.com/@your_channel" target="_blank"
+         class="group bg-white border border-gray-200 rounded-full p-4 shadow hover:bg-red-600 hover:text-white transition">
+        <i class="fa-brands fa-youtube text-2xl group-hover:scale-125 transition-transform"></i>
+      </a>
+
+      <!-- Dev.to -->
+      <a href="https://dev.to/your_username" target="_blank"
+         class="group bg-white border border-gray-200 rounded-full p-4 shadow hover:bg-black hover:text-white transition">
+        <i class="fa-brands fa-dev text-2xl group-hover:scale-125 transition-transform"></i>
+      </a>
+
+      <!-- Medium -->
+      <a href="https://medium.com/@your_username" target="_blank"
+         class="group bg-white border border-gray-200 rounded-full p-4 shadow hover:bg-green-700 hover:text-white transition">
+        <i class="fa-brands fa-medium text-2xl group-hover:scale-125 transition-transform"></i>
+      </a>
+    </div>
+  </div>
+</section>
+
+
+<!--Connect with me ends -->
+
+<!--contact -->
+
+<!--contact -->
 
     <footer class="mt-10 border-t border-slate-500/15 pt-5 text-muted text-sm flex items-center justify-between gap-4 flex-wrap flex-col md:flex-row text-center md:text-left">
       <span>© <span id="year"></span> kaustubh. Built with semantic HTML, accessible components, and a sprinkle of CSS magic.</span>
