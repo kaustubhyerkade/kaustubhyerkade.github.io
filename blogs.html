@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  
+  <title>kaustubh | DevOps × GenAI Engineer</title>
+  
+  <meta name="description" content="Personal portfolio of kaustubh — DevOps engineer building Generative AI products, cloud architectures, and high-impact automation." />
+  
+  <meta name="theme-color" content="#0ea5e9" />
+  
+  <!-- Open Graph protocol set -->
+  <meta property="og:title" content="kaustubh | DevOps × GenAI Engineer" />
+  <meta property="og:description" content="DevOps, Cloud, and Generative AI portfolio — projects, case studies, and writing." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://raw.githubusercontent.com/user/repo/main/og-image.png" />
+  <meta property="og:url" content="https://kaustubhkaustubh.github.io" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Tailwind Configuration -->
+  <script>
+    tailwind.config = {
+      darkMode: ['class', '[data-theme="dark"]'], // Use data-theme attribute for dark mode
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'Arial', 'sans-serif'],
+          },
+          colors: {
+            bg: 'var(--bg)',
+            panel: 'var(--panel)',
+            muted: 'var(--muted)',
+            text: 'var(--text)',
+            brand: 'var(--brand)',
+            'brand-2': 'var(--brand-2)',
+            ring: 'var(--ring)',
+            card: 'var(--card)',
+            ok: 'var(--ok)',
+            warn: 'var(--warn)',
+            bad: 'var(--bad)',
+          },
+          boxShadow: {
+            'brand-ring': '0 0 0 3px var(--ring)',
+            'brand-logo': '0 6px 18px rgba(14,165,233,.35)',
+          }
+        }
+      }
+    }
+  </script>
+   
+</head>
+
+<!-- End of headers -->
+
+<body class="font-sans text-text bg-bg">
+  <!-- Star and object animation container -->
+  <div class="stars"></div>
+
+  <!-- Skip to content -->
+  <a class="sr-only" href="#main">Skip to content</a>
+
+  <!-- NAVBAR -->
+  <header class="sticky top-0 z-50 backdrop-saturate-125 backdrop-blur-lg bg-panel/85 border-b border-slate-500/15" role="banner">
+    <div class="flex items-center justify-between gap-4 py-3 px-5 max-w-6xl mx-auto">
+      <div class="flex items-center gap-2.5 font-bold tracking-wide">
+        <div class="w-7 h-7 rounded-[9px] bg-gradient-to-tr from-brand to-brand-2 grid place-items-center text-white font-extrabold shadow-brand-logo" aria-hidden="true">KY</div>
+        <a href="#" aria-label="Go to top" class="text-text no-underline opacity-90 font-semibold">Kaustubh Yerkade</a>
+      </div>
+      <nav aria-label="Primary">
+        <button id="menu-toggle" class="md:hidden cursor-pointer text-2xl bg-none border-none text-text z-60" aria-controls="nav-links" aria-expanded="false">☰</button>
+        <!-- Mobile Nav: hidden by default, shown via .active class. Becomes flex row on md screens -->
+        <div id="nav-links" class="hidden md:flex flex-col md:flex-row items-center gap-4 md:gap-4 absolute md:relative top-full left-0 w-full md:w-auto bg-panel md:bg-transparent border-b md:border-none border-slate-500/15 p-4 md:p-0 shadow-lg md:shadow-none">
+          <a href="index.html/#projects" class="text-text no-underline opacity-90 font-semibold">Projects</a>
+		  <a href="index.html/#education" class="text-text no-underline opacity-90 font-semibold">Education</a>
+          <a href="index.html/#experience" class="text-text no-underline opacity-90 font-semibold">Experience</a>
+          <a href="index.html/#skills" class="text-text no-underline opacity-90 font-semibold">Skills</a>
+          <a href="index.html/#writing" class="text-text no-underline opacity-90 font-semibold">Blog</a>
+          <a href="index.html/#contact" class="text-text no-underline opacity-90 font-semibold">Contact</a>
+          
+		  <button id="themeToggle" class="inline-flex items-center gap-2 py-2.5 px-3.5 rounded-2xl border border-slate-500/20 shadow-lg shadow-black/35 transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:shadow-2xl hover:shadow-black/50 bg-transparent border-dashed border-slate-500/35" aria-label="Toggle theme">test1</button>
+		  
+          <a class="inline-flex items-center gap-2 py-2.5 px-3.5 rounded-2xl border border-slate-500/20 shadow-lg shadow-black/35 transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:shadow-2xl hover:shadow-black/50 bg-transparent border-dashed border-slate-500/35" href="resume.pdf" download>test2</a>
+		  
+		  
+        </div>
+      </nav>
+    </div>
+  </header>
+
+
+
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Kaustubh's all Dev.to Blogs Auto Fetch</title>
+  <meta name="description" content="Auto-fetch all Dev.to articles and display them." />
+  <!-- Tailwind Play CDN (easy for static pages) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* small helpers */
+    .line-clamp-3 {
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-900">
+
+  <header class="bg-white shadow-sm">
+    <div class="max-w-7xl mx-auto px-6 py-6 flex items-center justify-between">
+      <div>
+        <h1 class="text-2xl font-semibold">Dev.to All Posts</h1>
+        <p class="text-sm text-gray-500">auto fetching all posts written by kaustubh</p>
+      </div>
+      <div class="text-sm text-gray-600">Powered by <span class="font-medium">dev.to API</span></div>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-6 py-10">
+    <!-- Controls -->
+    <section class="mb-8">
+      <div class="grid gap-4 md:grid-cols-3">
+        <div class="md:col-span-2 flex gap-3">
+          <input id="searchInput" type="search" placeholder="Search by title or description..."
+                 class="flex-1 px-4 py-3 rounded-lg bg-white border border-gray-200 focus:ring-2 focus:ring-blue-400 outline-none" />
+          <select id="sortSelect" class="px-3 py-3 rounded-lg bg-white border border-gray-200">
+            <option value="newest">Sort: Newest</option>
+            <option value="oldest">Sort: Oldest</option>
+            <option value="popular">Sort: Most Reactions</option>
+          </select>
+        </div>
+
+        <div class="flex gap-3 items-center">
+          <label class="text-sm text-gray-600">Filter tag:</label>
+          <select id="tagFilter" class="px-3 py-3 rounded-lg bg-white border border-gray-200">
+            <option value="">All tags</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="mt-4 flex items-center gap-4">
+        <div id="status" class="text-sm text-gray-500">Waiting to load posts...</div>
+        <div id="progressBar" class="h-2 w-64 bg-gray-200 rounded overflow-hidden">
+          <div id="progressFill" class="h-full bg-blue-500 w-0 transition-all"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Grid -->
+    <section>
+      <div id="grid" class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"></div>
+    </section>
+
+    <!-- No results -->
+    <div id="noResults" class="hidden mt-8 text-center text-gray-500">
+      No posts found.
+    </div>
+
+    <!-- Footer CTA -->
+    <div class="mt-12 text-center">
+      <a id="devtoProfileLink" href="#" target="_blank" class="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg shadow">
+        Visit Dev.to Profile
+      </a>
+    </div>
+  </main>
+
+  <script>
+    /**********************
+     * CONFIG
+     **********************/
+    const USERNAME = "kaustubhyerkade"; // ← Replace with the Dev.to username you want to fetch
+    const PER_PAGE = 100;    // Dev.to supports per_page param; try big to reduce requests
+    const CACHE_KEY = `devto_all_${USERNAME}`;
+    const CACHE_TTL_MS = 10 * 60 * 1000; // 10 minutes cache
+
+    /**********************
+     * DOM refs
+     **********************/
+    const statusEl = document.getElementById('status');
+    const progressFill = document.getElementById('progressFill');
+    const grid = document.getElementById('grid');
+    const noResults = document.getElementById('noResults');
+    const devtoProfileLink = document.getElementById('devtoProfileLink');
+    const searchInput = document.getElementById('searchInput');
+    const tagFilter = document.getElementById('tagFilter');
+    const sortSelect = document.getElementById('sortSelect');
+
+    devtoProfileLink.href = `https://dev.to/${USERNAME}`;
+
+    /**********************
+     * Helpers
+     **********************/
+    function updateStatus(text) {
+      statusEl.textContent = text;
+    }
+    function setProgress(percent) {
+      progressFill.style.width = Math.min(100, Math.max(0, percent)) + '%';
+    }
+    function dateFmt(iso) {
+      try {
+        return new Date(iso).toLocaleDateString();
+      } catch { return iso; }
+    }
+
+    /**********************
+     * Fetch all pages (pagination)
+     **********************/
+    async function fetchAllArticles() {
+      // check cache
+      const cached = localStorage.getItem(CACHE_KEY);
+      if (cached) {
+        try {
+          const parsed = JSON.parse(cached);
+          if (Date.now() - parsed.fetchedAt < CACHE_TTL_MS) {
+            updateStatus(`Loaded from cache (${parsed.items.length} posts)`);
+            setProgress(100);
+            return parsed.items;
+          }
+        } catch (e) {
+          // ignore parse errors
+        }
+      }
+
+      updateStatus('Fetching posts from Dev.to...');
+      let page = 1;
+      const all = [];
+      let keepGoing = true;
+
+      while (keepGoing) {
+        updateStatus(`Fetching page ${page}...`);
+        setProgress(((page - 1) * 10) % 100);
+
+        const url = `https://dev.to/api/articles?username=${encodeURIComponent(USERNAME)}&per_page=${PER_PAGE}&page=${page}`;
+        let res;
+        try {
+          res = await fetch(url);
+        } catch (err) {
+          console.error('Fetch error', err);
+          throw new Error('Network error while fetching Dev.to API');
+        }
+
+        if (!res.ok) {
+          const txt = await res.text().catch(()=>'');
+          throw new Error(`Dev.to API returned ${res.status}: ${txt}`);
+        }
+
+        const data = await res.json();
+        if (!Array.isArray(data)) {
+          throw new Error('Unexpected API response');
+        }
+
+        all.push(...data);
+
+        // if less than per_page, last page
+        if (data.length < PER_PAGE) keepGoing = false;
+        else page++;
+
+        // Safety: break after 20 pages to avoid infinite loops
+        if (page > 20) keepGoing = false;
+      }
+
+      // cache result
+      localStorage.setItem(CACHE_KEY, JSON.stringify({ fetchedAt: Date.now(), items: all }));
+      updateStatus(`Fetched ${all.length} posts`);
+      setProgress(100);
+      return all;
+    }
+
+    /**********************
+     * Render functions
+     **********************/
+    function clearGrid() {
+      grid.innerHTML = '';
+    }
+
+    function renderCards(items) {
+      clearGrid();
+      if (!items || items.length === 0) {
+        noResults.classList.remove('hidden');
+        return;
+      } else {
+        noResults.classList.add('hidden');
+      }
+
+      items.forEach(post => {
+        const cover = post.cover_image || post.social_image || 'https://dev.to/social_previews/default.png';
+        const title = post.title || '(no title)';
+        const desc = (post.description || '').replace(/<\/?[^>]+(>|$)/g, '');
+        const taglist = (post.tag_list || []).slice(0,4);
+        const published = post.published_at ? dateFmt(post.published_at) : '';
+
+        const card = document.createElement('article');
+        card.className = 'bg-white rounded-lg shadow hover:shadow-lg overflow-hidden flex flex-col';
+
+        card.innerHTML = `
+          <a href="${post.url}" target="_blank" class="block h-44 overflow-hidden">
+            <img src="${cover}" alt="${title}" class="w-full h-full object-cover transform hover:scale-105 transition duration-300">
+          </a>
+          <div class="p-4 flex-1 flex flex-col">
+            <a href="${post.url}" target="_blank" class="text-lg font-semibold hover:text-blue-600">${escapeHtml(title)}</a>
+            <p class="text-gray-600 text-sm mt-2 line-clamp-3 flex-1">${escapeHtml(desc)}</p>
+            <div class="mt-4 flex items-center justify-between text-xs text-gray-500">
+              <div class="flex items-center gap-2">
+                <span class="px-2 py-1 bg-gray-100 rounded text-gray-700">${escapeHtml(published)}</span>
+                ${taglist.map(t => `<span class="px-2 py-1 bg-blue-50 text-blue-600 rounded">${escapeHtml(t)}</span>`).join(' ')}
+              </div>
+              <div class="flex items-center gap-3">
+                <span title="Reactions" class="flex items-center gap-1 text-gray-500">
+                  ${svgHeart()} <strong class="ml-1">${post.positive_reactions_count ?? 0}</strong>
+                </span>
+                <span title="Comments" class="flex items-center gap-1 text-gray-500">
+                  ${svgComment()} <strong class="ml-1">${post.comments_count ?? 0}</strong>
+                </span>
+              </div>
+            </div>
+          </div>
+        `;
+
+        grid.appendChild(card);
+      });
+    }
+
+    /**********************
+     * Utilities
+     **********************/
+    function escapeHtml(text) {
+      if (!text) return '';
+      return text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    }
+    function svgHeart() {
+      return `<svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20.8 7.2a5.5 5.5 0 0 0-7.7 0L12 8.3l-1.1-1.1a5.5 5.5 0 1 0-7.7 7.7L12 21l8.8-8.1a5.5 5.5 0 0 0 0-7.7z"/></svg>`;
+    }
+    function svgComment() {
+      return `<svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>`;
+    }
+
+    /**********************
+     * Filtering / Searching / Sorting
+     **********************/
+    function buildTagOptions(items) {
+      const tagSet = new Set();
+      items.forEach(p => (p.tag_list || []).forEach(t => tagSet.add(t)));
+      const tags = [...tagSet].sort();
+      tagFilter.innerHTML = `<option value="">All tags</option>` + tags.map(t => `<option value="${escapeHtml(t)}">${escapeHtml(t)}</option>`).join('');
+    }
+
+    function applyFiltersAndRender(allItems) {
+      let filtered = [...allItems];
+
+      // Tag filter
+      const tag = tagFilter.value;
+      if (tag) filtered = filtered.filter(p => (p.tag_list || []).includes(tag));
+
+      // Search
+      const q = searchInput.value.trim().toLowerCase();
+      if (q) {
+        filtered = filtered.filter(p => {
+          const t = (p.title || '') + ' ' + (p.description || '') + ' ' + ((p.tag_list || []).join(' '));
+          return t.toLowerCase().includes(q);
+        });
+      }
+
+      // Sort
+      const sort = sortSelect.value;
+      if (sort === 'newest') {
+        filtered.sort((a,b) => new Date(b.published_at) - new Date(a.published_at));
+      } else if (sort === 'oldest') {
+        filtered.sort((a,b) => new Date(a.published_at) - new Date(b.published_at));
+      } else if (sort === 'popular') {
+        filtered.sort((a,b) => (b.positive_reactions_count || 0) - (a.positive_reactions_count || 0));
+      }
+
+      renderCards(filtered);
+    }
+
+    /**********************
+     * Main
+     **********************/
+    (async function main() {
+      try {
+        updateStatus('Starting fetch...');
+        setProgress(5);
+
+        const all = await fetchAllArticles();
+        setProgress(80);
+
+        // store local copy
+        window.__DEVTO_ALL = all; // easy debugging
+
+        if (!all || all.length === 0) {
+          updateStatus('No public posts found for this user.');
+          setProgress(100);
+          renderCards([]);
+          return;
+        }
+
+        buildTagOptions(all);
+
+        // initial render
+        applyFiltersAndRender(all);
+
+        // UI hooking
+        searchInput.addEventListener('input', () => applyFiltersAndRender(all));
+        tagFilter.addEventListener('change', () => applyFiltersAndRender(all));
+        sortSelect.addEventListener('change', () => applyFiltersAndRender(all));
+
+        updateStatus(`Loaded ${all.length} posts.`);
+        setProgress(100);
+      } catch (err) {
+        console.error(err);
+        updateStatus('Error: ' + (err.message || 'Failed to load posts.'));
+        grid.innerHTML = `<div class="p-6 bg-red-50 text-red-700 rounded">Failed to load Dev.to posts. Check console for details.</div>`;
+        setProgress(0);
+      }
+    })();
+  </script>
+</body>
+</html>
