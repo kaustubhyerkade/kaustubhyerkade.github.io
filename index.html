@@ -184,10 +184,11 @@
         <button id="menu-toggle" class="md:hidden cursor-pointer text-2xl bg-none border-none text-text z-60" aria-controls="nav-links" aria-expanded="false">☰</button>
         <!-- Mobile Nav: hidden by default, shown via .active class. Becomes flex row on md screens -->
         <div id="nav-links" class="hidden md:flex flex-col md:flex-row items-center gap-4 md:gap-4 absolute md:relative top-full left-0 w-full md:w-auto bg-panel md:bg-transparent border-b md:border-none border-slate-500/15 p-4 md:p-0 shadow-lg md:shadow-none">
-          <a href="#projects" class="text-text no-underline opacity-90 font-semibold">Projects</a>
+          
 		  <a href="#education" class="text-text no-underline opacity-90 font-semibold">Education</a>
           <a href="#experience" class="text-text no-underline opacity-90 font-semibold">Experience</a>
           <a href="#skills" class="text-text no-underline opacity-90 font-semibold">Skills</a>
+		  <a href="#projects" class="text-text no-underline opacity-90 font-semibold">Projects</a>
           <a href="#writing" class="text-text no-underline opacity-90 font-semibold">Blog</a>
           <a href="#contact" class="text-text no-underline opacity-90 font-semibold">Contact</a>
           
@@ -206,22 +207,23 @@
     <!-- HERO -->
     <section class="grid grid-cols-1 md:grid-cols-[1.1fr,0.9fr] gap-8 py-8 md:py-14 items-center relative text-center md:text-left" id="home">
       <!-- Hero text content -->
-      <div class="hero-content order-2 md:order-1">
+      <div class="hero-content order-2 md:order-1 backdrop-saturate-125 backdrop-blur-lg bg-panel/85 border-b border-slate-500/15">
         <div class="inline-flex items-center gap-2 py-1 px-2.5 rounded-full border border-slate-500/25 bg-panel/80 text-xs text-muted">🚀 DevOps × Generative AI</div>
         <h1 class="text-3xl sm:text-4xl lg:text-5xl leading-tight my-2.5 font-extrabold tracking-tight">Hi<span style="display:inline-block; animation:wave 1.2s infinite; transform-origin:70% 70%;">👋🏻</span>...I’m <span class="bg-gradient-to-r from-brand to-brand-2 bg-clip-text text-transparent">kaustubh</span><br>building resilient cloud systems and <span class="bg-gradient-to-r from-brand to-brand-2 bg-clip-text text-transparent">AI products</span> that ship.</h1>
         <p class="text-base sm:text-lg text-muted max-w-prose mx-auto md:mx-0">DevOps engineer with a knack for GenAI. I automate deployments, craft scalable cloud architectures, and build practical AI features like RAG chatbots, smart product navigation, and risk scoring tools. Currently exploring Google Cloud Architect patterns and AI-first UX on the web.</p>
+		
+		<!-- -->
+   
+		
+		<!-- -->
         <div class="flex gap-3 mt-5 flex-wrap justify-center md:justify-start">
-          <a class="inline-flex items-center gap-2 py-2.5 px-3.5 rounded-2xl border border-slate-500/20 shadow-lg shadow-black/35 transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:shadow-2xl hover:shadow-black/50 bg-green-400 border-dashed border-slate-500/35" href="#projects">View Projects</a>
-          <a class="inline-flex items-center gap-2 py-2.5 px-3.5 rounded-2xl border border-slate-500/20 shadow-lg shadow-black/35 transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:shadow-2xl hover:shadow-black/50 bg-green-400 border-dashed border-slate-500/35" href="#contact">Let’s Work Together</a>
-		  <a class="inline-flex items-center gap-2 py-2.5 px-3.5 rounded-2xl border border-slate-500/20 shadow-lg shadow-black/35 transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:shadow-2xl hover:shadow-black/50 bg-green-400 border-dashed border-slate-500/35" href="#contact">Resume</a>
+          <a class="inline-flex items-center gap-2 py-2.5 px-3.5 rounded-2xl border border-slate-500/20 shadow-lg shadow-black/35 transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:shadow-2xl hover:shadow-black/50 bg-blue-400 border-dashed border-slate-500/35" href="#projects">View Projects</a>
+          <a class="inline-flex items-center gap-2 py-2.5 px-3.5 rounded-2xl border border-slate-500/20 shadow-lg shadow-black/35 transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:shadow-2xl hover:shadow-black/50 bg-blue-400 border-dashed border-slate-500/35" href="#contact">Let’s Work Together</a>
 		  
-		  <a class="inline-flex items-center gap-2 py-2.5 px-3.5 rounded-2xl border border-slate-500/20 shadow-lg shadow-black/35 transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:shadow-2xl hover:shadow-black/50 bg-green-400 border-dashed border-slate-500/35" href="#contact">Explore</a>
 		  
         </div>
         <div class="flex gap-3 items-center flex-wrap justify-center md:justify-start" style="margin-top:1rem">
-          <span class="inline-flex items-center gap-1.5 py-1 px-2.5 text-xs rounded-full border border-slate-500/25 text-muted bg-panel/80">Available for freelance</span>
-          <span class="inline-flex items-center gap-1.5 py-1 px-2.5 text-xs rounded-full border border-slate-500/25 text-muted bg-panel/80">Based in India (IST)</span>
-          <span class="inline-flex items-center gap-1.5 py-1 px-2.5 text-xs rounded-full border border-slate-500/25 text-muted bg-panel/80">Open to remote</span>
+          
         </div>
       </div>
       <!-- Profile pic and highlights card container -->
@@ -229,268 +231,19 @@
         <!-- Profile Picture -->
         <div class="mb-0">
           
-		  <img src="portfolio.png" alt="kaustubh's profile picture" class="w-60 h-60 rounded border-4 border-brand shadow-[0_0_0_5px_rgba(14,165,233,0.2)] object-cover mx-auto">
+		  <img src="portfolio.png" alt="kaustubh's profile picture" class="w-80 h-80 rounded border-4 border-brand shadow-[0_0_0_5px_rgba(14,165,233,0.2)] object-cover mx-auto">
 		  
 		  
 		  
 		   <!-- <img src="portfolio.png" alt="kaustubh's profile picture" class="w-60 h-60 rounded-full border-4 border-brand shadow-[0_0_0_5px_rgba(14,165,233,0.2)] object-cover mx-auto"> -->
 		   
         </div>
-        <aside class="relative rounded-3xl p-4 bg-gradient-to-b from-brand/10 to-transparent border border-brand/25 flex flex-col gap-4 order-3" aria-label="Highlights">
-          <div class="h-full rounded-2xl p-5 bg-card border border-slate-500/15">
-            <div class="flex gap-3 items-center flex-wrap" style="justify-content:space-between; gap:.4rem;">
-              <strong>Highlights</strong>
-              <span class="text-muted">Last updated: <span id="lastUpdated">Oct 2025</span></span>
-            </div>
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-3">
-              <div class="p-3.5 border border-slate-500/15 rounded-2xl bg-gradient-to-b from-panel/80 to-panel/90">
-                <h3 class="m-0 text-xl font-semibold">12k+</h3>
-                <p class="m-0 mt-1 text-muted text-sm">servers automated</p>
-              </div>
-              <div class="p-3.5 border border-slate-500/15 rounded-2xl bg-gradient-to-b from-panel/80 to-panel/90">
-                <h3 class="m-0 text-xl font-semibold">~99.9%</h3>
-                <p class="m-0 mt-1 text-muted text-sm">Automated uptime on AIX/Exadata</p>
-              </div>
-              <div class="p-3.5 border border-slate-500/15 rounded-2xl bg-gradient-to-b from-panel/80 to-panel/90">
-                <h3 class="m-0 text-xl font-semibold">7×</h3>
-                <p class="m-0 mt-1 text-muted text-sm">Faster deployments via CI/CD</p>
-              </div>
-            </div>
-          </div>
-        </aside>
+
       </div>
     </section>
 <!-- HERO Section Ends -->
  
-<!-- Education Section Starts -->
-<section id="education" class="bg-gray-50 py-16">
-
-
-  <div class="max-w-6xl mx-auto px-4">
-    
-    
-      <div class="flex items-center justify-between gap-4 mb-4">
-      <h2 class="m-0 text-xl font-semibold tracking-wide">Education</h2>
-      <div class="h-px bg-gradient-to-r from-slate-500/40 to-slate-500/5 flex-1" aria-hidden="true"></div>
-      </div>	
-	
-	
-    <div class="space-y-8">
-      <!-- Education Item 1 -->
-      <div class="flex flex-col md:flex-row items-start md:items-center md:space-x-6 bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300">
-        <div class="flex-shrink-0 mb-4 md:mb-0">
-          <span class="inline-block bg-blue-500 text-white font-bold px-4 py-2 rounded-full">2016 - 2019</span>
-        </div>
-        <div>
-          <h3 class="text-xl font-semibold text-gray-800">Bachelor's Degree In Computer Engineering</h3>
-          <p class="text-gray-600">Pune Institute of Computer Technology</p>
-          <p class="mt-2 text-gray-500">Focus on cloud computing, DevOps practices, and software engineering fundamentals.</p>
-        </div>
-      </div>
-
-      <!-- Education Item 2 -->
-      <div class="flex flex-col md:flex-row items-start md:items-center md:space-x-6 bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300">
-        <div class="flex-shrink-0 mb-4 md:mb-0">
-          <span class="inline-block bg-green-500 text-white font-bold px-4 py-2 rounded-full">2013 - 2016 </span>
-        </div>
-        <div>
-          <h3 class="text-xl font-semibold text-gray-800">Diploma In Computer Engineering</h3>
-          <p class="text-gray-600">Government Polytechnic, Yavatmal</p>
-          <p class="mt-2 text-gray-500">Focus on cloud computing, DevOps practices, and software engineering fundamentals.</p>
-        </div>
-      </div>
-
-      
-    </div>
-  </div>
-</section>
-
-<!-- Education Section Ends -->
  
-<!-- Featured PROJECTS -->
-    <section class="py-9" id="projects">
-      <div class="flex items-center justify-between gap-4 mb-4">
-        <h2 class="m-0 text-xl font-semibold tracking-wide">Featured Projects</h2>
-        <div class="h-px bg-gradient-to-r from-slate-500/40 to-slate-500/5 flex-1" aria-hidden="true"></div>
-      </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        <!-- Project 1 -->
-        <article class="p-4 rounded-2xl bg-card border border-slate-500/15 transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:border-brand/35 hover:shadow-2xl hover:shadow-black/40" aria-labelledby="p1-title">
-          <div class="aspect-video w-full rounded-lg bg-gradient-to-tr from-brand/25 to-brand-2/15 grid place-items-center font-bold tracking-wider">Chemical Industry AI Website</div>
-          <h3 id="p1-title" class="text-lg font-semibold mt-3">Nova Healthcare: AI-first Product</h3>
-          <p class="text-muted my-2">Production-grade site using Carbon Design System with integrated AI: RAG chatbot, product metadata extraction (PubChem), smart product filters, and Ask-PDF assistant. Deployed on cloud with CI/CD and analytics.</p>
-          <div class="flex flex-wrap gap-1.5 mt-3">
-            <span class="inline-flex items-center gap-1.5 py-1 px-2.5 text-xs rounded-full border border-slate-500/25 text-muted bg-panel/80">Carbon Design</span>
-            <span class="inline-flex items-center gap-1.5 py-1 px-2.5 text-xs rounded-full border border-slate-500/25 text-muted bg-panel/80">Python + Flask</span>
-            <span class="inline-flex items-center gap-1.5 py-1 px-2.5 text-xs rounded-full border border-slate-500/25 text-muted bg-panel/80">RAG</span>
-            <span class="inline-flex items-center gap-1.5 py-1 px-2.5 text-xs rounded-full border border-slate-500/25 text-muted bg-panel/80">PubChem PUG REST</span>
-            <span class="inline-flex items-center gap-1.5 py-1 px-2.5 text-xs rounded-full border border-slate-500/25 text-muted bg-panel/80">GCP</span>
-          </div>
-          <div class="flex gap-3 mt-4 flex-wrap">
-            <a class="inline-flex items-center gap-2 py-2.5 px-3.5 rounded-2xl border border-slate-500/20 shadow-lg shadow-black/35 transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:shadow-2xl hover:shadow-black/50 bg-transparent border-dashed border-slate-500/35" href="#" target="_blank" rel="noopener">Live Demo</a>
-            <a class="inline-flex items-center gap-2 py-2.5 px-3.5 rounded-2xl border border-slate-500/20 shadow-lg shadow-black/35 transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:shadow-2xl hover:shadow-black/50 bg-transparent border-dashed border-slate-500/35" href="#" target="_blank" rel="noopener">Source</a>
-          </div>
-        </article>
-
-        <!-- Project 2 -->
-        <article class="p-4 rounded-2xl bg-card border border-slate-500/15 transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:border-brand/35 hover:shadow-2xl hover:shadow-black/40" aria-labelledby="p2-title">
-          <div class="aspect-video w-full rounded-lg bg-gradient-to-tr from-brand/25 to-brand-2/15 grid place-items-center font-bold tracking-wider">Loan Risk Scorer</div>
-          <h3 id="p2-title" class="text-lg font-semibold mt-3">Loan & Adverse-Media Risk Scorer</h3>
-          <p class="text-muted my-2">End-to-end scoring prototype: ingest news & filings, entity resolve, evaluate risk signals, and output explainable scores with transparent factors. Designed for BFSI stakeholders.</p>
-          <div class="flex flex-wrap gap-1.5 mt-3">
-            <span class="inline-flex items-center gap-1.5 py-1 px-2.5 text-xs rounded-full border border-slate-500/25 text-muted bg-panel/80">GenAI</span>
-            <span class="inline-flex items-center gap-1.5 py-1 px-2.5 text-xs rounded-full border border-slate-500/25 text-muted bg-panel/80">Vector DB</span>
-            <span class="inline-flex items-center gap-1.5 py-1 px-2.5 text-xs rounded-full border border-slate-500/25 text-muted bg-panel/80">LangGraph</span>
-            <span class="inline-flex items-center gap-1.5 py-1 px-2.5 text-xs rounded-full border border-slate-500/25 text-muted bg-panel/80">Explainability</span>
-          </div>
-          <div class="flex gap-3 mt-4 flex-wrap">
-            <a class="inline-flex items-center gap-2 py-2.5 px-3.5 rounded-2xl border border-slate-500/20 shadow-lg shadow-black/35 transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:shadow-2xl hover:shadow-black/50 bg-transparent border-dashed border-slate-500/35" href="#" target="_blank" rel="noopener">Case Study</a>
-            <a class="inline-flex items-center gap-2 py-2.5 px-3.5 rounded-2xl border border-slate-500/20 shadow-lg shadow-black/35 transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:shadow-2xl hover:shadow-black/50 bg-transparent border-dashed border-slate-500/35" href="#" target="_blank" rel="noopener">Source</a>
-          </div>
-        </article>
-
-        <!-- Project 3 -->
-        <article class="p-4 rounded-2xl bg-card border border-slate-500/15 transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:border-brand/35 hover:shadow-2xl hover:shadow-black/40" aria-labelledby="p3-title">
-          <div class="aspect-video w-full rounded-lg bg-gradient-to-tr from-brand/25 to-brand-2/15 grid place-items-center font-bold tracking-wider">AIX Beats</div>
-          <h3 id="p3-title" class="text-lg font-semibold mt-3">AIX Beats : Observability for IBM AIX</h3>
-          <p class="text-muted my-2">A custom lightweight shipper to bring AIX telemetry into modern ELK/Grafana stacks where official Beats support is missing. Includes packaging, security hardening, and dashboards.</p>
-          <div class="flex flex-wrap gap-1.5 mt-3">
-            <span class="inline-flex items-center gap-1.5 py-1 px-2.5 text-xs rounded-full border border-slate-500/25 text-muted bg-panel/80">IBM AIX</span>
-            <span class="inline-flex items-center gap-1.5 py-1 px-2.5 text-xs rounded-full border border-slate-500/25 text-muted bg-panel/80">Go/Python</span>
-            <span class="inline-flex items-center gap-1.5 py-1 px-2.5 text-xs rounded-full border border-slate-500/25 text-muted bg-panel/80">ELK</span>
-            <span class="inline-flex items-center gap-1.5 py-1 px-2.5 text-xs rounded-full border border-slate-500/25 text-muted bg-panel/80">Grafana</span>
-          </div>
-          <div class="flex gap-3 mt-4 flex-wrap">
-            <a class="inline-flex items-center gap-2 py-2.5 px-3.5 rounded-2xl border border-slate-500/20 shadow-lg shadow-black/35 transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:shadow-2xl hover:shadow-black/50 bg-transparent border-dashed border-slate-500/35" href="#" target="_blank" rel="noopener">Docs</a>
-            <a class="inline-flex items-center gap-2 py-2.5 px-3.5 rounded-2xl border border-slate-500/20 shadow-lg shadow-black/35 transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:shadow-2xl hover:shadow-black/50 bg-transparent border-dashed border-slate-500/35" href="#" target="_blank" rel="noopener">Source</a>
-          </div>
-        </article>
-
-        
-      </div>
-    </section>
-<!-- Featured Projects Section Ends -->
-
-
-<!-- Highlighted Projects Green Section -->
-            <section id="projects" class="pt-16">
-                <h2 class="text-4xl font-bold mb-10 text-center border-b-4 border-accent-green/50 pb-2 inline-block mx-auto">Highlighted Projects</h2>
-
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
-
-                    <!-- Project Card 1 -->
-                    <div class="bg-teal-800 p-6 rounded-xl shadow-xl border border-white-700 transition duration-300 hover:shadow-2xl hover:border-accent-blue/50 transform hover:-translate-y-1">
-                        <h3 class="text-xl font-semibold text-white text-accent-blue mb-2">Automated Blue-Green Deployment for Finance App</h3>
-                        <p class="text-sm text-gray-400 mb-4">A zero-downtime deployment strategy using Kubernetes.</p>
-                        <div class="mb-4">
-                            <span class="text-sm font-medium text-gray-300">Tech Stack: </span>
-                            <span class="text-xs text-accent-green bg-green-700 px-2 py-0.5 rounded-full">Terraform</span>
-                            <span class="text-xs text-accent-green bg-green-700 px-2 py-0.5 rounded-full">ArgoCD</span>
-                            <span class="text-xs text-accent-green bg-green-700 px-2 py-0.5 rounded-full">AWS</span>
-                            <span class="text-xs text-accent-green bg-green-700 px-2 py-0.5 rounded-full">Docker</span>
-                        </div>
-                        <p class="text-lg font-bold text-white text-accent-green mb-4">Key Metrics: Deployment time reduced by 90%</p>
-                        <div class="flex gap-3">
-                            <a href="javascript:void(0)" class="text-sm font-medium text-white bg-accent-blue px-3 py-1.5 rounded hover:bg-cyan-600 transition">View Architecture</a>
-                            <a href="https://github.com/kaustubh-devops/blue-green" target="_blank" class="text-sm font-medium text-accent-green border border-accent-green px-3 py-1.5 rounded hover:bg-accent-green hover:text-white transition">GitHub Repo</a>
-                        </div>
-                    </div>
-
-                    <!-- Project Card 2 -->
-                    <div class="bg-teal-800 p-6 rounded-xl shadow-xl border border-gray-700 transition duration-300 hover:shadow-2xl hover:border-accent-blue/50 transform hover:-translate-y-1">
-                        <h3 class="text-xl font-semibold text-white text-accent-blue mb-2">Multi-Cloud Observability Stack</h3>
-                        <p class="text-sm text-gray-400 mb-4">Centralized logging and metrics across AWS and GCP environments.</p>
-                        <div class="mb-4">
-                            <span class="text-sm font-medium text-gray-300">Tech Stack: </span>
-                            <span class="text-xs text-accent-green bg-green-700 px-2 py-0.5 rounded-full">Prometheus</span>
-                            <span class="text-xs text-accent-green bg-green-700 px-2 py-0.5 rounded-full">Grafana</span>
-                            <span class="text-xs text-accent-green bg-green-700 px-2 py-0.5 rounded-full">ELK</span>
-                            <span class="text-xs text-accent-green bg-green-700 px-2 py-0.5 rounded-full">Python</span>
-                        </div>
-                        <p class="text-lg font-bold text-white text-accent-green mb-4">Key Metrics: Alert response time improved by 65%</p>
-                        <div class="flex gap-3">
-                            <a href="javascript:void(0)" class="text-sm font-medium text-white bg-accent-blue px-3 py-1.5 rounded hover:bg-cyan-600 transition">View Architecture</a>
-                            <a href="https://github.com/kaustubh-devops/observability-stack" target="_blank" class="text-sm font-medium text-accent-green border border-accent-green px-3 py-1.5 rounded hover:bg-accent-green hover:text-white transition">GitHub Repo</a>
-                        </div>
-                    </div>
-
-                    <!-- Project Card 3 -->
-                    <div class="bg-teal-800 p-6 rounded-xl shadow-xl border border-gray-700 transition duration-300 hover:shadow-2xl hover:border-accent-blue/50 transform hover:-translate-y-1">
-                        <h3 class="text-xl font-semibold text-white text-accent-blue mb-2">Automated Patching Pipeline with Ansible</h3>
-                        <p class="text-sm text-gray-400 mb-4">Ensuring fleet security and compliance with zero human touch.</p>
-                        <div class="mb-4">
-                            <span class="text-sm font-medium text-gray-300">Tech Stack: </span>
-                            <span class="text-xs text-accent-green bg-green-700 px-2 py-0.5 rounded-full">Ansible</span>
-                            <span class="text-xs text-accent-green bg-green-700 px-2 py-0.5 rounded-full">Jenkins</span>
-                            <span class="text-xs text-accent-green bg-green-700 px-2 py-0.5 rounded-full">GCP</span>
-                            <span class="text-xs text-accent-green bg-green-700 px-2 py-0.5 rounded-full">Bash</span>
-                        </div>
-                        <p class="text-lg font-bold text-white text-accent-green mb-4">Key Metrics: Vulnerability window decreased to 4 hours</p>
-                        <div class="flex gap-3">
-                            <a href="javascript:void(0)" class="text-sm font-medium text-white bg-accent-blue px-3 py-1.5 rounded hover:bg-cyan-600 transition">View Architecture</a>
-                            <a href="https://github.com/kaustubh-devops/ansible-patching" target="_blank" class="text-sm font-medium text-accent-green border border-accent-green px-3 py-1.5 rounded hover:bg-accent-green hover:text-white transition">GitHub Repo</a>
-                        </div>
-                    </div>
-
-                </div>
-            </section>
-
-<!-- EXPERIENCE -->
-    <section class="py-9" id="experience">
-      <div class="flex items-center justify-between gap-4 mb-4">
-        <h2 class="m-0 text-xl font-semibold tracking-wide">Experience</h2>
-        <div class="h-px bg-gradient-to-r from-slate-500/40 to-slate-500/5 flex-1" aria-hidden="true"></div>
-      </div>
-      <div class="timeline" aria-label="Work timeline">
-        <div class="t-item p-3 pl-5 my-1.5 border border-slate-500/15 rounded-2xl bg-card">
-          <div class="flex gap-3 items-center flex-wrap" style="justify-content:space-between">
-            <strong>DevOps Engineer · Financial Services</strong>
-            <span class="text-muted">2019 — Present</span>
-          </div>
-          <ul class="list-disc pl-5 mt-2 space-y-1">
-            <li>Migrated Exadata X5 → X10 with minimal downtime for a critical finance application.</li>
-            <li>Automated AIX server fleet (7+ nodes) for JVM/IHS operations, cutting manual toil by 80%.</li>
-            <li>Designed CI/CD pipelines, IaC, and observability with SLOs and incident playbooks.</li>
-          </ul>
-        </div>
-        <div class="t-item p-3 pl-5 my-1.5 border border-slate-500/15 rounded-2xl bg-card">
-          <div class="flex gap-3 items-center flex-wrap" style="justify-content:space-between">
-            <strong>AI Builder · Product/Research</strong>
-            <span class="text-muted">2024 — Present</span>
-          </div>
-          <ul class="list-disc pl-5 mt-2 space-y-1">
-            <li>Built chemistry-aware RAG for pharmaceutical R&D (12,643 CAS records enriched).</li>
-            <li>Shipped AI-first e‑commerce UX: smart filters, Ask‑PDF, and product recommenders.</li>
-            <li>Prototyped loan & adverse‑media risk scoring with explainable outputs.</li>
-          </ul>
-        </div>
-		<div class="t-item p-3 pl-5 my-1.5 border border-slate-500/15 rounded-2xl bg-card">
-          <div class="flex gap-3 items-center flex-wrap" style="justify-content:space-between">
-            <strong>AI Builder · Product/Research</strong>
-            <span class="text-muted">2024 — Present</span>
-          </div>
-          <ul class="list-disc pl-5 mt-2 space-y-1">
-            <li>Built chemistry-aware RAG for pharmaceutical R&D (12,643 CAS records enriched).</li>
-            <li>Shipped AI-first e‑commerce UX: smart filters, Ask‑PDF, and product recommenders.</li>
-            <li>Prototyped loan & adverse‑media risk scoring with explainable outputs.</li>
-          </ul>
-        </div>
-		<div class="t-item p-3 pl-5 my-1.5 border border-slate-500/15 rounded-2xl bg-card">
-          <div class="flex gap-3 items-center flex-wrap" style="justify-content:space-between">
-            <strong>AI Builder · Product/Research</strong>
-            <span class="text-muted">2024 — Present</span>
-          </div>
-          <ul class="list-disc pl-5 mt-2 space-y-1">
-            <li>Built chemistry-aware RAG for pharmaceutical R&D (12,643 CAS records enriched).</li>
-            <li>Shipped AI-first e‑commerce UX: smart filters, Ask‑PDF, and product recommenders.</li>
-            <li>Prototyped loan & adverse‑media risk scoring with explainable outputs.</li>
-          </ul>
-        </div>
-      </div>
-    </section>
-<!-- EXPERIENCE Section Ends -->	
-	
-
 <!-- SKILLS -->
     <section class="py-9" id="skills">
       <div class="flex items-center justify-between gap-4 mb-4">
@@ -565,7 +318,235 @@
 	  
 	  
     </section>
-<!-- SKILLS Section Ends -->
+<!-- SKILLS Section Ends --> 
+ 
+ 
+
+ 
+ 
+<!-- Education Section Starts -->
+<section id="education">
+
+
+  <div class="max-w-6xl mx-auto px-4">
+    
+    
+      <div class="flex items-center justify-between gap-4 mb-4">
+      <h2 class="m-0 text-xl font-semibold tracking-wide">Education</h2>
+      <div class="h-px bg-gradient-to-r from-slate-500/40 to-slate-500/5 flex-1" aria-hidden="true"></div>
+      </div>	
+	
+	
+    <div class="space-y-8">
+      <!-- Education Item 1 -->
+      <div class="flex flex-col md:flex-row items-start md:items-center md:space-x-6 bg-card p-6 rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300">
+        <div class="flex-shrink-0 mb-4 md:mb-0">
+          <span class="inline-block bg-blue-500 text-white font-bold px-4 py-2 rounded-full">2016 - 2019</span>
+        </div>
+        <div>
+          <h3 class="text-xl font-semibold">Bachelor's Degree In Computer Engineering</h3>
+          <p class="text-white-600">Pune Institute of Computer Technology</p>
+          <p class="mt-2 text-gray-500">Focus on cloud computing, DevOps practices, and software engineering fundamentals.</p>
+        </div>
+      </div>
+
+      <!-- Education Item 2 -->
+      <div class="flex flex-col md:flex-row items-start md:items-center md:space-x-6 bg-card p-6 rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300">
+        <div class="flex-shrink-0 mb-4 md:mb-0">
+          <span class="inline-block bg-green-500 text-white font-bold px-4 py-2 rounded-full">2013 - 2016 </span>
+        </div>
+        <div>
+          <h3 class="text-xl font-semibold">Diploma In Computer Engineering</h3>
+          <p class="text-white-600">Government Polytechnic, Yavatmal</p>
+          <p class="mt-2 text-gray-500">Focus on cloud computing, DevOps practices, and software engineering fundamentals.</p>
+        </div>
+      </div>
+
+      
+    </div>
+  </div>
+</section>
+
+<!-- Education Section Ends -->
+ 
+
+<!-- Highlighted Projects Green Section -->
+<section id="projects" class="pt-16">			
+		<div class="flex items-center justify-between gap-4 mb-4">
+        <h2 class="m-0 text-xl font-semibold tracking-wide">Featured Projects</h2>
+        <div class="h-px bg-gradient-to-r from-slate-500/40 to-slate-500/5 flex-1" aria-hidden="true"></div>
+        </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+
+                    <!-- Project Card 1 -->
+                    <div class="bg-gradient-to-r from-blue-500 via-violet-600 to-fuchsia-600 p-6 rounded-xl shadow-xl border border-white-700 transition duration-300 hover:shadow-2xl hover:border-accent-blue/50 transform hover:-translate-y-1">
+                        <h3 class="text-xl font-semibold text-white text-accent-blue mb-2">Automated Blue-Green Deployment for Finance App</h3>
+                        <p class="text-sm text-gray-400 mb-4">A zero-downtime deployment strategy using Kubernetes.</p>
+                        <div class="mb-4">
+                            <span class="text-sm font-medium text-gray-300">Tech Stack: </span>
+                            <span class="text-xs text-accent-green bg-green-700 px-2 py-0.5 rounded-full">Terraform</span>
+                            <span class="text-xs text-accent-green bg-green-700 px-2 py-0.5 rounded-full">ArgoCD</span>
+                            <span class="text-xs text-accent-green bg-green-700 px-2 py-0.5 rounded-full">AWS</span>
+                            <span class="text-xs text-accent-green bg-green-700 px-2 py-0.5 rounded-full">Docker</span>
+                        </div>
+                        <p class="text-lg font-bold text-white text-accent-green mb-4">Key Metrics: Deployment time reduced by 90%</p>
+                        <div class="flex gap-3">
+                            <a href="javascript:void(0)" class="text-sm font-medium text-white bg-accent-blue px-3 py-1.5 rounded hover:bg-cyan-600 transition">View Architecture</a>
+                            <a href="https://github.com/kaustubh-devops/blue-green" target="_blank" class="text-sm font-medium text-accent-green border border-accent-green px-3 py-1.5 rounded hover:bg-accent-green hover:text-white transition">GitHub Repo</a>
+                        </div>
+                    </div>
+					
+					<!-- Project Card 1.1 -->
+                    <div class="bg-gradient-to-r from-slate-600 via-gray-700 to-gray-800 p-6 rounded-xl shadow-xl border border-white-700 transition duration-300 hover:shadow-2xl hover:border-accent-blue/50 transform hover:-translate-y-1">
+                        <h3 class="text-xl font-semibold text-white text-accent-blue mb-2">Automated Blue-Green Deployment for Finance App</h3>
+                        <p class="text-sm text-gray-400 mb-4">A zero-downtime deployment strategy using Kubernetes.</p>
+                        <div class="mb-4">
+                            <span class="text-sm font-medium text-gray-300">Tech Stack: </span>
+                            <span class="text-xs text-accent-green bg-green-700 px-2 py-0.5 rounded-full">Terraform</span>
+                            <span class="text-xs text-accent-green bg-green-700 px-2 py-0.5 rounded-full">ArgoCD</span>
+                            <span class="text-xs text-accent-green bg-green-700 px-2 py-0.5 rounded-full">AWS</span>
+                            <span class="text-xs text-accent-green bg-green-700 px-2 py-0.5 rounded-full">Docker</span>
+                        </div>
+                        <p class="text-lg font-bold text-white text-accent-green mb-4">Key Metrics: Deployment time reduced by 90%</p>
+                        <div class="flex gap-3">
+                            <a href="javascript:void(0)" class="text-sm font-medium text-white bg-accent-blue px-3 py-1.5 rounded hover:bg-cyan-600 transition">View Architecture</a>
+                            <a href="https://github.com/kaustubh-devops/blue-green" target="_blank" class="text-sm font-medium text-accent-green border border-accent-green px-3 py-1.5 rounded hover:bg-accent-green hover:text-white transition">GitHub Repo</a>
+                        </div>
+                    </div>
+
+                    <!-- Project Card 2 -->
+                    <div class="bg-gradient-to-r from-cyan-400 via-sky-500 to-indigo-500 p-6 rounded-xl shadow-xl border border-gray-700 transition duration-300 hover:shadow-2xl hover:border-accent-blue/50 transform hover:-translate-y-1">
+                        <h3 class="text-xl font-semibold text-white text-accent-blue mb-2">Multi-Cloud Observability Stack</h3>
+                        <p class="text-sm text-gray-400 mb-4">Centralized logging and metrics across AWS and GCP environments.</p>
+                        <div class="mb-4">
+                            <span class="text-sm font-medium text-gray-300">Tech Stack: </span>
+                            <span class="text-xs text-accent-green bg-green-700 px-2 py-0.5 rounded-full">Prometheus</span>
+                            <span class="text-xs text-accent-green bg-green-700 px-2 py-0.5 rounded-full">Grafana</span>
+                            <span class="text-xs text-accent-green bg-green-700 px-2 py-0.5 rounded-full">ELK</span>
+                            <span class="text-xs text-accent-green bg-green-700 px-2 py-0.5 rounded-full">Python</span>
+                        </div>
+                        <p class="text-lg font-bold text-white text-accent-green mb-4">Key Metrics: Alert response time improved by 65%</p>
+                        <div class="flex gap-3">
+                            <a href="javascript:void(0)" class="text-sm font-medium text-white bg-accent-blue px-3 py-1.5 rounded hover:bg-cyan-600 transition">View Architecture</a>
+                            <a href="https://github.com/kaustubh-devops/observability-stack" target="_blank" class="text-sm font-medium text-accent-green border border-accent-green px-3 py-1.5 rounded hover:bg-accent-green hover:text-white transition">GitHub Repo</a>
+                        </div>
+                    </div>
+					
+					<!-- Project Card 2.2 -->
+                    <div class="bg-gradient-to-r from-green-400 via-emerald-600 to-black p-6 rounded-xl shadow-xl border border-gray-700 transition duration-300 hover:shadow-2xl hover:border-accent-blue/50 transform hover:-translate-y-1">
+                        <h3 class="text-xl font-semibold text-white text-accent-blue mb-2">Multi-Cloud Observability Stack</h3>
+                        <p class="text-sm text-gray-400 mb-4">Centralized logging and metrics across AWS and GCP environments.</p>
+                        <div class="mb-4">
+                            <span class="text-sm font-medium text-gray-300">Tech Stack: </span>
+                            <span class="text-xs text-accent-green bg-green-700 px-2 py-0.5 rounded-full">Prometheus</span>
+                            <span class="text-xs text-accent-green bg-green-700 px-2 py-0.5 rounded-full">Grafana</span>
+                            <span class="text-xs text-accent-green bg-green-700 px-2 py-0.5 rounded-full">ELK</span>
+                            <span class="text-xs text-accent-green bg-green-700 px-2 py-0.5 rounded-full">Python</span>
+                        </div>
+                        <p class="text-lg font-bold text-white text-accent-green mb-4">Key Metrics: Alert response time improved by 65%</p>
+                        <div class="flex gap-3">
+                            <a href="javascript:void(0)" class="text-sm font-medium text-white bg-accent-blue px-3 py-1.5 rounded hover:bg-cyan-600 transition">View Architecture</a>
+                            <a href="https://github.com/kaustubh-devops/observability-stack" target="_blank" class="text-sm font-medium text-accent-green border border-accent-green px-3 py-1.5 rounded hover:bg-accent-green hover:text-white transition">GitHub Repo</a>
+                        </div>
+                    </div>
+
+                    <!-- Project Card 3 -->
+                    <div class="bg-gradient-to-r from-orange-400 via-pink-500 to-purple-600 p-6 rounded-xl shadow-xl border border-gray-700 transition duration-300 hover:shadow-2xl hover:border-accent-blue/50 transform hover:-translate-y-1">
+                        <h3 class="text-xl font-semibold text-white text-accent-blue mb-2">Automated Patching Pipeline with Ansible</h3>
+                        <p class="text-sm text-gray-400 mb-4">Ensuring fleet security and compliance with zero human touch.</p>
+                        <div class="mb-4">
+                            <span class="text-sm font-medium text-gray-300">Tech Stack: </span>
+                            <span class="text-xs text-accent-green bg-green-700 px-2 py-0.5 rounded-full">Ansible</span>
+                            <span class="text-xs text-accent-green bg-green-700 px-2 py-0.5 rounded-full">Jenkins</span>
+                            <span class="text-xs text-accent-green bg-green-700 px-2 py-0.5 rounded-full">GCP</span>
+                            <span class="text-xs text-accent-green bg-green-700 px-2 py-0.5 rounded-full">Bash</span>
+                        </div>
+                        <p class="text-lg font-bold text-white text-accent-green mb-4">Key Metrics: Vulnerability window decreased to 4 hours</p>
+                        <div class="flex gap-3">
+                            <a href="javascript:void(0)" class="text-sm font-medium text-white bg-accent-blue px-3 py-1.5 rounded hover:bg-cyan-600 transition">View Architecture</a>
+                            <a href="https://github.com/kaustubh-devops/ansible-patching" target="_blank" class="text-sm font-medium text-accent-green border border-accent-green px-3 py-1.5 rounded hover:bg-accent-green hover:text-white transition">GitHub Repo</a>
+                        </div>
+                    </div>
+					
+					<!-- Project Card 3.3 -->
+                    <div class="bg-gradient-to-br from-slate-900 via-gray-900 to-black p-6 rounded-xl shadow-xl border border-gray-700 transition duration-300 hover:shadow-2xl hover:border-accent-blue/50 transform hover:-translate-y-1">
+                        <h3 class="text-xl font-semibold text-white text-accent-blue mb-2">Automated Patching Pipeline with Ansible</h3>
+                        <p class="text-sm text-gray-400 mb-4">Ensuring fleet security and compliance with zero human touch.</p>
+                        <div class="mb-4">
+                            <span class="text-sm font-medium text-gray-300">Tech Stack: </span>
+                            <span class="text-xs text-accent-green bg-green-700 px-2 py-0.5 rounded-full">Ansible</span>
+                            <span class="text-xs text-accent-green bg-green-700 px-2 py-0.5 rounded-full">Jenkins</span>
+                            <span class="text-xs text-accent-green bg-green-700 px-2 py-0.5 rounded-full">GCP</span>
+                            <span class="text-xs text-accent-green bg-green-700 px-2 py-0.5 rounded-full">Bash</span>
+                        </div>
+                        <p class="text-lg font-bold text-white text-accent-green mb-4">Key Metrics: Vulnerability window decreased to 4 hours</p>
+                        <div class="flex gap-3">
+                            <a href="javascript:void(0)" class="text-sm font-medium text-white bg-accent-blue px-3 py-1.5 rounded hover:bg-cyan-600 transition">View Architecture</a>
+                            <a href="https://github.com/kaustubh-devops/ansible-patching" target="_blank" class="text-sm font-medium text-accent-green border border-accent-green px-3 py-1.5 rounded hover:bg-accent-green hover:text-white transition">GitHub Repo</a>
+                        </div>
+                    </div>
+</div>
+</section>
+
+
+<!-- EXPERIENCE -->
+<section class="py-9" id="experience">
+      <div class="flex items-center justify-between gap-4 mb-4">
+        <h2 class="m-0 text-xl font-semibold tracking-wide">Experience</h2>
+        <div class="h-px bg-gradient-to-r from-slate-500/40 to-slate-500/5 flex-1" aria-hidden="true"></div>
+      </div>
+      <div class="timeline" aria-label="Work timeline">
+        <div class="t-item p-3 pl-5 my-1.5 border border-slate-500/15 rounded-2xl bg-card">
+          <div class="flex gap-3 items-center flex-wrap" style="justify-content:space-between">
+            <strong>DevOps Engineer · Financial Services</strong>
+            <span class="text-muted">2019 — Present</span>
+          </div>
+          <ul class="list-disc pl-5 mt-2 space-y-1">
+            <li>Migrated Exadata X5 → X10 with minimal downtime for a critical finance application.</li>
+            <li>Automated AIX server fleet (7+ nodes) for JVM/IHS operations, cutting manual toil by 80%.</li>
+            <li>Designed CI/CD pipelines, IaC, and observability with SLOs and incident playbooks.</li>
+          </ul>
+        </div>
+        <div class="t-item p-3 pl-5 my-1.5 border border-slate-500/15 rounded-2xl bg-card">
+          <div class="flex gap-3 items-center flex-wrap" style="justify-content:space-between">
+            <strong>AI Builder · Product/Research</strong>
+            <span class="text-muted">2024 — Present</span>
+          </div>
+          <ul class="list-disc pl-5 mt-2 space-y-1">
+            <li>Built chemistry-aware RAG for pharmaceutical R&D (12,643 CAS records enriched).</li>
+            <li>Shipped AI-first e‑commerce UX: smart filters, Ask‑PDF, and product recommenders.</li>
+            <li>Prototyped loan & adverse‑media risk scoring with explainable outputs.</li>
+          </ul>
+        </div>
+		<div class="t-item p-3 pl-5 my-1.5 border border-slate-500/15 rounded-2xl bg-card">
+          <div class="flex gap-3 items-center flex-wrap" style="justify-content:space-between">
+            <strong>AI Builder · Product/Research</strong>
+            <span class="text-muted">2024 — Present</span>
+          </div>
+          <ul class="list-disc pl-5 mt-2 space-y-1">
+            <li>Built chemistry-aware RAG for pharmaceutical R&D (12,643 CAS records enriched).</li>
+            <li>Shipped AI-first e‑commerce UX: smart filters, Ask‑PDF, and product recommenders.</li>
+            <li>Prototyped loan & adverse‑media risk scoring with explainable outputs.</li>
+          </ul>
+        </div>
+		<div class="t-item p-3 pl-5 my-1.5 border border-slate-500/15 rounded-2xl bg-card">
+          <div class="flex gap-3 items-center flex-wrap" style="justify-content:space-between">
+            <strong>AI Builder · Product/Research</strong>
+            <span class="text-muted">2024 — Present</span>
+          </div>
+          <ul class="list-disc pl-5 mt-2 space-y-1">
+            <li>Built chemistry-aware RAG for pharmaceutical R&D (12,643 CAS records enriched).</li>
+            <li>Shipped AI-first e‑commerce UX: smart filters, Ask‑PDF, and product recommenders.</li>
+            <li>Prototyped loan & adverse‑media risk scoring with explainable outputs.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+<!-- EXPERIENCE Section Ends -->	
+	
+
+
 
 
 <!-- -->
@@ -574,12 +555,15 @@
 
 
 <!-- dynamic blogs -->
-<section id="blogs" class="bg-transparent text-gray-100 py-20">
+<section id="blogs" class="bg-transparent text-black-100 py-20">
+
+      <div class="flex items-center justify-between gap-4 mb-4">
+        <h2 class="m-0 text-xl font-semibold tracking-wide">My Blogs & Articles</h2>
+        <div class="h-px bg-gradient-to-r from-slate-500/40 to-slate-500/5 flex-1" aria-hidden="true"></div>
+      </div>
+
+
   <div class="max-w-6xl mx-auto px-4">
-    <h2 class="text-3xl font-bold text-center mb-4 text-black tracking-tight">My Blogs & Articles</h2>
-    <p class="text-gray-400 text-center max-w-2xl mx-auto mb-12">
-      I share my learnings on DevOps, Cloud, and AI-driven automation — helping engineers build smarter, faster, and more reliable systems.
-    </p>
 
     <!-- Blog Grid (Dynamic content will be injected here) -->
     <div id="blogGrid" class="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-8"></div>
@@ -590,12 +574,11 @@
          class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-3 rounded-full shadow-md hover:shadow-blue-500/30 transition-all duration-300">
         View All on Dev.to
       </a>
-    
-	  <a href="blogs_merged.html" target="_blank"
-        class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-3 rounded-full shadow-md hover:shadow-blue-500/30 transition-all duration-300">
-        Platforms Merged
+	  <br><br>
+	  <a href="blogs.html" target="_blank"
+         class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-3 rounded-full shadow-md hover:shadow-blue-500/30 transition-all duration-300">
+        View All Merged
       </a>
-  		
     </div>
   </div>
 </section>
@@ -723,112 +706,65 @@
 	
 <!-- Insta Starts -->	
 
+
 <!-- Insta ends -->	
 	
+<!-- constact starts -->	
+<section class="w-full min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center p-4">
+  <div class="max-w-6xl w-full bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl shadow-2xl flex flex-col md:flex-row overflow-hidden">
+    
+    <!-- Left: Image -->
+    <div class="md:w-1/2 w-full">
+      <img src="highfive.jpg" 
+           alt="Contact Image" 
+           class="w-full h-full object-cover md:min-h-[600px]">
+    </div>
 
-    <!-- CONTACT -->
-    <section class="py-9" id="contact">
-      <div class="flex items-center justify-between gap-4 mb-4">
-        <h2 class="m-0 text-xl font-semibold tracking-wide">Contact</h2>
-        <div class="h-px bg-gradient-to-r from-slate-500/40 to-slate-500/5 flex-1" aria-hidden="true"></div>
+    <!-- Right: Contact Info -->
+    <div class="md:w-1/2 w-full p-6 sm:p-8 md:p-10 flex flex-col justify-center text-white">
+      <h2 class="text-3xl sm:text-4xl font-extrabold mb-4">Get in Touch</h2>
+      <p class="text-slate-300 mb-6">Whether you want to discuss a project, collaborate, or just say hi — I’d love to hear from you.</p>
+
+      <form class="space-y-3">
+        <input type="text" placeholder="Your Name" class="w-full p-3 rounded-lg bg-white/10 border border-white/20 focus:outline-none focus:ring-2 focus:ring-brand" />
+        <input type="email" placeholder="Your Email" class="w-full p-3 rounded-lg bg-white/10 border border-white/20 focus:outline-none focus:ring-2 focus:ring-brand" />
+        <textarea placeholder="Your Message" rows="4" class="w-full p-3 rounded-lg bg-white/10 border border-white/20 focus:outline-none focus:ring-2 focus:ring-brand"></textarea>
+        <button type="submit" class="w-full bg-gradient-to-r from-brand to-brand-2 text-white font-semibold py-3 rounded-lg hover:opacity-90 transition">Send Message</button>
+      </form>
+
+      <!-- Social Icons -->
+      <div class="flex justify-center md:justify-start gap-5 pt-4">
+        <a href="https://github.com/ragu" target="_blank" class="hover:scale-110 transition">
+          <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/github.svg" alt="GitHub" class="w-10 h-10 invert">
+        </a>
+        <a href="https://linkedin.com/in/ragu" target="_blank" class="hover:scale-110 transition">
+          <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/linkedin.svg" alt="LinkedIn" class="w-10 h-10 invert">
+        </a>
+        <a href="https://discord.com/users/ragu" target="_blank" class="hover:scale-110 transition">
+          <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/discord.svg" alt="Discord" class="w-10 h-10 invert">
+        </a>
+        <a href="https://instagram.com/ragu" target="_blank" class="hover:scale-110 transition">
+          <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/instagram.svg" alt="Instagram" class="w-10 h-10 invert">
+        </a>
+        <a href="https://dev.to/ragu" target="_blank" class="hover:scale-110 transition">
+          <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/devdotto.svg" alt="Dev.to" class="w-10 h-10 invert">
+        </a>
+        <a href="https://medium.com/@ragu" target="_blank" class="hover:scale-110 transition">
+          <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/medium.svg" alt="Medium" class="w-10 h-10 invert">
+        </a>
+        <a href="https://youtube.com/@ragu" target="_blank" class="hover:scale-110 transition">
+          <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/youtube.svg" alt="YouTube" class="w-10 h-10 invert">
+        </a>
       </div>
-      <div class="p-4 rounded-2xl bg-card border border-slate-500/15">
-        <p class="text-muted">Interested in collaborating or hiring? Drop a note — I respond quickly.</p>
-        <form class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4" name="contact" method="POST" data-netlify="true">
-          <input type="hidden" name="form-name" value="contact">
-          <p class="md:col-span-1 m-0">
-            <label class="sr-only" for="name">Name</label>
-            <input id="name" name="name" placeholder="Your Name" required class="w-full p-3 rounded-xl bg-panel text-text border border-slate-500/25" />
-          </p>
-          <p class="md:col-span-1 m-0">
-            <label class="sr-only" for="email">Email</label>
-            <input id="email" name="email" type="email" placeholder="you@example.com" required class="w-full p-3 rounded-xl bg-panel text-text border border-slate-500/25" />
-          </p>
-          <p class="md:col-span-3 m-0">
-            <label class="sr-only" for="message">Message</label>
-            <textarea id="message" name="message" placeholder="Tell me about your project…" rows="3" class="w-full p-3 rounded-xl bg-panel text-text border border-slate-500/25"></textarea>
-          </p>
-          <div class="md:col-span-3">
-            <button class="inline-flex items-center gap-2 py-2.5 px-3.5 rounded-2xl border border-slate-500/20 shadow-lg shadow-black/35 transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:shadow-2xl hover:shadow-black/50 bg-transparent border-dashed border-slate-500/35" type="submit">Send Message</button>
-          </div>
-        </form>
-        <div class="flex gap-3 items-center flex-wrap" style="margin-top:1rem">
-          <a class="inline-flex items-center gap-2 py-2.5 px-3.5 rounded-2xl border border-slate-500/20 shadow-lg shadow-black/35 transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:shadow-2xl hover:shadow-black/50 bg-transparent border-dashed border-slate-500/35" href="mailto:hello@yourdomain.dev">hello@yourdomain.dev</a>
-          <a class="inline-flex items-center gap-2 py-2.5 px-3.5 rounded-2xl border border-slate-500/20 shadow-lg shadow-black/35 transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:shadow-2xl hover:shadow-black/50 bg-transparent border-dashed border-slate-500/35" href="https://github.com/yourusername" target="_blank" rel="noopener">GitHub</a>
-          <a class="inline-flex items-center gap-2 py-2.5 px-3.5 rounded-2xl border border-slate-500/20 shadow-lg shadow-black/35 transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:shadow-2xl hover:shadow-black/50 bg-transparent border-dashed border-slate-500/35" href="https://www.linkedin.com/in/yourprofile" target="_blank" rel="noopener">LinkedIn</a>
-        </div>
-      </div>
-    </section>
-	
-<!--Connect with me -->
-<section id="connect" class="bg-gray-50 py-16">
-  <div class="max-w-6xl mx-auto px-4 text-center">
-    <h2 class="text-3xl font-bold text-gray-800 mb-6">Connect with Me</h2>
-    <p class="text-gray-600 mb-12 max-w-2xl mx-auto">
-      Let’s connect and talk about DevOps, Cloud, or Open Source! I’m active on most platforms.
-    </p>
-
-    <div class="flex flex-wrap justify-center gap-6">
-      <!-- Discord -->
-      <a href="https://discord.com/users/your_discord_id" target="_blank"
-         class="group bg-white border border-gray-200 rounded-full p-4 shadow hover:bg-[#5865F2] hover:text-white transition">
-        <i class="fa-brands fa-discord text-2xl group-hover:scale-125 transition-transform"></i>
-      </a>
-
-      <!-- GitHub -->
-      <a href="https://github.com/your_github_username" target="_blank"
-         class="group bg-white border border-gray-200 rounded-full p-4 shadow hover:bg-black hover:text-white transition">
-        <i class="fa-brands fa-github text-2xl group-hover:scale-125 transition-transform"></i>
-      </a>
-
-      <!-- LinkedIn -->
-      <a href="https://linkedin.com/in/your_linkedin_id" target="_blank"
-         class="group bg-white border border-gray-200 rounded-full p-4 shadow hover:bg-[#0A66C2] hover:text-white transition">
-        <i class="fa-brands fa-linkedin text-2xl group-hover:scale-125 transition-transform"></i>
-      </a>
-
-      <!-- Instagram -->
-      <a href="https://instagram.com/your_instagram" target="_blank"
-         class="group bg-white border border-gray-200 rounded-full p-4 shadow hover:bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600 hover:text-white transition">
-        <i class="fa-brands fa-instagram text-2xl group-hover:scale-125 transition-transform"></i>
-      </a>
-
-      <!-- Gmail -->
-      <a href="mailto:yourname@gmail.com"
-         class="group bg-white border border-gray-200 rounded-full p-4 shadow hover:bg-red-500 hover:text-white transition">
-        <i class="fa-solid fa-envelope text-2xl group-hover:scale-125 transition-transform"></i>
-      </a>
-
-      <!-- YouTube -->
-      <a href="https://www.youtube.com/@your_channel" target="_blank"
-         class="group bg-white border border-gray-200 rounded-full p-4 shadow hover:bg-red-600 hover:text-white transition">
-        <i class="fa-brands fa-youtube text-2xl group-hover:scale-125 transition-transform"></i>
-      </a>
-
-      <!-- Dev.to -->
-      <a href="https://dev.to/your_username" target="_blank"
-         class="group bg-white border border-gray-200 rounded-full p-4 shadow hover:bg-black hover:text-white transition">
-        <i class="fa-brands fa-dev text-2xl group-hover:scale-125 transition-transform"></i>
-      </a>
-
-      <!-- Medium -->
-      <a href="https://medium.com/@your_username" target="_blank"
-         class="group bg-white border border-gray-200 rounded-full p-4 shadow hover:bg-green-700 hover:text-white transition">
-        <i class="fa-brands fa-medium text-2xl group-hover:scale-125 transition-transform"></i>
-      </a>
+    </div>
     </div>
   </div>
 </section>
 
-
-<!--Connect with me ends -->
-
-<!--contact -->
-
-<!--contact -->
+<!--contact ends-->
 
     <footer class="mt-10 border-t border-slate-500/15 pt-5 text-muted text-sm flex items-center justify-between gap-4 flex-wrap flex-col md:flex-row text-center md:text-left">
-      <span>© <span id="year"></span> kaustubh. Built with semantic HTML, accessible components, and a sprinkle of CSS magic.</span>
+      <span>© <span id="year"></span> kaustubh. Built with love, accessible components, and a sprinkle of CSS magic.</span>
       <div class="flex gap-3 items-center flex-wrap">
         <a class="text-brand" href="#">Back to top ↑</a>
       </div>
