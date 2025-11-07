@@ -84,8 +84,9 @@
       margin: 0; 
       /* Base font and colors are now handled by Tailwind classes on the <body> tag */
       /* Complex background gradient remains */
-      background: radial-gradient(1200px 600px at 10% -10%, rgba(34,211,238,.08), transparent 60%), radial-gradient(1200px 600px at 110% 10%, rgba(14,165,233,.10), transparent 60%), var(--bg);
-      line-height: 1.6;
+	  
+      /* background: radial-gradient(1200px 600px at 10% -10%, rgba(34,211,238,.08), transparent 60%), radial-gradient(1200px 600px at 110% 10%, rgba(14,165,233,.10), transparent 60%), var(--bg);
+      line-height: 1.6; */
     }
 
     /* Star and flying object animation CSS */
@@ -242,82 +243,141 @@
  
  
 <!-- SKILLS -->
+
+<!-- SKILLS -->
     <section class="py-9" id="skills">
       <div class="flex items-center justify-between gap-4 mb-4">
-        <h2 class="m-0 text-xl font-semibold tracking-wide">Skills & Tools</h2>
+        <h2 class="m-0 text-xl font-semibold tracking-wide">Skills & Expertise Summary</h2>
         <div class="h-px bg-gradient-to-r from-slate-500/40 to-slate-500/5 flex-1" aria-hidden="true"></div>
       </div>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div class="p-4 rounded-2xl bg-card border border-slate-500/15">
-          <h3 class="text-lg font-semibold">DevOps</h3>
-          <p class="text-muted my-2">Kubernetes, Docker, Terraform, CI/CD, Observability</p>
+          <h3 class="text-lg font-semibold flex items-center gap-2"><span class="text-brand text-2xl" aria-hidden="true">☁️</span> DevOps & Cloud</h3>
+          <p class="text-muted my-2">Core expertise in resilient cloud infrastructure, automation, and observability for mission-critical systems.</p>
           <div class="flex flex-wrap gap-1.5" style="margin-top:.5rem">
             <span class="inline-flex items-center gap-1.5 py-1 px-2.5 text-xs rounded-full border border-slate-500/25 text-muted bg-panel/80">GCP (GCA track)</span>
-            <span class="inline-flex items-center gap-1.5 py-1 px-2.5 text-xs rounded-full border border-slate-500/25 text-muted bg-panel/80">AWS</span>
+            <span class="inline-flex items-center gap-1.5 py-1 px-2.5 text-xs rounded-full border border-slate-500/25 text-muted bg-panel/80">Kubernetes</span>
+            <span class="inline-flex items-center gap-1.5 py-1 px-2.5 text-xs rounded-full border border-slate-500/25 text-muted bg-panel/80">Terraform</span>
             <span class="inline-flex items-center gap-1.5 py-1 px-2.5 text-xs rounded-full border border-slate-500/25 text-muted bg-panel/80">Linux/AIX</span>
             <span class="inline-flex items-center gap-1.5 py-1 px-2.5 text-xs rounded-full border border-slate-500/25 text-muted bg-panel/80">Grafana/ELK</span>
-            <span class="inline-flex items-center gap-1.5 py-1 px-2.5 text-xs rounded-full border border-slate-500/25 text-muted bg-panel/80">GitHub Actions</span>
           </div>
         </div>
         <div class="p-4 rounded-2xl bg-card border border-slate-500/15">
-          <h3 class="text-lg font-semibold">Generative AI</h3>
-          <p class="text-muted my-2">RAG, LangGraph, MCP, embeddings, safety/guardrails, evals</p>
+          <h3 class="text-lg font-semibold flex items-center gap-2"><span class="text-brand text-2xl" aria-hidden="true">🧠</span> Generative AI</h3>
+          <p class="text-muted my-2">Designing and deploying intelligent RAG, tool-use agents, and structured LLM outputs in production environments.</p>
           <div class="flex flex-wrap gap-1.5" style="margin-top:.5rem">
+            <span class="inline-flex items-center gap-1.5 py-1 px-2.5 text-xs rounded-full border border-slate-500/25 text-muted bg-panel/80">Agentic RAG</span>
+            <span class="inline-flex items-center gap-1.5 py-1 px-2.5 text-xs rounded-full border border-slate-500/25 text-muted bg-panel/80">LangGraph</span>
             <span class="inline-flex items-center gap-1.5 py-1 px-2.5 text-xs rounded-full border border-slate-500/25 text-muted bg-panel/80">Gemini Flash</span>
             <span class="inline-flex items-center gap-1.5 py-1 px-2.5 text-xs rounded-full border border-slate-500/25 text-muted bg-panel/80">Vector DB</span>
-            <span class="inline-flex items-center gap-1.5 py-1 px-2.5 text-xs rounded-full border border-slate-500/25 text-muted bg-panel/80">Prompting</span>
-            <span class="inline-flex items-center gap-1.5 py-1 px-2.5 text-xs rounded-full border border-slate-500/25 text-muted bg-panel/80">Fine-tuning</span>
-            <span class="inline-flex items-center gap-1.5 py-1 px-2.5 text-xs rounded-full border border-slate-500/25 text-muted bg-panel/80">Agentic RAG</span>
+            <span class="inline-flex items-center gap-1.5 py-1 px-2.5 text-xs rounded-full border border-slate-500/25 text-muted bg-panel/80">Guardrails</span>
           </div>
         </div>
         <div class="p-4 rounded-2xl bg-card border border-slate-500/15">
-          <h3 class="text-lg font-semibold">Cloud</h3>
-          <p class="text-muted my-2">GCP , AWS </p>
+          <h3 class="text-lg font-semibold flex items-center gap-2"><span class="text-brand text-2xl" aria-hidden="true">💻</span> Software & UX</h3>
+          <p class="text-muted my-2">Hands-on experience with Python-based backends and front-end development, focusing on performance and accessibility.</p>
           <div class="flex flex-wrap gap-1.5" style="margin-top:.5rem">
-            <span class="inline-flex items-center gap-1.5 py-1 px-2.5 text-xs rounded-full border border-slate-500/25 text-muted bg-panel/80">Design Systems</span>
-            <span class="inline-flex items-center gap-1.5 py-1 px-2.5 text-xs rounded-full border border-slate-500/25 text-muted bg-panel/80">Carbon</span>
-            <span class="inline-flex items-center gap-1.5 py-1 px-2.5 text-xs rounded-full border border-slate-500/25 text-muted bg-panel/80">Accessibility</span>
+            <span class="inline-flex items-center gap-1.5 py-1 px-2.5 text-xs rounded-full border border-slate-500/25 text-muted bg-panel/80">Python/Java</span>
+            <span class="inline-flex items-center gap-1.5 py-1 px-2.5 text-xs rounded-full border border-slate-500/25 text-muted bg-panel/80">Flask/FastAPI</span>
+            <span class="inline-flex items-center gap-1.5 py-1 px-2.5 text-xs rounded-full border border-slate-500/25 text-muted bg-panel/80">Carbon Design</span>
             <span class="inline-flex items-center gap-1.5 py-1 px-2.5 text-xs rounded-full border border-slate-500/25 text-muted bg-panel/80">Performance</span>
-          </div>
-        </div>
-		<div class="p-4 rounded-2xl bg-card border border-slate-500/15">
-          <h3 class="text-lg font-semibold">Software</h3>
-          <p class="text-muted my-2">Python, Java, Flask, FastAPI, HTML/CSS/JS</p>
-          <div class="flex flex-wrap gap-1.5" style="margin-top:.5rem">
-            <span class="inline-flex items-center gap-1.5 py-1 px-2.5 text-xs rounded-full border border-slate-500/25 text-muted bg-panel/80">Design Systems</span>
-            <span class="inline-flex items-center gap-1.5 py-1 px-2.5 text-xs rounded-full border border-slate-500/25 text-muted bg-panel/80">Carbon</span>
             <span class="inline-flex items-center gap-1.5 py-1 px-2.5 text-xs rounded-full border border-slate-500/25 text-muted bg-panel/80">Accessibility</span>
-            <span class="inline-flex items-center gap-1.5 py-1 px-2.5 text-xs rounded-full border border-slate-500/25 text-muted bg-panel/80">Performance</span>
-          </div>
-        </div>
-		<div class="p-4 rounded-2xl bg-card border border-slate-500/15">
-          <h3 class="text-lg font-semibold">Software</h3>
-          <p class="text-muted my-2">Python, Java, Flask, FastAPI, HTML/CSS/JS</p>
-          <div class="flex flex-wrap gap-1.5" style="margin-top:.5rem">
-            <span class="inline-flex items-center gap-1.5 py-1 px-2.5 text-xs rounded-full border border-slate-500/25 text-muted bg-panel/80">Design Systems</span>
-            <span class="inline-flex items-center gap-1.5 py-1 px-2.5 text-xs rounded-full border border-slate-500/25 text-muted bg-panel/80">Carbon</span>
-            <span class="inline-flex items-center gap-1.5 py-1 px-2.5 text-xs rounded-full border border-slate-500/25 text-muted bg-panel/80">Accessibility</span>
-            <span class="inline-flex items-center gap-1.5 py-1 px-2.5 text-xs rounded-full border border-slate-500/25 text-muted bg-panel/80">Performance</span>
-          </div>
-        </div>
-		<div class="p-4 rounded-2xl bg-card border border-slate-500/15">
-          <h3 class="text-lg font-semibold">Software</h3>
-          <p class="text-muted my-2">Python, Java, Flask, FastAPI, HTML/CSS/JS</p>
-          <div class="flex flex-wrap gap-1.5" style="margin-top:.5rem">
-            <span class="inline-flex items-center gap-1.5 py-1 px-2.5 text-xs rounded-full border border-slate-500/25 text-muted bg-panel/80">Design Systems</span>
-            <span class="inline-flex items-center gap-1.5 py-1 px-2.5 text-xs rounded-full border border-slate-500/25 text-muted bg-panel/80">Carbon</span>
-            <span class="inline-flex items-center gap-1.5 py-1 px-2.5 text-xs rounded-full border border-slate-500/25 text-muted bg-panel/80">Accessibility</span>
-            <span class="inline-flex items-center gap-1.5 py-1 px-2.5 text-xs rounded-full border border-slate-500/25 text-muted bg-panel/80">Performance</span>
           </div>
         </div>
       </div>
-	  
-	  
-	  
+    </section>
+
+    <!-- NEW: TECH STACK & ECOSYSTEM -->
+    <section class="py-9 border-t border-slate-500/15" id="tools">
+      <div class="flex items-center justify-between gap-4 mb-4">
+        <h2 class="m-0 text-xl font-semibold tracking-wide">Tech Stack & Ecosystem</h2>
+        <div class="h-px bg-gradient-to-r from-slate-500/40 to-slate-500/5 flex-1" aria-hidden="true"></div>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Infrastructure as Code -->
+        <div class="p-5 rounded-2xl bg-card border border-slate-500/15">
+          <h3 class="text-lg font-semibold flex items-center gap-2 mb-2"><span class="text-brand text-2xl" aria-hidden="true">⚙️</span> Infrastructure as Code (IaC)</h3>
+          <div class="flex flex-wrap gap-2">
+            <span class="inline-flex items-center gap-1.5 py-1.5 px-3 text-sm rounded-full border border-brand/25 text-text bg-brand/10">Terraform</span>
+            <span class="inline-flex items-center gap-1.5 py-1.5 px-3 text-sm rounded-full border border-brand/25 text-text bg-brand/10">Ansible</span>
+            <span class="inline-flex items-center gap-1.5 py-1.5 px-3 text-sm rounded-full border border-brand/25 text-text bg-brand/10">Helm</span>
+            <span class="inline-flex items-center gap-1.5 py-1.5 px-3 text-sm rounded-full border border-brand/25 text-text bg-brand/10">Packer</span>
+          </div>
+        </div>
+        <!-- CI/CD & Orchestration -->
+        <div class="p-5 rounded-2xl bg-card border border-slate-500/15">
+          <h3 class="text-lg font-semibold flex items-center gap-2 mb-2"><span class="text-brand text-2xl" aria-hidden="true">🔄</span> CI/CD & Orchestration</h3>
+          <div class="flex flex-wrap gap-2">
+            <span class="inline-flex items-center gap-1.5 py-1.5 px-3 text-sm rounded-full border border-brand/25 text-text bg-brand/10">Jenkins</span>
+            <span class="inline-flex items-center gap-1.5 py-1.5 px-3 text-sm rounded-full border border-brand/25 text-text bg-brand/10">GitLab CI</span>
+            <span class="inline-flex items-center gap-1.5 py-1.5 px-3 text-sm rounded-full border border-brand/25 text-text bg-brand/10">Argo CD</span>
+            <span class="inline-flex items-center gap-1.5 py-1.5 px-3 text-sm rounded-full border border-brand/25 text-text bg-brand/10">Artifactory</span>
+            <span class="inline-flex items-center gap-1.5 py-1.5 px-3 text-sm rounded-full border border-brand/25 text-text bg-brand/10">Docker</span>
+          </div>
+        </div>
+        <!-- Databases & Data Stores -->
+        <div class="p-5 rounded-2xl bg-card border border-slate-500/15">
+          <h3 class="text-lg font-semibold flex items-center gap-2 mb-2"><span class="text-brand text-2xl" aria-hidden="true">💾</span> Databases & Data Stores</h3>
+          <div class="flex flex-wrap gap-2">
+            <span class="inline-flex items-center gap-1.5 py-1.5 px-3 text-sm rounded-full border border-brand/25 text-text bg-brand/10">Oracle Exadata</span>
+            <span class="inline-flex items-center gap-1.5 py-1.5 px-3 text-sm rounded-full border border-brand/25 text-text bg-brand/10">PostgreSQL</span>
+            <span class="inline-flex items-center gap-1.5 py-1.5 px-3 text-sm rounded-full border border-brand/25 text-text bg-brand/10">Redis</span>
+            <span class="inline-flex items-center gap-1.5 py-1.5 px-3 text-sm rounded-full border border-brand/25 text-text bg-brand/10">Pinecone (Vector)</span>
+          </div>
+        </div>
+        <!-- Observability & Monitoring -->
+        <div class="p-5 rounded-2xl bg-card border border-slate-500/15">
+          <h3 class="text-lg font-semibold flex items-center gap-2 mb-2"><span class="text-brand text-2xl" aria-hidden="true">👀</span> Observability & Monitoring</h3>
+          <div class="flex flex-wrap gap-2">
+            <span class="inline-flex items-center gap-1.5 py-1.5 px-3 text-sm rounded-full border border-brand/25 text-text bg-brand/10">Grafana</span>
+            <span class="inline-flex items-center gap-1.5 py-1.5 px-3 text-sm rounded-full border border-brand/25 text-text bg-brand/10">Prometheus</span>
+            <span class="inline-flex items-center gap-1.5 py-1.5 px-3 text-sm rounded-full border border-brand/25 text-text bg-brand/10">Splunk</span>
+            <span class="inline-flex items-center gap-1.5 py-1.5 px-3 text-sm rounded-full border border-brand/25 text-text bg-brand/10">ELK Stack</span>
+          </div>
+        </div>
+      </div>
     </section>
 <!-- SKILLS Section Ends --> 
  
- 
+
+
+<!-- -->
+<!-- AWARDS & CERTIFICATES -->
+    <section class="py-9 border-t border-slate-500/15" id="awards">
+      <div class="flex items-center justify-between gap-4 mb-4">
+        <h2 class="m-0 text-xl font-semibold tracking-wide">Certifications & Awards</h2>
+        <div class="h-px bg-gradient-to-r from-slate-500/40 to-slate-500/5 flex-1" aria-hidden="true"></div>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div class="p-4 rounded-2xl bg-card border border-slate-500/15 flex items-start gap-4 transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:border-brand/35 hover:shadow-2xl hover:shadow-black/40">
+          <span class="text-3xl text-brand" aria-hidden="true">🏆</span>
+          <div>
+            <h3 class="text-lg font-semibold mt-0">Google Cloud Architect</h3>
+            <p class="text-muted text-sm my-1">Professional Cloud Architect Certification (2025)</p>
+            <a class="text-xs text-brand hover:underline" href="#" target="_blank">View Credential</a>
+          </div>
+        </div>
+        <div class="p-4 rounded-2xl bg-card border border-slate-500/15 flex items-start gap-4 transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:border-brand/35 hover:shadow-2xl hover:shadow-black/40">
+          <span class="text-3xl text-brand" aria-hidden="true">🥇</span>
+          <div>
+            <h3 class="text-lg font-semibold mt-0">Tech Excellence Award</h3>
+            <p class="text-muted text-sm my-1">Quarterly Internal Award for CI/CD Pipeline Automation (2023)</p>
+            <a class="text-xs text-brand hover:underline" href="#" target="_blank">Details</a>
+          </div>
+        </div>
+        <div class="p-4 rounded-2xl bg-card border border-slate-500/15 flex items-start gap-4 transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:border-brand/35 hover:shadow-2xl hover:shadow-black/40">
+          <span class="text-3xl text-brand" aria-hidden="true">📜</span>
+          <div>
+            <h3 class="text-lg font-semibold mt-0">Certified Kubernetes Admin</h3>
+            <p class="text-muted text-sm my-1">Certified Kubernetes Administrator (CKA) by CNCF (2022)</p>
+            <a class="text-xs text-brand hover:underline" href="#" target="_blank">View Credential</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+<!-- Awards & certificates ends --> 
 
 
  
@@ -566,7 +626,7 @@ published to a private module registry.</p>
         View All on Dev.to
       </a>
 	  <br><br>
-	  <a href="blogs.html" target="_blank"
+	  <a href="blogs_merged.html" target="_blank"
          class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-3 rounded-full shadow-md hover:shadow-blue-500/30 transition-all duration-300">
         View All Merged
       </a>
@@ -663,6 +723,44 @@ published to a private module registry.</p>
  </section>
 <!-- Writing & Talks section Ends -->	
 	
+<!-- AWARDS & CERTIFICATES -->
+    <section class="py-9 border-t border-slate-500/15" id="awards">
+      <div class="flex items-center justify-between gap-4 mb-4">
+        <h2 class="m-0 text-xl font-semibold tracking-wide">Certifications & Awards</h2>
+        <div class="h-px bg-gradient-to-r from-slate-500/40 to-slate-500/5 flex-1" aria-hidden="true"></div>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div class="p-4 rounded-2xl bg-card border border-slate-500/15 flex items-start gap-4 transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:border-brand/35 hover:shadow-2xl hover:shadow-black/40">
+          <span class="text-3xl text-brand" aria-hidden="true">🏆</span>
+          <div>
+            <h3 class="text-lg font-semibold mt-0">Google Cloud Architect</h3>
+            <p class="text-muted text-sm my-1">Professional Cloud Architect Certification (2025)</p>
+            <a class="text-xs text-brand hover:underline" href="#" target="_blank">View Credential</a>
+          </div>
+        </div>
+        <div class="p-4 rounded-2xl bg-card border border-slate-500/15 flex items-start gap-4 transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:border-brand/35 hover:shadow-2xl hover:shadow-black/40">
+          <span class="text-3xl text-brand" aria-hidden="true">🥇</span>
+          <div>
+            <h3 class="text-lg font-semibold mt-0">Tech Excellence Award</h3>
+            <p class="text-muted text-sm my-1">Quarterly Internal Award for CI/CD Pipeline Automation (2023)</p>
+            <a class="text-xs text-brand hover:underline" href="#" target="_blank">Details</a>
+          </div>
+        </div>
+        <div class="p-4 rounded-2xl bg-card border border-slate-500/15 flex items-start gap-4 transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:border-brand/35 hover:shadow-2xl hover:shadow-black/40">
+          <span class="text-3xl text-brand" aria-hidden="true">📜</span>
+          <div>
+            <h3 class="text-lg font-semibold mt-0">Certified Kubernetes Admin</h3>
+            <p class="text-muted text-sm my-1">Certified Kubernetes Administrator (CKA) by CNCF (2022)</p>
+            <a class="text-xs text-brand hover:underline" href="#" target="_blank">View Credential</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+<!-- Awards & certificates ends --> 	
+	
+	
 <!-- Awards & Recognition Section -->
     <section class="py-9" id="writing">
       <div class="flex items-center justify-between gap-4 mb-4">
@@ -731,7 +829,7 @@ published to a private module registry.</p>
                 <!-- Card 1: Image Card -->
                 <div class="lg:col-span-1 bg-gray-900 rounded-2xl overflow-hidden flex flex-col justify-end p-6 md:p-8 relative min-h-[500px]">
                     <!-- Background Image -->
-                    <img src="https://placehold.co/600x800/4B5563/FFFFFF?text=Team+Meeting" 
+                    <img src="pic.png" 
                          alt="UX & UI Design" 
                          class="absolute inset-0 w-full h-full object-cover opacity-70"
                          onerror="this.src='https://placehold.co/600x800/4B5563/FFFFFF?text=Image+Not+Found'; this.onerror=null;">
@@ -835,7 +933,7 @@ published to a private module registry.</p>
                 <!-- Card 1: Website Development -->
                 <div class="bg-white rounded-xl overflow-hidden shadow-lg flex flex-col">
                     <img 
-                        src="https://placehold.co/600x400/CCCCCC/FFFFFF?text=Website+Dev" 
+                        src="pic2.png" 
                         alt="Website Development" 
                         class="w-full h-56 object-cover"
                         onerror="this.src='https://placehold.co/600x400/CCCCCC/FFFFFF?text=Image+Not+Found'; this.onerror=null;"
@@ -855,7 +953,7 @@ published to a private module registry.</p>
                 <!-- Card 2: Graphic Design -->
                 <div class="bg-white rounded-xl overflow-hidden shadow-lg flex flex-col">
                     <img 
-                        src="https://placehold.co/600x400/6366F1/FFFFFF?text=Graphic+Design" 
+                        src="pic3.jpg" 
                         alt="Graphic Design" 
                         class="w-full h-56 object-cover"
                         onerror="this.src='https://placehold.co/600x400/6366F1/FFFFFF?text=Image+Not+Found'; this.onerror=null;"
@@ -875,7 +973,7 @@ published to a private module registry.</p>
                 <!-- Card 3: App Development -->
                 <div class="bg-white rounded-xl overflow-hidden shadow-lg flex flex-col">
                     <img 
-                        src="https://placehold.co/600x400/1F2937/FFFFFF?text=App+Development" 
+                        src="pic4.png" 
                         alt="App Development" 
                         class="w-full h-56 object-cover"
                         onerror="this.src='https://placehold.co/600x400/1F2937/FFFFFF?text=Image+Not+Found'; this.onerror=null;"
@@ -966,13 +1064,14 @@ published to a private module registry.</p>
     {
       "@context": "https://schema.org",
       "@type": "Person",
-      "name": "kaustubh",
-      "url": "https://yourusername.github.io",
+      "name": "kaustubh yerkade",
+      "url": "https://kaustubhyerkade.github.io",
       "jobTitle": "DevOps & Generative AI Engineer",
       "sameAs": [
-        "https://github.com/yourusername",
-        "https://www.linkedin.com/in/yourprofile",
-        "https://kaustubh.medium.com"
+        "https://github.com/kaustubhyerkade",
+        "https://www.linkedin.com/in/kaustubhyerkade",
+        "https://dev.to/kaustubhyerkade"
+		
       ]
     }
   </script>
