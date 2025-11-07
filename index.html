@@ -79,6 +79,7 @@
     [data-theme="light"] { --bg:#f6f7fb; --panel:#ffffff; --muted:#475569; --text:#0f172a; --card:#ffffff; }
 
     * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; } /* Added for smooth anchor scrolling */
     html, body { height: 100%; }
     body {
       margin: 0; 
@@ -162,6 +163,19 @@
 	100% { transform: rotate(0deg); }
 	}
 
+    /* --- NEW: Scroll Animation --- */
+    .scroll-animate {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+      will-change: opacity, transform;
+    }
+    .scroll-animate.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    /* --- End of Scroll Animation --- */
+
   </style>
 </head>
 
@@ -179,7 +193,7 @@
     <div class="flex items-center justify-between gap-4 py-3 px-5 max-w-6xl mx-auto">
       <div class="flex items-center gap-2.5 font-bold tracking-wide">
         <div class="w-7 h-7 rounded-[9px] bg-gradient-to-tr from-brand to-brand-2 grid place-items-center text-white font-extrabold shadow-brand-logo" aria-hidden="true">KY</div>
-        <a href="#" aria-label="Go to top" class="text-text no-underline opacity-90 font-semibold">Kaustubh Yerkade</a>
+        <a href="#" aria-label="Go to top" class="text-text no-underline opacity-90 font-semibold">kaustubh yerkade</a>
       </div>
       <nav aria-label="Primary">
         <button id="menu-toggle" class="md:hidden cursor-pointer text-2xl bg-none border-none text-text z-60" aria-controls="nav-links" aria-expanded="false">☰</button>
@@ -208,7 +222,7 @@
 <!-- HERO -->
 <section class="grid grid-cols-1 md:grid-cols-[1.1fr,0.9fr] gap-8 py-8 md:py-14 items-center relative text-center md:text-left" id="home">
       <!-- Hero text content -->
-      <div class="hero-content order-2 md:order-1 backdrop-saturate-125 backdrop-blur-lg bg-panel/85 border-b border-slate-500/15">
+      <div class="hero-content order-2 md:order-1 backdrop-saturate-125 backdrop-blur-lg bg-panel/85 border-b border-slate-500/15 scroll-animate">
         <div class="inline-flex items-center gap-2 py-1 px-2.5 rounded-full border border-slate-500/25 bg-panel/80 text-xs text-muted">🚀 DevOps × Generative AI</div>
         <h1 class="text-3xl sm:text-4xl lg:text-5xl leading-tight my-2.5 font-extrabold tracking-tight">Hi<span style="display:inline-block; animation:wave 1.2s infinite; transform-origin:70% 70%;">👋🏻</span>...I’m <span class="bg-gradient-to-r from-brand to-brand-2 bg-clip-text text-transparent">kaustubh</span><br>building resilient cloud systems and <span class="bg-gradient-to-r from-brand to-brand-2 bg-clip-text text-transparent">AI products</span> that ship.</h1>
         <p class="text-base sm:text-lg text-muted max-w-prose mx-auto md:mx-0">DevOps engineer with a knack for GenAI. I automate deployments, craft scalable cloud architectures, and build practical AI features like RAG chatbots, smart product navigation, and risk scoring tools. Currently exploring Google Cloud Architect patterns and AI-first UX on the web.</p>
@@ -228,7 +242,7 @@
         </div>
       </div>
       <!-- Profile pic and highlights card container -->
-      <div class="flex flex-col items-center md:items-stretch gap-6 order-1 md:order-2">
+      <div class="flex flex-col items-center md:items-stretch gap-6 order-1 md:order-2 scroll-animate">
         <!-- Profile Picture -->
         <div class="mb-0">
           
@@ -246,12 +260,12 @@
 
 <!-- SKILLS -->
     <section class="py-9" id="skills">
-      <div class="flex items-center justify-between gap-4 mb-4">
+      <div class="flex items-center justify-between gap-4 mb-4 scroll-animate">
         <h2 class="m-0 text-xl font-semibold tracking-wide">Skills & Expertise Summary</h2>
         <div class="h-px bg-gradient-to-r from-slate-500/40 to-slate-500/5 flex-1" aria-hidden="true"></div>
       </div>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div class="p-4 rounded-2xl bg-card border border-slate-500/15">
+        <div class="p-4 rounded-2xl bg-card border border-slate-500/15 scroll-animate">
           <h3 class="text-lg font-semibold flex items-center gap-2"><span class="text-brand text-2xl" aria-hidden="true">☁️</span> DevOps & Cloud</h3>
           <p class="text-muted my-2">Core expertise in resilient cloud infrastructure, automation, and observability for mission-critical systems.</p>
           <div class="flex flex-wrap gap-1.5" style="margin-top:.5rem">
@@ -262,7 +276,7 @@
             <span class="inline-flex items-center gap-1.5 py-1 px-2.5 text-xs rounded-full border border-slate-500/25 text-muted bg-panel/80">Grafana/ELK</span>
           </div>
         </div>
-        <div class="p-4 rounded-2xl bg-card border border-slate-500/15">
+        <div class="p-4 rounded-2xl bg-card border border-slate-500/15 scroll-animate">
           <h3 class="text-lg font-semibold flex items-center gap-2"><span class="text-brand text-2xl" aria-hidden="true">🧠</span> Generative AI</h3>
           <p class="text-muted my-2">Designing and deploying intelligent RAG, tool-use agents, and structured LLM outputs in production environments.</p>
           <div class="flex flex-wrap gap-1.5" style="margin-top:.5rem">
@@ -273,7 +287,7 @@
             <span class="inline-flex items-center gap-1.5 py-1 px-2.5 text-xs rounded-full border border-slate-500/25 text-muted bg-panel/80">Guardrails</span>
           </div>
         </div>
-        <div class="p-4 rounded-2xl bg-card border border-slate-500/15">
+        <div class="p-4 rounded-2xl bg-card border border-slate-500/15 scroll-animate">
           <h3 class="text-lg font-semibold flex items-center gap-2"><span class="text-brand text-2xl" aria-hidden="true">💻</span> Software & UX</h3>
           <p class="text-muted my-2">Hands-on experience with Python-based backends and front-end development, focusing on performance and accessibility.</p>
           <div class="flex flex-wrap gap-1.5" style="margin-top:.5rem">
@@ -289,13 +303,13 @@
 
     <!-- NEW: TECH STACK & ECOSYSTEM -->
     <section class="py-9 border-t border-slate-500/15" id="tools">
-      <div class="flex items-center justify-between gap-4 mb-4">
+      <div class="flex items-center justify-between gap-4 mb-4 scroll-animate">
         <h2 class="m-0 text-xl font-semibold tracking-wide">Tech Stack & Ecosystem</h2>
         <div class="h-px bg-gradient-to-r from-slate-500/40 to-slate-500/5 flex-1" aria-hidden="true"></div>
       </div>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <!-- Infrastructure as Code -->
-        <div class="p-5 rounded-2xl bg-card border border-slate-500/15">
+        <div class="p-5 rounded-2xl bg-card border border-slate-500/15 scroll-animate">
           <h3 class="text-lg font-semibold flex items-center gap-2 mb-2"><span class="text-brand text-2xl" aria-hidden="true">⚙️</span> Infrastructure as Code (IaC)</h3>
           <div class="flex flex-wrap gap-2">
             <span class="inline-flex items-center gap-1.5 py-1.5 px-3 text-sm rounded-full border border-brand/25 text-text bg-brand/10">Terraform</span>
@@ -305,7 +319,7 @@
           </div>
         </div>
         <!-- CI/CD & Orchestration -->
-        <div class="p-5 rounded-2xl bg-card border border-slate-500/15">
+        <div class="p-5 rounded-2xl bg-card border border-slate-500/15 scroll-animate">
           <h3 class="text-lg font-semibold flex items-center gap-2 mb-2"><span class="text-brand text-2xl" aria-hidden="true">🔄</span> CI/CD & Orchestration</h3>
           <div class="flex flex-wrap gap-2">
             <span class="inline-flex items-center gap-1.5 py-1.5 px-3 text-sm rounded-full border border-brand/25 text-text bg-brand/10">Jenkins</span>
@@ -316,7 +330,7 @@
           </div>
         </div>
         <!-- Databases & Data Stores -->
-        <div class="p-5 rounded-2xl bg-card border border-slate-500/15">
+        <div class="p-5 rounded-2xl bg-card border border-slate-500/15 scroll-animate">
           <h3 class="text-lg font-semibold flex items-center gap-2 mb-2"><span class="text-brand text-2xl" aria-hidden="true">💾</span> Databases & Data Stores</h3>
           <div class="flex flex-wrap gap-2">
             <span class="inline-flex items-center gap-1.5 py-1.5 px-3 text-sm rounded-full border border-brand/25 text-text bg-brand/10">Oracle Exadata</span>
@@ -326,7 +340,7 @@
           </div>
         </div>
         <!-- Observability & Monitoring -->
-        <div class="p-5 rounded-2xl bg-card border border-slate-500/15">
+        <div class="p-5 rounded-2xl bg-card border border-slate-500/15 scroll-animate">
           <h3 class="text-lg font-semibold flex items-center gap-2 mb-2"><span class="text-brand text-2xl" aria-hidden="true">👀</span> Observability & Monitoring</h3>
           <div class="flex flex-wrap gap-2">
             <span class="inline-flex items-center gap-1.5 py-1.5 px-3 text-sm rounded-full border border-brand/25 text-text bg-brand/10">Grafana</span>
@@ -344,12 +358,12 @@
 <!-- -->
 <!-- AWARDS & CERTIFICATES -->
     <section class="py-9 border-t border-slate-500/15" id="awards">
-      <div class="flex items-center justify-between gap-4 mb-4">
+      <div class="flex items-center justify-between gap-4 mb-4 scroll-animate">
         <h2 class="m-0 text-xl font-semibold tracking-wide">Certifications & Awards</h2>
         <div class="h-px bg-gradient-to-r from-slate-500/40 to-slate-500/5 flex-1" aria-hidden="true"></div>
       </div>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        <div class="p-4 rounded-2xl bg-card border border-slate-500/15 flex items-start gap-4 transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:border-brand/35 hover:shadow-2xl hover:shadow-black/40">
+        <div class="p-4 rounded-2xl bg-card border border-slate-500/15 flex items-start gap-4 transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:border-brand/35 hover:shadow-2xl hover:shadow-black/40 scroll-animate">
           <span class="text-3xl text-brand" aria-hidden="true">🏆</span>
           <div>
             <h3 class="text-lg font-semibold mt-0">Google Cloud Architect</h3>
@@ -357,7 +371,7 @@
             <a class="text-xs text-brand hover:underline" href="#" target="_blank">View Credential</a>
           </div>
         </div>
-        <div class="p-4 rounded-2xl bg-card border border-slate-500/15 flex items-start gap-4 transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:border-brand/35 hover:shadow-2xl hover:shadow-black/40">
+        <div class="p-4 rounded-2xl bg-card border border-slate-500/15 flex items-start gap-4 transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:border-brand/35 hover:shadow-2xl hover:shadow-black/40 scroll-animate">
           <span class="text-3xl text-brand" aria-hidden="true">🥇</span>
           <div>
             <h3 class="text-lg font-semibold mt-0">Tech Excellence Award</h3>
@@ -365,7 +379,7 @@
             <a class="text-xs text-brand hover:underline" href="#" target="_blank">Details</a>
           </div>
         </div>
-        <div class="p-4 rounded-2xl bg-card border border-slate-500/15 flex items-start gap-4 transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:border-brand/35 hover:shadow-2xl hover:shadow-black/40">
+        <div class="p-4 rounded-2xl bg-card border border-slate-500/15 flex items-start gap-4 transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:border-brand/35 hover:shadow-2xl hover:shadow-black/40 scroll-animate">
           <span class="text-3xl text-brand" aria-hidden="true">📜</span>
           <div>
             <h3 class="text-lg font-semibold mt-0">Certified Kubernetes Admin</h3>
@@ -388,7 +402,7 @@
   <div class="py-9">
     
     
-      <div class="flex items-center justify-between gap-4 mb-4">
+      <div class="flex items-center justify-between gap-4 mb-4 scroll-animate">
       <h2 class="m-0 text-xl font-semibold tracking-wide">Education</h2>
       <div class="h-px bg-gradient-to-r from-slate-500/40 to-slate-500/5 flex-1" aria-hidden="true"></div>
       </div>	
@@ -396,7 +410,7 @@
 	
     <div class="space-y-8">
       <!-- Education Item 1 -->
-      <div class="flex flex-col md:flex-row items-start md:items-center md:space-x-6 bg-card p-6 rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300">
+      <div class="flex flex-col md:flex-row items-start md:items-center md:space-x-6 bg-card p-6 rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300 scroll-animate">
         <div class="flex-shrink-0 mb-4 md:mb-0">
           <span class="inline-block bg-blue-500 text-white font-bold px-4 py-2 rounded-full">2016 - 2019</span>
         </div>
@@ -408,7 +422,7 @@
       </div>
 
       <!-- Education Item 2 -->
-      <div class="flex flex-col md:flex-row items-start md:items-center md:space-x-6 bg-card p-6 rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300">
+      <div class="flex flex-col md:flex-row items-start md:items-center md:space-x-6 bg-card p-6 rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300 scroll-animate">
         <div class="flex-shrink-0 mb-4 md:mb-0">
           <span class="inline-block bg-green-500 text-white font-bold px-4 py-2 rounded-full">2013 - 2016 </span>
         </div>
@@ -429,7 +443,7 @@
 
 <!-- Highlighted Projects Green Section -->
 <section id="projects" class="pt-16">			
-		<div class="flex items-center justify-between gap-4 mb-4">
+		<div class="flex items-center justify-between gap-4 mb-4 scroll-animate">
         <h2 class="m-0 text-xl font-semibold tracking-wide">Featured Projects</h2>
         <div class="h-px bg-gradient-to-r from-slate-500/40 to-slate-500/5 flex-1" aria-hidden="true"></div>
         </div>
@@ -437,7 +451,7 @@
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
 
                     <!-- Project Card 1 -->
-                    <div class="bg-gradient-to-r from-slate-600 via-gray-700 to-gray-800 to-fuchsia-600 p-6 rounded-xl shadow-xl border border-white-700 transition duration-300 hover:shadow-2xl hover:border-accent-blue/50 transform hover:-translate-y-1">
+                    <div class="bg-gradient-to-r from-slate-600 via-gray-700 to-gray-800 to-fuchsia-600 p-6 rounded-xl shadow-xl border border-white-700 transition duration-300 hover:shadow-2xl hover:border-accent-blue/50 transform hover:-translate-y-1 scroll-animate">
                         <h3 class="text-xl font-semibold text-white text-accent-blue mb-2">Automated Blue-Green Deployment for Finance App</h3>
                         <p class="text-sm text-gray-400 mb-4">A zero-downtime deployment strategy using Kubernetes.</p>
                         <div class="mb-4">
@@ -455,7 +469,7 @@
                     </div>
 					
 					<!-- Project Card 1.1 -->
-                    <div class="bg-gradient-to-r from-slate-600 via-gray-700 to-gray-800 p-6 rounded-xl shadow-xl border border-white-700 transition duration-300 hover:shadow-2xl hover:border-accent-blue/50 transform hover:-translate-y-1">
+                    <div class="bg-gradient-to-r from-slate-600 via-gray-700 to-gray-800 p-6 rounded-xl shadow-xl border border-white-700 transition duration-300 hover:shadow-2xl hover:border-accent-blue/50 transform hover:-translate-y-1 scroll-animate">
                         <h3 class="text-xl font-semibold text-white text-accent-blue mb-2">Multi-Cloud K8s GitOps Pipeline</h3>
                         <p class="text-sm text-gray-400 mb-4">A fully automated GitOps workflow using ArgoCD to manage
 application deployments across EKS, GKE, and AKS clusters.</p>
@@ -474,7 +488,7 @@ application deployments across EKS, GKE, and AKS clusters.</p>
                     </div>
 
                     <!-- Project Card 2 -->
-                    <div class="bg-gradient-to-r from-slate-600 via-gray-700 to-gray-800 p-6 rounded-xl shadow-xl border border-gray-700 transition duration-300 hover:shadow-2xl hover:border-accent-blue/50 transform hover:-translate-y-1">
+                    <div class="bg-gradient-to-r from-slate-600 via-gray-700 to-gray-800 p-6 rounded-xl shadow-xl border border-gray-700 transition duration-300 hover:shadow-2xl hover:border-accent-blue/50 transform hover:-translate-y-1 scroll-animate">
                         <h3 class="text-xl font-semibold text-white text-accent-blue mb-2">Multi-Cloud Observability Stack</h3>
                         <p class="text-sm text-gray-400 mb-4">Centralized logging and metrics across AWS and GCP environments.</p>
                         <div class="mb-4">
@@ -492,7 +506,7 @@ application deployments across EKS, GKE, and AKS clusters.</p>
                     </div>
 					
 					<!-- Project Card 2.2 -->
-                    <div class="bg-gradient-to-r from-slate-600 via-gray-700 to-gray-800 p-6 rounded-xl shadow-xl border border-gray-700 transition duration-300 hover:shadow-2xl hover:border-accent-blue/50 transform hover:-translate-y-1">
+                    <div class="bg-gradient-to-r from-slate-600 via-gray-700 to-gray-800 p-6 rounded-xl shadow-xl border border-gray-700 transition duration-300 hover:shadow-2xl hover:border-accent-blue/50 transform hover:-translate-y-1 scroll-animate">
                         <h3 class="text-xl font-semibold text-white text-accent-blue mb-2">Automated Security & Compliance</h3>
                         <p class="text-sm text-gray-400 mb-4">Integrated static analysis (SAST) and container vulnerability scanning directly into the GitLab CI pipeline
 .</p>
@@ -511,7 +525,7 @@ application deployments across EKS, GKE, and AKS clusters.</p>
                     </div>
 
                     <!-- Project Card 3 -->
-                    <div class="bg-gradient-to-r from-slate-600 via-gray-700 to-gray-800 p-6 rounded-xl shadow-xl border border-gray-700 transition duration-300 hover:shadow-2xl hover:border-accent-blue/50 transform hover:-translate-y-1">
+                    <div class="bg-gradient-to-r from-slate-600 via-gray-700 to-gray-800 p-6 rounded-xl shadow-xl border border-gray-700 transition duration-300 hover:shadow-2xl hover:border-accent-blue/50 transform hover:-translate-y-1 scroll-animate">
                         <h3 class="text-xl font-semibold text-white text-accent-blue mb-2">Automated Patching Pipeline with Ansible</h3>
                         <p class="text-sm text-gray-400 mb-4">Ensuring fleet security and compliance with zero human touch.</p>
                         <div class="mb-4">
@@ -529,7 +543,7 @@ application deployments across EKS, GKE, and AKS clusters.</p>
                     </div>
 					
 					<!-- Project Card 3.3 -->
-                    <div class="bg-gradient-to-r from-slate-600 via-gray-700 to-gray-800 p-6 rounded-xl shadow-xl border border-gray-700 transition duration-300 hover:shadow-2xl hover:border-accent-blue/50 transform hover:-translate-y-1">
+                    <div class="bg-gradient-to-r from-slate-600 via-gray-700 to-gray-800 p-6 rounded-xl shadow-xl border border-gray-700 transition duration-300 hover:shadow-2xl hover:border-accent-blue/50 transform hover:-translate-y-1 scroll-animate">
                         <h3 class="text-xl font-semibold text-white text-accent-blue mb-2">Infrastructure as Code Modules</h3>
                         <p class="text-sm text-gray-400 mb-4">Reusable Terraform modules for provisioning common AWS/GCP resources, 
 published to a private module registry.</p>
@@ -552,12 +566,12 @@ published to a private module registry.</p>
 
 <!-- EXPERIENCE -->
 <section class="py-9" id="experience">
-      <div class="flex items-center justify-between gap-4 mb-4">
+      <div class="flex items-center justify-between gap-4 mb-4 scroll-animate">
         <h2 class="m-0 text-xl font-semibold tracking-wide">Experience</h2>
         <div class="h-px bg-gradient-to-r from-slate-500/40 to-slate-500/5 flex-1" aria-hidden="true"></div>
       </div>
       <div class="timeline" aria-label="Work timeline">
-        <div class="t-item p-3 pl-5 my-1.5 border border-slate-500/15 rounded-2xl bg-card">
+        <div class="t-item p-3 pl-5 my-1.5 border border-slate-500/15 rounded-2xl bg-card scroll-animate">
           <div class="flex gap-3 items-center flex-wrap" style="justify-content:space-between">
             <strong>DevOps Engineer · Fintech</strong>
             <span class="text-muted">2019 - Present</span> 
@@ -568,7 +582,7 @@ published to a private module registry.</p>
             <li>Designed CI/CD pipelines, IaC, and observability with SLOs and incident playbooks.</li>
           </ul>
         </div>
-        <div class="t-item p-3 pl-5 my-1.5 border border-slate-500/15 rounded-2xl bg-card">
+        <div class="t-item p-3 pl-5 my-1.5 border border-slate-500/15 rounded-2xl bg-card scroll-animate">
           <div class="flex gap-3 items-center flex-wrap" style="justify-content:space-between">
             <strong>Senior Analyst · Fintech</strong>
             <span class="text-muted">2024 - Present</span>
@@ -580,7 +594,7 @@ published to a private module registry.</p>
 			
           </ul>
         </div>
-		<div class="t-item p-3 pl-5 my-1.5 border border-slate-500/15 rounded-2xl bg-card">
+		<div class="t-item p-3 pl-5 my-1.5 border border-slate-500/15 rounded-2xl bg-card scroll-animate">
           <div class="flex gap-3 items-center flex-wrap" style="justify-content:space-between">
             <strong>Software Engineer  · Ed-tech</strong>
             <span class="text-muted">2019 - 2020</span>
@@ -608,7 +622,7 @@ published to a private module registry.</p>
 <!-- dynamic blogs -->
 <section id="blogs" class="bg-transparent text-black-100 py-20">
 
-      <div class="flex items-center justify-between gap-4 mb-4">
+      <div class="flex items-center justify-between gap-4 mb-4 scroll-animate">
         <h2 class="m-0 text-xl font-semibold tracking-wide">My Blogs & Articles</h2>
         <div class="h-px bg-gradient-to-r from-slate-500/40 to-slate-500/5 flex-1" aria-hidden="true"></div>
       </div>
@@ -620,7 +634,7 @@ published to a private module registry.</p>
     <div id="blogGrid" class="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-8"></div>
 
     <!-- CTA -->
-    <div class="text-center mt-14">
+    <div class="text-center mt-14 scroll-animate">
       <a href="blogs.html" target="_blank"
          class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-3 rounded-full shadow-md hover:shadow-blue-500/30 transition-all duration-300">
         View All on Dev.to
@@ -635,6 +649,9 @@ published to a private module registry.</p>
 </section>
 
 <script>
+  // This script is intentionally outside the main DOMContentLoaded
+  // as it needs to run to fetch blog posts.
+  // We'll add the scroll-animate class to the generated cards.
   const blogGrid = document.getElementById('blogGrid');
 
   async function fetchDevToArticles(username) {
@@ -649,7 +666,7 @@ published to a private module registry.</p>
       const latest = data.slice(0, 6); // Show latest 6 posts
       blogGrid.innerHTML = latest.map(article => `
         <a href="${article.url}" target="_blank"
-           class="group relative block bg-gray-800 rounded-2xl overflow-hidden shadow-lg hover:shadow-blue-500/20 transition-all duration-300">
+           class="group relative block bg-gray-800 rounded-2xl overflow-hidden shadow-lg hover:shadow-blue-500/20 transition-all duration-300 scroll-animate">
           <div class="h-48 bg-[url('${article.social_image}')] bg-cover bg-center group-hover:scale-105 transition-transform duration-500"></div>
           <div class="p-6">
             <h3 class="text-xl font-semibold text-white group-hover:text-blue-400 transition-colors">${article.title}</h3>
@@ -661,6 +678,25 @@ published to a private module registry.</p>
           </div>
         </a>
       `).join('');
+      
+      // IMPORTANT: Now that cards are added, re-query and observe them
+      if ("IntersectionObserver" in window) {
+          const newAnimatedElements = blogGrid.querySelectorAll('.scroll-animate');
+          const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                observer.unobserve(entry.target);
+              }
+            });
+          }, { rootMargin: "0px 0px -50px 0px" });
+          
+          newAnimatedElements.forEach(el => observer.observe(el));
+      } else {
+          // Fallback for old browsers
+          blogGrid.querySelectorAll('.scroll-animate').forEach(el => el.classList.add('is-visible'));
+      }
+
     } catch (error) {
       console.error("Error fetching Dev.to articles:", error);
       blogGrid.innerHTML = `
@@ -679,12 +715,12 @@ published to a private module registry.</p>
 <!-- Writing & Social Media Section-->
 
     <section class="py-9" id="writing">
-      <div class="flex items-center justify-between gap-4 mb-4">
+      <div class="flex items-center justify-between gap-4 mb-4 scroll-animate">
         <h2 class="m-0 text-xl font-semibold tracking-wide">Writing & Talks</h2>
         <div class="h-px bg-gradient-to-r from-slate-500/40 to-slate-500/5 flex-1" aria-hidden="true"></div>
       </div>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        <article class="p-4 rounded-2xl bg-card border border-slate-500/15 transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:border-brand/35 hover:shadow-2xl hover:shadow-black/40">
+        <article class="p-4 rounded-2xl bg-card border border-slate-500/15 transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:border-brand/35 hover:shadow-2xl hover:shadow-black/40 scroll-animate">
           <div class="aspect-video w-full rounded-lg bg-gradient-to-r from-orange-200 via-orange-400 to-orange-600 grid place-items-center font-bold tracking-wider">Writing & Talks</div>
           <h3 class="text-lg font-semibold mt-3">Modern GenAI in Fintech</h3>
           <p class="text-muted my-2">Slide deck + notes for leaders at hsbc‑style organizations: real use‑cases, ROI math, and risk controls.</p>
@@ -693,7 +729,7 @@ published to a private module registry.</p>
             
           </div>
         </article>
-        <article class="p-4 rounded-2xl bg-card border border-slate-500/15 transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:border-brand/35 hover:shadow-2xl hover:shadow-black/40">
+        <article class="p-4 rounded-2xl bg-card border border-slate-500/15 transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:border-brand/35 hover:shadow-2xl hover:shadow-black/40 scroll-animate">
           <div class="aspect-video w-full rounded-lg bg-gradient-to-r from-cyan-400 via-blue-400 to-indigo-400
  grid place-items-center font-bold tracking-wider">Writing & Talks</div>
           <h3 class="text-lg font-semibold mt-3">Attention Is All You Need</h3>
@@ -707,7 +743,7 @@ published to a private module registry.</p>
           </div>
         </article>
         <!-- New Card -->
-        <article class="p-4 rounded-2xl bg-card border border-slate-500/15 transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:border-brand/35 hover:shadow-2xl hover:shadow-black/40">
+        <article class="p-4 rounded-2xl bg-card border border-slate-500/15 transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:border-brand/35 hover:shadow-2xl hover:shadow-black/40 scroll-animate">
           <div class="aspect-video w-full rounded-lg bg-gradient-to-r from-green-200 via-teal-400 to-cyan-600 grid place-items-center font-bold tracking-wider" style="font-size: 2.5rem; letter-spacing: normal;">👨‍💻</div>
           <h3 class="text-lg font-semibold mt-3">Community Content & memes</h3>
           <p class="text-muted my-2">Find me on social media and other platforms for more content, coding tips, and engineering memes.</p>
@@ -725,12 +761,12 @@ published to a private module registry.</p>
 	
 <!-- AWARDS & CERTIFICATES -->
     <section class="py-9 border-t border-slate-500/15" id="awards">
-      <div class="flex items-center justify-between gap-4 mb-4">
+      <div class="flex items-center justify-between gap-4 mb-4 scroll-animate">
         <h2 class="m-0 text-xl font-semibold tracking-wide">Certifications & Awards</h2>
         <div class="h-px bg-gradient-to-r from-slate-500/40 to-slate-500/5 flex-1" aria-hidden="true"></div>
       </div>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        <div class="p-4 rounded-2xl bg-card border border-slate-500/15 flex items-start gap-4 transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:border-brand/35 hover:shadow-2xl hover:shadow-black/40">
+        <div class="p-4 rounded-2xl bg-card border border-slate-500/15 flex items-start gap-4 transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:border-brand/35 hover:shadow-2xl hover:shadow-black/40 scroll-animate">
           <span class="text-3xl text-brand" aria-hidden="true">🏆</span>
           <div>
             <h3 class="text-lg font-semibold mt-0">Google Cloud Architect</h3>
@@ -738,7 +774,7 @@ published to a private module registry.</p>
             <a class="text-xs text-brand hover:underline" href="#" target="_blank">View Credential</a>
           </div>
         </div>
-        <div class="p-4 rounded-2xl bg-card border border-slate-500/15 flex items-start gap-4 transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:border-brand/35 hover:shadow-2xl hover:shadow-black/40">
+        <div class="p-4 rounded-2xl bg-card border border-slate-500/15 flex items-start gap-4 transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:border-brand/35 hover:shadow-2xl hover:shadow-black/40 scroll-animate">
           <span class="text-3xl text-brand" aria-hidden="true">🥇</span>
           <div>
             <h3 class="text-lg font-semibold mt-0">Tech Excellence Award</h3>
@@ -746,7 +782,7 @@ published to a private module registry.</p>
             <a class="text-xs text-brand hover:underline" href="#" target="_blank">Details</a>
           </div>
         </div>
-        <div class="p-4 rounded-2xl bg-card border border-slate-500/15 flex items-start gap-4 transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:border-brand/35 hover:shadow-2xl hover:shadow-black/40">
+        <div class="p-4 rounded-2xl bg-card border border-slate-500/15 flex items-start gap-4 transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:border-brand/35 hover:shadow-2xl hover:shadow-black/40 scroll-animate">
           <span class="text-3xl text-brand" aria-hidden="true">📜</span>
           <div>
             <h3 class="text-lg font-semibold mt-0">Certified Kubernetes Admin</h3>
@@ -763,12 +799,12 @@ published to a private module registry.</p>
 	
 <!-- Awards & Recognition Section -->
     <section class="py-9" id="writing">
-      <div class="flex items-center justify-between gap-4 mb-4">
+      <div class="flex items-center justify-between gap-4 mb-4 scroll-animate">
         <h2 class="m-0 text-xl font-semibold tracking-wide">Awards & Recognition</h2>
         <div class="h-px bg-gradient-to-r from-slate-500/40 to-slate-500/5 flex-1" aria-hidden="true"></div>
       </div>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        <article class="p-4 rounded-2xl bg-card border border-slate-500/15 transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:border-brand/35 hover:shadow-2xl hover:shadow-black/40">
+        <article class="p-4 rounded-2xl bg-card border border-slate-500/15 transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:border-brand/35 hover:shadow-2xl hover:shadow-black/40 scroll-animate">
           <div class="aspect-video w-full rounded-lg bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500
  grid place-items-center font-bold tracking-wider">Silver Star Award</div>
           <h3 class="text-lg font-semibold mt-3">Modern GenAI in Fintech</h3>
@@ -778,7 +814,7 @@ published to a private module registry.</p>
             <a class="inline-flex items-center gap-2 py-2.5 px-3.5 rounded-2xl border border-slate-500/20 shadow-lg shadow-black/35 transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:shadow-2xl hover:shadow-black/50 bg-transparent border-dashed border-slate-500/35" href="https://kaustubh.medium.com" target="_blank" rel="noopener">Medium</a>
           </div>
         </article>
-        <article class="p-4 rounded-2xl bg-card border border-slate-500/15 transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:border-brand/35 hover:shadow-2xl hover:shadow-black/40">
+        <article class="p-4 rounded-2xl bg-card border border-slate-500/15 transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:border-brand/35 hover:shadow-2xl hover:shadow-black/40 scroll-animate">
           <div class="aspect-video w-full rounded-lg bg-gradient-to-r from-purple-200 via-violet-400 to-indigo-600
  grid place-items-center font-bold tracking-wider">Silver Star Award</div>
           <h3 class="text-lg font-semibold mt-3">Attention Is All You Need</h3>
@@ -789,7 +825,7 @@ published to a private module registry.</p>
           </div>
         </article>
         <!-- New Card -->
-       <article class="p-4 rounded-2xl bg-card border border-slate-500/15 transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:border-brand/35 hover:shadow-2xl hover:shadow-black/40">
+       <article class="p-4 rounded-2xl bg-card border border-slate-500/15 transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:border-brand/35 hover:shadow-2xl hover:shadow-black/40 scroll-animate">
           <div class="aspect-video w-full rounded-lg bg-gradient-to-r from-pink-500 via-red-500 to-orange-500 grid place-items-center font-bold tracking-wider">Winner genAI spot award</div>
           <h3 class="text-lg font-semibold mt-3">Attention Is All You Need</h3>
           <p class="text-muted my-2">An intuitive walk‑through with diagrams, tokenization gotchas, and practical tips for builders.</p>
@@ -807,7 +843,7 @@ published to a private module registry.</p>
         <div class="container mx-auto max-w-7xl px-4">
             
             <!-- Header Grid -->
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 mb-8 md:mb-12">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 mb-8 md:mb-12 scroll-animate">
                 <!-- Header: Title -->
                 <div class="lg:col-span-1">
                     <span class="text-indigo-600 font-semibold uppercase tracking-wider">Features</span>
@@ -827,7 +863,7 @@ published to a private module registry.</p>
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
 
                 <!-- Card 1: Image Card -->
-                <div class="lg:col-span-1 bg-gray-900 rounded-2xl overflow-hidden flex flex-col justify-end p-6 md:p-8 relative min-h-[500px]">
+                <div class="lg:col-span-1 bg-gray-900 rounded-2xl overflow-hidden flex flex-col justify-end p-6 md:p-8 relative min-h-[500px] scroll-animate">
                     <!-- Background Image -->
                     <img src="pic.png" 
                          alt="UX & UI Design" 
@@ -853,7 +889,7 @@ published to a private module registry.</p>
                 </div>
 
                 <!-- Column 2: Stacked Cards -->
-                <div class="lg:col-span-1 flex flex-col gap-6 lg:gap-8">
+                <div class="lg:col-span-1 flex flex-col gap-6 lg:gap-8 scroll-animate">
                     <!-- Card 2: Read Our Blog -->
                     <div class="bg-indigo-600 text-white p-6 md:p-8 rounded-2xl flex-grow flex flex-col justify-between">
                         <p class="mb-10 text-lg">
@@ -885,7 +921,7 @@ published to a private module registry.</p>
                 </div>
 
                 <!-- Card 4: Meet Our Expert -->
-                <div class="lg:col-span-1 bg-gray-100 text-gray-900 p-6 md:p-8 rounded-2xl flex flex-col justify-between min-h-[500px]">
+                <div class="lg:col-span-1 bg-gray-100 text-gray-900 p-6 md:p-8 rounded-2xl flex flex-col justify-between min-h-[500px] scroll-animate">
                     <p class="text-gray-600 text-lg">
                         There are many variations of passages of Lorem Ipsum available
                         <br><br>
@@ -911,7 +947,7 @@ published to a private module registry.</p>
         <div class="container mx-auto max-w-7xl px-4">
             
             <!-- Section Header -->
-            <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 md:mb-16">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 md:mb-16 scroll-animate">
                 <!-- Header Left -->
                 <div>
                     <span class="text-indigo-400 font-semibold uppercase tracking-wider">Project Planning</span>
@@ -931,7 +967,7 @@ published to a private module registry.</p>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 
                 <!-- Card 1: Website Development -->
-                <div class="bg-white rounded-xl overflow-hidden shadow-lg flex flex-col">
+                <div class="bg-white rounded-xl overflow-hidden shadow-lg flex flex-col scroll-animate">
                     <img 
                         src="pic2.png" 
                         alt="Website Development" 
@@ -951,7 +987,7 @@ published to a private module registry.</p>
                 </div>
                 
                 <!-- Card 2: Graphic Design -->
-                <div class="bg-white rounded-xl overflow-hidden shadow-lg flex flex-col">
+                <div class="bg-white rounded-xl overflow-hidden shadow-lg flex flex-col scroll-animate">
                     <img 
                         src="pic3.jpg" 
                         alt="Graphic Design" 
@@ -971,7 +1007,7 @@ published to a private module registry.</p>
                 </div>
                 
                 <!-- Card 3: App Development -->
-                <div class="bg-white rounded-xl overflow-hidden shadow-lg flex flex-col">
+                <div class="bg-white rounded-xl overflow-hidden shadow-lg flex flex-col scroll-animate">
                     <img 
                         src="pic4.png" 
                         alt="App Development" 
@@ -997,8 +1033,8 @@ published to a private module registry.</p>
 <!--Insta2 Ends -->
 	
 <!-- constact starts -->	
-<section class="w-full min-h-screen bg-card flex items-center justify-center p-4">
-  <div class="max-w-6xl w-full bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl shadow-2xl flex flex-col md:flex-row overflow-hidden">
+<section class="w-full min-h-screen bg-card flex items-center justify-center p-4" id="contact">
+  <div class="max-w-6xl w-full bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl shadow-2xl flex flex-col md:flex-row overflow-hidden scroll-animate">
     
     <!-- Left: Image -->
     <div class="md:w-1/2 w-full">
@@ -1021,25 +1057,25 @@ published to a private module registry.</p>
 
       <!-- Social Icons -->
       <div class="flex justify-center md:justify-start gap-5 pt-4">
-        <a href="https://github.com/ragu" target="_blank" class="hover:scale-110 transition">
+        <a href="https://github.com/kaustubh" target="_blank" class="hover:scale-110 transition">
           <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/github.svg" alt="GitHub" class="w-10 h-10">
         </a>
-        <a href="https://linkedin.com/in/ragu" target="_blank" class="hover:scale-110 transition">
+        <a href="https://linkedin.com/in/kaustubh" target="_blank" class="hover:scale-110 transition">
           <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/linkedin.svg" alt="LinkedIn" class="w-10 h-10">
         </a>
-        <a href="https://discord.com/users/ragu" target="_blank" class="hover:scale-110 transition">
+        <a href="https://discord.com/users/kaustubh" target="_blank" class="hover:scale-110 transition">
           <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/discord.svg" alt="Discord" class="w-10 h-10">
         </a>
-        <a href="https://instagram.com/ragu" target="_blank" class="hover:scale-110 transition">
+        <a href="https://instagram.com/kaustubh" target="_blank" class="hover:scale-110 transition">
           <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/instagram.svg" alt="Instagram" class="w-10 h-10">
         </a>
-        <a href="https://dev.to/ragu" target="_blank" class="hover:scale-110 transition">
+        <a href="https://dev.to/kaustubh" target="_blank" class="hover:scale-110 transition">
           <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/devdotto.svg" alt="Dev.to" class="w-10 h-10">
         </a>
-        <a href="https://medium.com/@ragu" target="_blank" class="hover:scale-110 transition">
+        <a href="https://medium.com/@kaustubh" target="_blank" class="hover:scale-110 transition">
           <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/medium.svg" alt="Medium" class="w-10 h-10">
         </a>
-        <a href="https://youtube.com/@ragu" target="_blank" class="hover:scale-110 transition">
+        <a href="https://youtube.com/@kaustubh" target="_blank" class="hover:scale-110 transition">
           <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/youtube.svg" alt="YouTube" class="w-10 h-10">
         </a>
       </div>
@@ -1050,7 +1086,7 @@ published to a private module registry.</p>
 
 <!--contact ends-->
 
-    <footer class="mt-10 border-t border-slate-500/15 pt-5 text-muted text-sm flex items-center justify-between gap-4 flex-wrap flex-col md:flex-row text-center md:text-left">
+    <footer class="mt-10 border-t border-slate-500/15 pt-5 text-muted text-sm flex items-center justify-between gap-4 flex-wrap flex-col md:flex-row text-center md:text-left scroll-animate">
       <span>© <span id="year"></span> kaustubh |  Built with accessible components, and a sprinkle of CSS magic.</span>
       <div class="flex gap-3 items-center flex-wrap">
         <a class="text-brand" href="#">Back to top ↑</a>
@@ -1136,6 +1172,17 @@ published to a private module registry.</p>
           navLinks.classList.toggle('hidden'); // Toggle 'hidden' class
           navLinks.classList.toggle('flex'); // Toggle 'flex' to show
         });
+
+        // Close mobile nav on link click
+        navLinks.querySelectorAll('a').forEach(link => {
+          link.addEventListener('click', () => {
+            if (window.innerWidth < 768) { // md breakpoint
+              menuToggle.setAttribute('aria-expanded', 'false');
+              navLinks.classList.add('hidden');
+              navLinks.classList.remove('flex');
+            }
+          });
+        });
       }
       
       // Star and flying object animation script
@@ -1196,8 +1243,36 @@ published to a private module registry.</p>
             starsContainer.appendChild(element);
         }
       }
+
+      // --- NEW: Scroll Animation Observer ---
+      // We select all elements *except* the ones in the blog grid,
+      // which are handled by the blog script.
+      const animatedElements = document.querySelectorAll('.scroll-animate:not(#blogGrid .scroll-animate)');
+      
+      if ("IntersectionObserver" in window) {
+        const observer = new IntersectionObserver((entries, observer) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-visible');
+              observer.unobserve(entry.target); // Stop observing once animated
+            }
+          });
+        }, {
+          rootMargin: "0px 0px -50px 0px" // Trigger slightly before it's fully in view
+        });
+
+        animatedElements.forEach(el => {
+          observer.observe(el);
+        });
+      } else {
+        // Fallback for very old browsers: just show everything
+        animatedElements.forEach(el => {
+          el.classList.add('is-visible');
+        });
+      }
+      // --- End of Scroll Animation Observer ---
+
     });
   </script>
 </body>
 </html>
-
