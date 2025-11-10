@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kaustubh Yerkade | DevOps Engineer</title>
+    <meta name="description" content="Portfolio of Alex Dev - Senior DevOps Engineer specializing in Kubernetes, AWS, and Automation.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        terminal: {
+                            bg: '#0d1117',
+                            header: '#161b22',
+                            text: '#c9d1d9',
+                            green: '#3fb950',
+                            blue: '#58a6ff',
+                            gray: '#8b949e'
+                        },
+                        neon: {
+                            cyan: '#00ffff',
+                            purple: '#bd34fe'
+                        }
+                    },
+                    fontFamily: {
+                        mono: ['"Fira Code"', 'monospace'],
+                        sans: ['Inter', 'sans-serif']
+                    },
+                    animation: {
+                        'blink': 'blink 1s step-end infinite',
+                        'fade-in': 'fadeIn 0.5s ease-in forwards'
+                    },
+                    keyframes: {
+                        blink: {
+                            '0%, 100%': { opacity: 1 },
+                            '50%': { opacity: 0 }
+                        },
+                        fadeIn: {
+                            '0%': { opacity: 0, transform: 'translateY(10px)' },
+                            '100%': { opacity: 1, transform: 'translateY(0)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* Custom Scrollbar for that 'hacker' feel */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0d1117;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #21262d;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #30363d;
+        }
+        .typing-container {
+            display: inline-block;
+        }
+        /* CRT Screen Effect overlay (subtle) */
+        .crt::before {
+            content: " ";
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            z-index: 2;
+            background-size: 100% 2px, 3px 100%;
+            pointer-events: none;
+            opacity: 0.15;
+        }
+    </style>
+</head>
+<body class="bg-neutral-950 text-gray-300 font-sans selection:bg-terminal-green selection:text-black">
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 bg-neutral-950/80 backdrop-blur-md border-b border-white/5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex-shrink-0 font-mono font-bold text-terminal-green text-xl">
+                    <span class="text-white">&lt;</span>Kaustubh_Yerkade<span class="text-white">/&gt;</span>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8 font-mono text-sm">
+                        <a href="#home" class="hover:text-terminal-green transition-colors px-3 py-2 rounded-md">~/home</a>
+                        <a href="#about" class="hover:text-terminal-green transition-colors px-3 py-2 rounded-md">./about</a>
+                        <a href="#stack" class="hover:text-terminal-green transition-colors px-3 py-2 rounded-md">./stack</a>
+                        <a href="#projects" class="hover:text-terminal-green transition-colors px-3 py-2 rounded-md">./projects</a>
+                        <a href="#contact" class="text-terminal-green border border-terminal-green hover:bg-terminal-green hover:text-black transition-all px-4 py-2 rounded-md">./contact.sh</a>
+                    </div>
+                </div>
+                <!-- Mobile menu button -->
+                <div class="md:hidden">
+                    <button id="mobile-menu-btn" class="text-gray-300 hover:text-white p-2">
+                        <i data-lucide="menu"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-neutral-900 border-b border-white/5">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 font-mono">
+                <a href="#home" class="hover:text-terminal-green block px-3 py-2 rounded-md">~/home</a>
+                <a href="#about" class="hover:text-terminal-green block px-3 py-2 rounded-md">./about</a>
+                <a href="#stack" class="hover:text-terminal-green block px-3 py-2 rounded-md">./stack</a>
+                <a href="#projects" class="hover:text-terminal-green block px-3 py-2 rounded-md">./projects</a>
+                <a href="#contact" class="text-terminal-green block px-3 py-2 rounded-md">./contact.sh</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section (Terminal Theme) -->
+    <section id="home" class="min-h-screen flex items-center justify-center pt-16 px-4 relative overflow-hidden">
+        <!-- Background Elements -->
+        <div class="absolute inset-0 overflow-hidden -z-10">
+            <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-terminal-green/10 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl"></div>
+        </div>
+
+        <div class="w-full max-w-4xl">
+            <!-- Terminal Window -->
+            <div class="bg-terminal-bg rounded-xl shadow-2xl border border-white/10 overflow-hidden crt">
+                <!-- Terminal Header -->
+                <div class="bg-terminal-header px-4 py-3 flex items-center gap-2 border-b border-white/5">
+                    <div class="flex gap-2">
+                        <div class="w-3 h-3 rounded-full bg-red-500/80"></div>
+                        <div class="w-3 h-3 rounded-full bg-yellow-500/80"></div>
+                        <div class="w-3 h-3 rounded-full bg-green-500/80"></div>
+                    </div>
+                    <div class="flex-1 text-center text-xs font-mono text-terminal-gray opacity-50">
+                        kaustubh@devbox:~
+                    </div>
+                </div>
+                <!-- Terminal Body -->
+                <div class="p-6 font-mono text-sm md:text-base min-h-[300px] md:min-h-[400px]">
+                    <div id="terminal-content" class="space-y-2">
+                        <!-- Content will be typed here by JS -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- System Stats / Quick Intro -->
+    <section class="py-12 bg-neutral-950 border-y border-white/5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                <div class="p-4 rounded-lg bg-neutral-900/50 border border-white/5">
+                    <div class="text-terminal-green font-mono text-3xl font-bold">99.99%</div>
+                    <div class="text-sm text-gray-500 mt-2">Uptime Maintained</div>
+                </div>
+                <div class="p-4 rounded-lg bg-neutral-900/50 border border-white/5">
+                    <div class="text-blue-400 font-mono text-3xl font-bold">500+</div>
+                    <div class="text-sm text-gray-500 mt-2">Pipelines Built</div>
+                </div>
+                <div class="p-4 rounded-lg bg-neutral-900/50 border border-white/5">
+                    <div class="text-purple-400 font-mono text-3xl font-bold">50TB+</div>
+                    <div class="text-sm text-gray-500 mt-2">Data Managed</div>
+                </div>
+                <div class="p-4 rounded-lg bg-neutral-900/50 border border-white/5">
+                    <div class="text-orange-400 font-mono text-3xl font-bold">&lt;10min</div>
+                    <div class="text-sm text-gray-500 mt-2">Avg. Recovery Time</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About & Philosophy -->
+    <section id="about" class="py-20 md:py-32">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">
+                        <span class="text-terminal-green font-mono">./about</span><br>
+                        Automate everything. <br>Trust nothing.
+                    </h2>
+                    <p class="text-gray-400 text-lg mb-6 leading-relaxed">
+                        I don't just manage servers; I build self-healing, resilient infrastructure. My philosophy is simple: if you have to do it twice, automate it.
+                    </p>
+                    <p class="text-gray-400 mb-8 leading-relaxed">
+                        With 6+ years of experience in distributed systems, I bridge the gap between complex application code and the scalable infrastructure it runs on. I specialize in Kubernetes orchestration, zero-downtime CI/CD deployments, and cloud cost optimization.
+                    </p>
+                    <div class="flex gap-4">
+                         <a href="#contact" class="bg-terminal-green text-black px-6 py-3 rounded-md font-semibold hover:bg-green-400 transition-colors flex items-center gap-2">
+                            <i data-lucide="terminal-square" class="w-5 h-5"></i>
+                            Start Collaboration
+                        </a>
+                        <a href="#" class="border border-white/20 text-white px-6 py-3 rounded-md font-semibold hover:bg-white/10 transition-colors flex items-center gap-2">
+                            <i data-lucide="file-down" class="w-5 h-5"></i>
+                            Download Resume
+                        </a>
+                    </div>
+                </div>
+                <div class="relative">
+                    <div class="absolute inset-0 bg-gradient-to-tr from-terminal-green/20 to-blue-500/20 blur-3xl opacity-30 -z-10"></div>
+                    <div class="bg-neutral-900 border border-white/10 p-6 rounded-xl font-mono text-sm text-gray-400">
+                        <div class="flex gap-2 mb-4 border-b border-white/10 pb-4">
+                            <div class="text-blue-400">config.yaml</div>
+                        </div>
+                        <pre class="overflow-x-auto"><code class="language-yaml">engineer:
+  name: Kaustubh Yerkade
+  role: Senior DevOps
+  location: Remote / Worldwide
+  focus:
+    - Infrastructure as Code
+    - GitOps
+    - Observability
+  hobbies:
+    - ricing_linux
+    - home_lab
+    - mechanical_keyboards
+status: ready_to_deploy
+</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tech Stack (Categorized) -->
+    <section id="stack" class="py-20 bg-neutral-900/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+             <h2 class="text-3xl font-bold text-white mb-12 flex items-center">
+                <i data-lucide="layers" class="text-terminal-green mr-3"></i>
+                Tech Stack
+            </h2>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Cloud & Infra -->
+                <div class="bg-neutral-950 p-6 rounded-xl border border-white/5 hover:border-terminal-green/50 transition-all group">
+                    <div class="w-12 h-12 bg-blue-500/10 rounded-lg flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <i data-lucide="cloud" class="text-blue-400 w-6 h-6"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-4 font-mono">Cloud & Infra</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-3 py-1 text-xs font-mono bg-blue-950/50 text-blue-300 rounded-full border border-blue-900">AWS</span>
+                        <span class="px-3 py-1 text-xs font-mono bg-blue-950/50 text-blue-300 rounded-full border border-blue-900">Azure</span>
+                        <span class="px-3 py-1 text-xs font-mono bg-neutral-800 text-gray-300 rounded-full border border-neutral-700">Terraform</span>
+                        <span class="px-3 py-1 text-xs font-mono bg-neutral-800 text-gray-300 rounded-full border border-neutral-700">Ansible</span>
+                    </div>
+                </div>
+
+                <!-- Containers & Orchestration -->
+                <div class="bg-neutral-950 p-6 rounded-xl border border-white/5 hover:border-terminal-green/50 transition-all group">
+                     <div class="w-12 h-12 bg-blue-500/10 rounded-lg flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <i data-lucide="boxes" class="text-blue-400 w-6 h-6"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-4 font-mono">Orchestration</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-3 py-1 text-xs font-mono bg-blue-950/50 text-blue-300 rounded-full border border-blue-900">Kubernetes</span>
+                        <span class="px-3 py-1 text-xs font-mono bg-blue-950/50 text-blue-300 rounded-full border border-blue-900">Docker</span>
+                        <span class="px-3 py-1 text-xs font-mono bg-neutral-800 text-gray-300 rounded-full border border-neutral-700">Helm</span>
+                        <span class="px-3 py-1 text-xs font-mono bg-neutral-800 text-gray-300 rounded-full border border-neutral-700">Istio</span>
+                    </div>
+                </div>
+
+                <!-- CI/CD -->
+                <div class="bg-neutral-950 p-6 rounded-xl border border-white/5 hover:border-terminal-green/50 transition-all group">
+                     <div class="w-12 h-12 bg-orange-500/10 rounded-lg flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <i data-lucide="git-merge" class="text-orange-400 w-6 h-6"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-4 font-mono">CI / CD</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-3 py-1 text-xs font-mono bg-neutral-800 text-gray-300 rounded-full border border-neutral-700">Jenkins</span>
+                        <span class="px-3 py-1 text-xs font-mono bg-neutral-800 text-gray-300 rounded-full border border-neutral-700">GitLab CI</span>
+                        <span class="px-3 py-1 text-xs font-mono bg-neutral-800 text-gray-300 rounded-full border border-neutral-700">GitHub Actions</span>
+                        <span class="px-3 py-1 text-xs font-mono bg-neutral-800 text-gray-300 rounded-full border border-neutral-700">ArgoCD</span>
+                    </div>
+                </div>
+
+                <!-- Observability -->
+                <div class="bg-neutral-950 p-6 rounded-xl border border-white/5 hover:border-terminal-green/50 transition-all group">
+                     <div class="w-12 h-12 bg-purple-500/10 rounded-lg flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <i data-lucide="activity" class="text-purple-400 w-6 h-6"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-4 font-mono">Observability</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-3 py-1 text-xs font-mono bg-neutral-800 text-gray-300 rounded-full border border-neutral-700">Prometheus</span>
+                        <span class="px-3 py-1 text-xs font-mono bg-neutral-800 text-gray-300 rounded-full border border-neutral-700">Grafana</span>
+                        <span class="px-3 py-1 text-xs font-mono bg-neutral-800 text-gray-300 rounded-full border border-neutral-700">ELK Stack</span>
+                        <span class="px-3 py-1 text-xs font-mono bg-neutral-800 text-gray-300 rounded-full border border-neutral-700">Datadog</span>
+                    </div>
+                </div>
+
+                 <!-- Scripting -->
+                <div class="bg-neutral-950 p-6 rounded-xl border border-white/5 hover:border-terminal-green/50 transition-all group">
+                     <div class="w-12 h-12 bg-green-500/10 rounded-lg flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <i data-lucide="code-2" class="text-terminal-green w-6 h-6"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-4 font-mono">Scripting & Code</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-3 py-1 text-xs font-mono bg-green-900/30 text-terminal-green rounded-full border border-green-900/50">Bash</span>
+                        <span class="px-3 py-1 text-xs font-mono bg-neutral-800 text-gray-300 rounded-full border border-neutral-700">Python</span>
+                        <span class="px-3 py-1 text-xs font-mono bg-neutral-800 text-gray-300 rounded-full border border-neutral-700">Go</span>
+                    </div>
+                </div>
+
+                <!-- Security -->
+                <div class="bg-neutral-950 p-6 rounded-xl border border-white/5 hover:border-terminal-green/50 transition-all group">
+                     <div class="w-12 h-12 bg-red-500/10 rounded-lg flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <i data-lucide="shield-check" class="text-red-400 w-6 h-6"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-4 font-mono">DevSecOps</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-3 py-1 text-xs font-mono bg-neutral-800 text-gray-300 rounded-full border border-neutral-700">Vault</span>
+                        <span class="px-3 py-1 text-xs font-mono bg-neutral-800 text-gray-300 rounded-full border border-neutral-700">SonarQube</span>
+                        <span class="px-3 py-1 text-xs font-mono bg-neutral-800 text-gray-300 rounded-full border border-neutral-700">Trivy</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Projects -->
+    <section id="projects" class="py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+             <h2 class="text-3xl font-bold text-white mb-12 flex items-center">
+                <i data-lucide="folder-git-2" class="text-terminal-green mr-3"></i>
+                Deployed Deployments
+            </h2>
+
+            <div class="space-y-16">
+                <!-- Project 1 -->
+                <div class="grid lg:grid-cols-5 gap-8 items-center border-b border-white/5 pb-16">
+                    <div class="lg:col-span-3">
+                        <div class="bg-neutral-900 rounded-lg p-1 overflow-hidden border border-white/10 shadow-2xl">
+                             <!-- Mockup of a dashboard or terminal -->
+                            <div class="bg-neutral-950 rounded p-4 font-mono text-xs md:text-sm h-64 overflow-y-hidden relative">
+                                <div class="text-green-500 mb-2">$ kubectl get pods -n production</div>
+                                <table class="w-full text-left opacity-75">
+                                    <tr class="text-gray-500"><th>NAME</th><th>READY</th><th>STATUS</th><th>RESTARTS</th><th>AGE</th></tr>
+                                    <tr><td>api-gateway-7f8b9c-x2z9</td><td>1/1</td><td class="text-terminal-green">Running</td><td>0</td><td>45d</td></tr>
+                                    <tr><td>auth-service-6d4a2e-v8k1</td><td>1/1</td><td class="text-terminal-green">Running</td><td>0</td><td>45d</td></tr>
+                                    <tr><td>payment-processor-5h1j3-9p2l</td><td>1/1</td><td class="text-terminal-green">Running</td><td>0</td><td>12d</td></tr>
+                                    <tr><td>data-worker-9k8l7m-4n5o</td><td>1/1</td><td class="text-terminal-green">Running</td><td>0</td><td>2d</td></tr>
+                                </table>
+                                <!-- Gradient fade at bottom for "more content" effect -->
+                                <div class="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-neutral-950 to-transparent"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="lg:col-span-2">
+                        <div class="text-terminal-green font-mono text-sm mb-2">01 // INFRASTRUCTURE</div>
+                        <h3 class="text-2xl font-bold text-white mb-4">Multi-Region K8s Federation</h3>
+                        <p class="text-gray-400 mb-6">
+                            Architected a highly available Kubernetes federation across 3 AWS regions using EKS and KubeFed. Achieved 99.999% uptime during regional failures.
+                        </p>
+                        <div class="flex flex-wrap gap-2 mb-8">
+                            <span class="text-xs font-mono px-2 py-1 rounded bg-white/5 text-gray-300">Terraform</span>
+                            <span class="text-xs font-mono px-2 py-1 rounded bg-white/5 text-gray-300">EKS</span>
+                            <span class="text-xs font-mono px-2 py-1 rounded bg-white/5 text-gray-300">Argocd</span>
+                        </div>
+                         <a href="#" class="inline-flex items-center gap-2 text-white font-semibold hover:text-terminal-green transition-colors">
+                            View Case Study <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        </a>
+                    </div>
+                </div>
+
+                 <!-- Project 2 -->
+                 <div class="grid lg:grid-cols-5 gap-8 items-center border-b border-white/5 pb-16">
+                    <div class="lg:col-span-2 order-2 lg:order-1">
+                        <div class="text-terminal-green font-mono text-sm mb-2">02 // AUTOMATION</div>
+                        <h3 class="text-2xl font-bold text-white mb-4">GitOps CI/CD Pipeline</h3>
+                        <p class="text-gray-400 mb-6">
+                            Reduced deployment time from 45 minutes to 5 minutes by implementing a fully automated GitOps pipeline using GitLab CI and ArgoCD, including automated canary analysis.
+                        </p>
+                        <div class="flex flex-wrap gap-2 mb-8">
+                            <span class="text-xs font-mono px-2 py-1 rounded bg-white/5 text-gray-300">GitLab</span>
+                            <span class="text-xs font-mono px-2 py-1 rounded bg-white/5 text-gray-300">Docker</span>
+                            <span class="text-xs font-mono px-2 py-1 rounded bg-white/5 text-gray-300">Helm</span>
+                        </div>
+                         <a href="#" class="inline-flex items-center gap-2 text-white font-semibold hover:text-terminal-green transition-colors">
+                            View Pipeline Config <i data-lucide="github" class="w-4 h-4"></i>
+                        </a>
+                    </div>
+                    <div class="lg:col-span-3 order-1 lg:order-2">
+                        <div class="bg-neutral-900 rounded-lg p-4 border border-white/10 shadow-2xl font-mono text-xs md:text-sm leading-relaxed opacity-90 hover:opacity-100 transition-opacity">
+                            <div class="flex gap-2 mb-3 opacity-50"><div class="w-3 h-3 rounded-full bg-white/20"></div><div class="w-3 h-3 rounded-full bg-white/20"></div></div>
+                            <span class="text-blue-400">stages:</span><br>
+                            &nbsp;&nbsp;- <span class="text-green-400">build</span><br>
+                            &nbsp;&nbsp;- <span class="text-green-400">test</span><br>
+                            &nbsp;&nbsp;- <span class="text-green-400">security_scan</span><br>
+                            &nbsp;&nbsp;- <span class="text-orange-400">deploy_staging</span><br>
+                            &nbsp;&nbsp;- <span class="text-red-400">deploy_prod</span><br>
+                            <br>
+                            <span class="text-blue-400">build_image:</span><br>
+                            &nbsp;&nbsp;<span class="text-purple-400">stage:</span> build<br>
+                            &nbsp;&nbsp;<span class="text-purple-400">script:</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;- docker build -t $REGISTRY_IMAGE:$CI_COMMIT_SHA .<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;- docker push $REGISTRY_IMAGE:$CI_COMMIT_SHA
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Terminal -->
+    <section id="contact" class="py-20 bg-neutral-950">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-3xl font-bold text-white mb-8 font-mono">
+                <span class="text-terminal-green">$</span> wall "Let's Connect"
+            </h2>
+            <p class="text-gray-400 mb-12 text-lg">
+                Currently available for freelance opportunities or full-time roles that involve interesting scaling challenges.
+            </p>
+
+            <div class="grid sm:grid-cols-3 gap-4 max-w-lg mx-auto">
+                <a href="https://github.com" target="_blank" class="flex flex-col items-center p-6 bg-neutral-900 border border-white/5 rounded-xl hover:bg-neutral-800 hover:border-terminal-green/30 transition-all group">
+                    <i data-lucide="github" class="w-8 h-8 text-gray-400 group-hover:text-white mb-3 transition-colors"></i>
+                    <span class="text-sm font-mono text-gray-300">GitHub</span>
+                </a>
+                <a href="https://linkedin.com" target="_blank" class="flex flex-col items-center p-6 bg-neutral-900 border border-white/5 rounded-xl hover:bg-neutral-800 hover:border-blue-400/30 transition-all group">
+                    <i data-lucide="linkedin" class="w-8 h-8 text-gray-400 group-hover:text-blue-400 mb-3 transition-colors"></i>
+                    <span class="text-sm font-mono text-gray-300">LinkedIn</span>
+                </a>
+                <a href="mailto:hello@example.com" class="flex flex-col items-center p-6 bg-neutral-900 border border-white/5 rounded-xl hover:bg-neutral-800 hover:border-terminal-green/30 transition-all group">
+                    <i data-lucide="mail" class="w-8 h-8 text-gray-400 group-hover:text-terminal-green mb-3 transition-colors"></i>
+                    <span class="text-sm font-mono text-gray-300">Email</span>
+                </a>
+            </div>
+
+             <div class="mt-16 pt-8 border-t border-white/5 text-gray-500 text-sm font-mono">
+                <p>echo "Made with &lt;3 and lots of caffeine by kaustubh"</p>
+                <p class="mt-2 opacity-50">© <span id="year"></span> Kaustubh Yerkade. All systems operational.</p>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Initialize Icons
+        lucide.createIcons();
+
+        // Set current year
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Mobile Menu Toggle
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+
+        btn.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+        });
+
+        // --- Terminal Typing Effect ---
+        const terminalContent = document.getElementById('terminal-content');
+        const commands = [
+            { text: 'init sequence...', output: '', delay: 500 },
+            { text: 'loading modules... [OK]', output: '', delay: 800 },
+            { text: 'whoami', output: 'Kaustubh Yerkade | Senior DevOps Engineer', delay: 1000 },
+            { text: 'cat mission.txt', output: 'Automating reliable, scalable infrastructure.\nSpecializing in AWS, Kubernetes, and GitOps.', delay: 1200 },
+            { text: 'tail -f /dev/experience', output: 'Found 6+ years of building cool stuff...', delay: 1500 }
+        ];
+
+        let currentCommandIndex = 0;
+
+        async function typeWriter(text, element, speed = 50) {
+            for (let i = 0; i < text.length; i++) {
+                element.textContent += text.charAt(i);
+                await new Promise(resolve => setTimeout(resolve, speed));
+            }
+        }
+
+        async function runTerminal() {
+            for (const cmd of commands) {
+                // Create command line
+                const cmdLine = document.createElement('div');
+                cmdLine.className = 'flex text-gray-300';
+                cmdLine.innerHTML = '<span class="text-terminal-green mr-2">$</span><span class="typing"></span>';
+                terminalContent.appendChild(cmdLine);
+
+                const typingSpan = cmdLine.querySelector('.typing');
+                
+                // Add blinking cursor to current line
+                typingSpan.classList.add('after:content-["_"]', 'after:animate-blink', 'after:ml-1');
+                
+                await typeWriter(cmd.text, typingSpan, Math.random() * 50 + 30);
+                
+                // Remove cursor after typing
+                typingSpan.classList.remove('after:content-["_"]', 'after:animate-blink', 'after:ml-1');
+
+                // Show output if it exists
+                if (cmd.output) {
+                    const outputLine = document.createElement('div');
+                    outputLine.className = 'text-terminal-blue ml-4 mb-2 whitespace-pre-wrap animate-fade-in opacity-75';
+                    outputLine.textContent = '> ' + cmd.output;
+                    terminalContent.appendChild(outputLine);
+                }
+
+                // Auto scroll to bottom
+                terminalContent.scrollTop = terminalContent.scrollHeight;
+
+                await new Promise(resolve => setTimeout(resolve, cmd.delay));
+            }
+
+            // Final prompt with blinking cursor
+            const finalPrompt = document.createElement('div');
+            finalPrompt.className = 'flex text-gray-300';
+            finalPrompt.innerHTML = '<span class="text-terminal-green mr-2">$</span><span class="after:content-[\'_\'] after:animate-blink"></span>';
+            terminalContent.appendChild(finalPrompt);
+            terminalContent.scrollTop = terminalContent.scrollHeight;
+        }
+
+        // Start terminal animation after a short delay
+        setTimeout(runTerminal, 1000);
+
+    </script>
+</body>
+</html>
