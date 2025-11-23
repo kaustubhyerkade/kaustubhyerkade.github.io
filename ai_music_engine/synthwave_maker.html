@@ -187,6 +187,10 @@
                 CLEAR LEADS
             </button>
 
+            <button id="autoDjBtn" class="bg-transparent border-2 border-green-400 text-green-400 px-6 py-3 rounded text-xl font-bold hover:bg-green-400 hover:text-black transition-colors shadow-[0_0_15px_rgba(74,222,128,0.3)]">
+                🤖 AUTO DJ
+            </button>
+
             <div class="flex items-center gap-3">
                 <span class="text-[#ff00de]">BPM</span>
                 <input type="range" id="bpmSlider" min="60" max="160" value="100" class="control-knob w-32">
@@ -238,6 +242,8 @@
     // --- Audio Context & Engine ---
     let audioCtx;
     let isPlaying = false;
+    let isAutoDj = false;
+    let stepCounter = 0;
     let currentStep = 0;
     let nextNoteTime = 0;
     let timerID;
@@ -455,6 +461,13 @@
     function nextNote() {
         const secondsPerBeat = 60.0 / bpm;
         nextNoteTime += 0.25 * secondsPerBeat; // 16th notes
+        
+        // Auto DJ: Randomize every 64 steps (4 bars)
+        stepCounter++;
+        if (isAutoDj && stepCounter > 0 && stepCounter % 64 === 0) {
+            randomize();
+        }
+
         currentStep = (currentStep + 1) % 16;
     }
 
@@ -664,12 +677,19 @@
         if (isPlaying) return;
         isPlaying = true;
         currentStep = 0;
+        stepCounter = 0;
         nextNoteTime = audioCtx.currentTime;
         scheduler();
     });
 
     document.getElementById('stopBtn').addEventListener('click', () => {
         isPlaying = false;
+        isAutoDj = false;
+        // Reset Auto DJ button style
+        const djBtn = document.getElementById('autoDjBtn');
+        djBtn.classList.remove('bg-green-400', 'text-black', 'animate-pulse');
+        djBtn.classList.add('bg-transparent', 'text-green-400');
+        
         window.clearTimeout(timerID);
         // Reset UI
         document.querySelectorAll('.step-btn').forEach(btn => btn.classList.remove('current'));
@@ -690,6 +710,23 @@
             }
         });
         renderGrid();
+    });
+
+    document.getElementById('autoDjBtn').addEventListener('click', (e) => {
+        isAutoDj = !isAutoDj;
+        const btn = document.getElementById('autoDjBtn'); // ensure we get the element even if icon clicked
+        
+        if (isAutoDj) {
+            btn.classList.add('bg-green-400', 'text-black', 'animate-pulse');
+            btn.classList.remove('bg-transparent', 'text-green-400');
+            // Auto-start playback if not playing
+            if (!isPlaying) {
+                document.getElementById('playBtn').click();
+            }
+        } else {
+            btn.classList.remove('bg-green-400', 'text-black', 'animate-pulse');
+            btn.classList.add('bg-transparent', 'text-green-400');
+        }
     });
 
     document.getElementById('randomizeBtn').addEventListener('click', () => {
