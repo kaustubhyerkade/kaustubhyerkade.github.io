@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neon Grid: Synthwave Maker</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Orbitron:wght@400;700;900&display=swap');
+
+        body {
+            background-color: #050011;
+            color: #fff;
+            font-family: 'Orbitron', sans-serif;
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1a0b2e;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #ff00de;
+            border-radius: 4px;
+        }
+
+        /* CRT Effect Overlay */
+        .crt::before {
+            content: " ";
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            z-index: 2;
+            background-size: 100% 2px, 3px 100%;
+            pointer-events: none;
+        }
+
+        /* Neon Glows */
+        .neon-text-pink {
+            text-shadow: 0 0 5px #ff00de, 0 0 10px #ff00de, 0 0 20px #ff00de, 0 0 40px #ff00de;
+            color: #ffffff;
+        }
+        .neon-text-blue {
+            text-shadow: 0 0 5px #00f3ff, 0 0 10px #00f3ff, 0 0 20px #00f3ff;
+            color: #ffffff;
+        }
+        .neon-box {
+            box-shadow: 0 0 10px #ff00de, inset 0 0 10px #ff00de;
+            border: 2px solid #ff00de;
+        }
+        .neon-box-blue {
+            box-shadow: 0 0 10px #00f3ff, inset 0 0 10px #00f3ff;
+            border: 2px solid #00f3ff;
+        }
+
+        /* Moving Grid Background */
+        .retro-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            perspective: 500px;
+            overflow: hidden;
+            pointer-events: none; /* Prevent clicks */
+        }
+        .grid-plane {
+            position: absolute;
+            bottom: -30%;
+            left: -50%;
+            width: 200%;
+            height: 100%;
+            background-image: 
+                linear-gradient(0deg, transparent 24%, rgba(255, 0, 222, 0.5) 25%, rgba(255, 0, 222, 0.5) 26%, transparent 27%, transparent 74%, rgba(255, 0, 222, 0.5) 75%, rgba(255, 0, 222, 0.5) 76%, transparent 77%, transparent),
+                linear-gradient(90deg, transparent 24%, rgba(0, 243, 255, 0.5) 25%, rgba(0, 243, 255, 0.5) 26%, transparent 27%, transparent 74%, rgba(0, 243, 255, 0.5) 75%, rgba(0, 243, 255, 0.5) 76%, transparent 77%, transparent);
+            background-size: 50px 50px;
+            transform: rotateX(60deg);
+            animation: gridMove 2s linear infinite;
+        }
+        @keyframes gridMove {
+            0% { transform: rotateX(60deg) translateY(0); }
+            100% { transform: rotateX(60deg) translateY(50px); }
+        }
+
+        /* Sun */
+        .synth-sun {
+            position: fixed;
+            bottom: 20%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 300px;
+            height: 300px;
+            background: linear-gradient(to bottom, #ffeb3b, #ff00de);
+            border-radius: 50%;
+            box-shadow: 0 0 50px #ff00de;
+            z-index: -2;
+            mask-image: linear-gradient(to bottom, black 0%, black 50%, transparent 55%, transparent 60%, black 65%, black 100%);
+            -webkit-mask-image: linear-gradient(to bottom, black 40%, transparent 45%, transparent 50%, black 55%, transparent 60%, transparent 65%, black 70%);
+            pointer-events: none; /* Prevent clicks */
+        }
+
+        /* Sequencer Grid */
+        .step-btn {
+            width: 100%;
+            aspect-ratio: 1;
+            border-radius: 4px;
+            border: 1px solid #333;
+            background: #111;
+            cursor: pointer;
+            transition: all 0.1s;
+        }
+        .step-btn.active {
+            background: #00f3ff;
+            box-shadow: 0 0 10px #00f3ff;
+            border-color: #fff;
+        }
+        .step-btn.bass-active {
+            background: #ff00de;
+            box-shadow: 0 0 10px #ff00de;
+        }
+        .step-btn.drum-active {
+            background: #ffeb3b;
+            box-shadow: 0 0 10px #ffeb3b;
+        }
+        .step-btn.current {
+            border: 2px solid white;
+            transform: scale(1.1);
+        }
+
+        .control-knob {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 8px;
+            background: #333;
+            border-radius: 4px;
+            outline: none;
+        }
+        .control-knob::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #ff00de;
+            cursor: pointer;
+            box-shadow: 0 0 10px #ff00de;
+        }
+    </style>
+</head>
+<body class="crt">
+
+    <div class="retro-grid"><div class="grid-plane"></div></div>
+    <div class="synth-sun"></div>
+
+    <div class="relative z-10 max-w-6xl mx-auto p-4 md:p-8">
+        
+        <!-- Header -->
+        <header class="text-center mb-8">
+            <h1 class="text-5xl md:text-7xl font-bold neon-text-pink mb-2" style="font-family: 'Press Start 2P', cursive; line-height: 1.4;">NEON GRID</h1>
+            <p class="text-xl neon-text-blue tracking-widest">SYNTHWAVE MAKER</p>
+        </header>
+
+        <!-- Controls -->
+        <div class="bg-black/80 backdrop-blur-md neon-box p-6 rounded-lg mb-8 flex flex-wrap gap-6 justify-center items-center">
+            
+            <button id="playBtn" class="bg-transparent border-2 border-[#00f3ff] text-[#00f3ff] px-8 py-3 rounded text-xl font-bold hover:bg-[#00f3ff] hover:text-black transition-colors shadow-[0_0_15px_#00f3ff]">
+                ▶ PLAY
+            </button>
+            <button id="stopBtn" class="bg-transparent border-2 border-red-500 text-red-500 px-6 py-3 rounded text-xl font-bold hover:bg-red-500 hover:text-black transition-colors">
+                ■ STOP
+            </button>
+            <button id="clearBtn" class="bg-transparent border-2 border-gray-500 text-gray-500 px-4 py-3 rounded font-bold hover:bg-gray-500 hover:text-white transition-colors">
+                CLEAR ALL
+            </button>
+
+            <button id="clearLeadsBtn" class="bg-transparent border-2 border-fuchsia-500 text-fuchsia-500 px-4 py-3 rounded font-bold hover:bg-fuchsia-500 hover:text-white transition-colors shadow-[0_0_10px_rgba(217,70,239,0.3)]">
+                CLEAR LEADS
+            </button>
+
+            <div class="flex items-center gap-3">
+                <span class="text-[#ff00de]">BPM</span>
+                <input type="range" id="bpmSlider" min="60" max="160" value="100" class="control-knob w-32">
+                <span id="bpmDisplay" class="w-12 text-right">100</span>
+            </div>
+
+            <div class="h-12 w-0.5 bg-gray-700 mx-2"></div>
+
+            <button id="randomizeBtn" class="bg-transparent border-2 border-[#ffeb3b] text-[#ffeb3b] px-6 py-3 rounded text-xl font-bold hover:bg-[#ffeb3b] hover:text-black transition-colors shadow-[0_0_15px_#ffeb3b] animate-pulse">
+                🎲 RANDOMIZE
+            </button>
+        </div>
+
+        <!-- Visualizer -->
+        <div class="relative w-full h-32 mb-8 bg-black/50 border border-gray-800 rounded overflow-hidden">
+            <canvas id="visualizer" class="absolute inset-0 w-full h-full"></canvas>
+            <div id="vis-placeholder" class="absolute inset-0 flex items-center justify-center text-gray-600 text-sm tracking-widest pointer-events-none">
+                [ VISUALIZER STANDBY ]
+            </div>
+        </div>
+
+        <!-- Sequencer -->
+        <div class="bg-black/90 p-6 rounded-lg neon-box-blue overflow-x-auto">
+            <div class="min-w-[800px]">
+                <div class="grid grid-cols-[100px_1fr] gap-4 mb-2">
+                    <div class="text-right pr-4 pt-2 font-bold text-gray-400">STEP</div>
+                    <!-- Fixed 16-col Grid -->
+                    <div class="grid grid-cols-[repeat(16,minmax(0,1fr))] gap-1 text-center text-xs text-gray-600">
+                        <div>1</div><div>2</div><div>3</div><div>4</div>
+                        <div>5</div><div>6</div><div>7</div><div>8</div>
+                        <div>9</div><div>10</div><div>11</div><div>12</div>
+                        <div>13</div><div>14</div><div>15</div><div>16</div>
+                    </div>
+                </div>
+
+                <!-- Tracks Container -->
+                <div id="tracksContainer" class="flex flex-col gap-2">
+                    <!-- Tracks generated by JS -->
+                </div>
+            </div>
+        </div>
+        
+        <div class="mt-8 text-center text-gray-500 text-xs">
+            <p>TIP: Use headphones for best bass response. Click cells to toggle notes.</p>
+        </div>
+    </div>
+
+<script>
+    // --- Audio Context & Engine ---
+    let audioCtx;
+    let isPlaying = false;
+    let currentStep = 0;
+    let nextNoteTime = 0;
+    let timerID;
+    let bpm = 100;
+    const lookahead = 25.0; 
+    const scheduleAheadTime = 0.1;
+    let masterGain;
+    let analyser;
+
+    // Instruments Configuration
+    const instruments = [
+        { name: "Kick", type: "drum", color: "drum-active", key: "kick" },
+        { name: "Snare", type: "drum", color: "drum-active", key: "snare" },
+        { name: "HiHat", type: "drum", color: "drum-active", key: "hihat" },
+        { name: "Bass Low", type: "synth", color: "bass-active", note: "A1", shape: "sawtooth" },
+        { name: "Bass High", type: "synth", color: "bass-active", note: "A2", shape: "sawtooth" },
+        { name: "Lead C", type: "synth", color: "active", note: "C4", shape: "square" },
+        { name: "Lead D", type: "synth", color: "active", note: "D4", shape: "square" },
+        { name: "Lead E", type: "synth", color: "active", note: "E4", shape: "square" },
+        { name: "Lead G", type: "synth", color: "active", note: "G4", shape: "square" },
+        { name: "Lead A", type: "synth", color: "active", note: "A4", shape: "square" },
+    ];
+
+    // Grid State (10 tracks x 16 steps)
+    let grid = Array(instruments.length).fill().map(() => Array(16).fill(false));
+
+    // --- Audio Synthesis ---
+
+    function initAudio() {
+        if (!audioCtx) {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            masterGain = audioCtx.createGain();
+            masterGain.gain.value = 0.5;
+            
+            // Reverb Effect (Convolver) - Simulated Impulse Response
+            const convolver = audioCtx.createConvolver();
+            const rate = audioCtx.sampleRate;
+            const length = rate * 2.0; // 2 seconds
+            const decay = 2.0;
+            const impulse = audioCtx.createBuffer(2, length, rate);
+            const impulseL = impulse.getChannelData(0);
+            const impulseR = impulse.getChannelData(1);
+            for (let i = 0; i < length; i++) {
+                const n = length - i;
+                impulseL[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / length, decay);
+                impulseR[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / length, decay);
+            }
+            convolver.buffer = impulse;
+            
+            // Reverb Mix
+            const reverbGain = audioCtx.createGain();
+            reverbGain.gain.value = 0.3; 
+            
+            // Wiring
+            masterGain.connect(audioCtx.destination);
+            masterGain.connect(convolver);
+            convolver.connect(reverbGain);
+            reverbGain.connect(audioCtx.destination); // Send wet signal to out
+
+            // Visualizer setup
+            analyser = audioCtx.createAnalyser();
+            analyser.fftSize = 256;
+            masterGain.connect(analyser);
+            
+            document.getElementById('vis-placeholder').style.display = 'none';
+            setupVisualizer();
+        }
+        if (audioCtx.state === 'suspended') {
+            audioCtx.resume();
+        }
+    }
+
+    function playKick(time) {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(masterGain);
+
+        osc.frequency.setValueAtTime(150, time);
+        osc.frequency.exponentialRampToValueAtTime(0.01, time + 0.5);
+        
+        gain.gain.setValueAtTime(1, time);
+        gain.gain.exponentialRampToValueAtTime(0.01, time + 0.5);
+
+        osc.start(time);
+        osc.stop(time + 0.5);
+    }
+
+    function playSnare(time) {
+        // Noise buffer
+        const bufferSize = audioCtx.sampleRate;
+        const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+        const data = buffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) {
+            data[i] = Math.random() * 2 - 1;
+        }
+
+        const noise = audioCtx.createBufferSource();
+        noise.buffer = buffer;
+        const noiseFilter = audioCtx.createBiquadFilter();
+        noiseFilter.type = "highpass";
+        noiseFilter.frequency.value = 1000;
+        const noiseGain = audioCtx.createGain();
+        
+        noise.connect(noiseFilter);
+        noiseFilter.connect(noiseGain);
+        noiseGain.connect(masterGain);
+
+        // Snap (Oscillator)
+        const osc = audioCtx.createOscillator();
+        osc.type = 'triangle';
+        const oscGain = audioCtx.createGain();
+        osc.connect(oscGain);
+        oscGain.connect(masterGain);
+
+        // Envelope
+        noiseGain.gain.setValueAtTime(1, time);
+        noiseGain.gain.exponentialRampToValueAtTime(0.01, time + 0.2);
+        
+        osc.frequency.setValueAtTime(100, time);
+        oscGain.gain.setValueAtTime(0.7, time);
+        oscGain.gain.exponentialRampToValueAtTime(0.01, time + 0.1);
+
+        noise.start(time);
+        osc.start(time);
+        noise.stop(time + 0.2);
+        osc.stop(time + 0.2);
+    }
+
+    function playHiHat(time) {
+        const bufferSize = audioCtx.sampleRate;
+        const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+        const data = buffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) {
+            data[i] = Math.random() * 2 - 1;
+        }
+
+        const noise = audioCtx.createBufferSource();
+        noise.buffer = buffer;
+        
+        const bandpass = audioCtx.createBiquadFilter();
+        bandpass.type = 'bandpass';
+        bandpass.frequency.value = 10000;
+
+        const highpass = audioCtx.createBiquadFilter();
+        highpass.type = 'highpass';
+        highpass.frequency.value = 7000;
+
+        const gain = audioCtx.createGain();
+        
+        noise.connect(bandpass);
+        bandpass.connect(highpass);
+        highpass.connect(gain);
+        gain.connect(masterGain);
+
+        gain.gain.setValueAtTime(0.3, time);
+        gain.gain.exponentialRampToValueAtTime(0.01, time + 0.05);
+
+        noise.start(time);
+        noise.stop(time + 0.05);
+    }
+
+    function playSynthNote(instrument, time) {
+        const osc1 = audioCtx.createOscillator();
+        const osc2 = audioCtx.createOscillator(); // Detuned oscillator for thickness
+        const filter = audioCtx.createBiquadFilter();
+        const gain = audioCtx.createGain();
+
+        const freq = getNoteFreq(instrument.note);
+        
+        osc1.type = instrument.shape;
+        osc2.type = instrument.shape;
+
+        osc1.frequency.value = freq;
+        osc2.frequency.value = freq;
+        osc2.detune.value = instrument.name.includes("Bass") ? 5 : 10; // Detune slightly
+
+        filter.type = "lowpass";
+        filter.frequency.value = instrument.name.includes("Bass") ? 400 : 2000;
+        
+        // Filter Envelope
+        filter.frequency.setValueAtTime(filter.frequency.value, time);
+        if(instrument.name.includes("Bass")) {
+             filter.frequency.exponentialRampToValueAtTime(100, time + 0.3);
+        } else {
+             filter.frequency.linearRampToValueAtTime(500, time + 0.4);
+        }
+
+        // Amp Envelope
+        gain.gain.setValueAtTime(0, time);
+        gain.gain.linearRampToValueAtTime(0.3, time + 0.02);
+        gain.gain.exponentialRampToValueAtTime(0.001, time + 0.5);
+
+        osc1.connect(filter);
+        osc2.connect(filter);
+        filter.connect(gain);
+        gain.connect(masterGain);
+
+        osc1.start(time);
+        osc2.start(time);
+        osc1.stop(time + 0.6);
+        osc2.stop(time + 0.6);
+    }
+
+    function getNoteFreq(note) {
+        const notes = {
+            "A1": 55.00, "A2": 110.00,
+            "C4": 261.63, "D4": 293.66, "E4": 329.63, "G4": 392.00, "A4": 440.00
+        };
+        return notes[note];
+    }
+
+    // --- Scheduler & Loop ---
+
+    function nextNote() {
+        const secondsPerBeat = 60.0 / bpm;
+        nextNoteTime += 0.25 * secondsPerBeat; // 16th notes
+        currentStep = (currentStep + 1) % 16;
+    }
+
+    function scheduleNote(beatNumber, time) {
+        // UI Updates must be separate from Audio timing
+        requestAnimationFrame(() => {
+            document.querySelectorAll('.step-btn').forEach(btn => btn.classList.remove('current'));
+            document.querySelectorAll(`.col-${beatNumber}`).forEach(btn => btn.classList.add('current'));
+        });
+
+        instruments.forEach((inst, trackIndex) => {
+            if (grid[trackIndex][beatNumber]) {
+                if (inst.type === 'drum') {
+                    if (inst.key === 'kick') playKick(time);
+                    if (inst.key === 'snare') playSnare(time);
+                    if (inst.key === 'hihat') playHiHat(time);
+                } else {
+                    playSynthNote(inst, time);
+                }
+            }
+        });
+    }
+
+    function scheduler() {
+        while (nextNoteTime < audioCtx.currentTime + scheduleAheadTime) {
+            scheduleNote(currentStep, nextNoteTime);
+            nextNote();
+        }
+        timerID = window.setTimeout(scheduler, lookahead);
+    }
+
+    // --- UI Generation & Interaction ---
+
+    function createGrid() {
+        const container = document.getElementById('tracksContainer');
+        container.innerHTML = '';
+
+        instruments.forEach((inst, trackIdx) => {
+            const row = document.createElement('div');
+            row.className = 'grid grid-cols-[100px_1fr] gap-4 items-center';
+
+            const label = document.createElement('div');
+            label.className = `text-right font-bold text-sm ${inst.type === 'drum' ? 'text-yellow-400' : inst.name.includes('Bass') ? 'text-pink-500' : 'text-cyan-400'}`;
+            label.textContent = inst.name;
+
+            const buttonsDiv = document.createElement('div');
+            // FIX: Tailwind doesn't support grid-cols-16 by default. We use arbitrary value.
+            buttonsDiv.className = 'grid grid-cols-[repeat(16,minmax(0,1fr))] gap-1';
+
+            for (let i = 0; i < 16; i++) {
+                const btn = document.createElement('div');
+                btn.className = `step-btn col-${i} ${grid[trackIdx][i] ? inst.color : ''}`;
+                btn.onclick = () => {
+                    grid[trackIdx][i] = !grid[trackIdx][i];
+                    renderGrid();
+                };
+                buttonsDiv.appendChild(btn);
+            }
+
+            row.appendChild(label);
+            row.appendChild(buttonsDiv);
+            container.appendChild(row);
+        });
+    }
+
+    function renderGrid() {
+        // Efficient class toggle instead of full re-render
+        instruments.forEach((inst, trackIdx) => {
+            const buttons = document.querySelectorAll(`#tracksContainer > div:nth-child(${trackIdx+1}) .step-btn`);
+            buttons.forEach((btn, stepIdx) => {
+                if (grid[trackIdx][stepIdx]) {
+                    btn.classList.add(inst.color);
+                } else {
+                    btn.classList.remove(inst.color);
+                }
+            });
+        });
+    }
+
+    // --- Visualization ---
+    
+    let isVisualizerSetup = false;
+
+    function setupVisualizer() {
+        if(isVisualizerSetup) return;
+        isVisualizerSetup = true;
+
+        const canvas = document.getElementById('visualizer');
+        const canvasCtx = canvas.getContext('2d');
+        
+        // Handle resizing robustly
+        function resizeCanvas() {
+            canvas.width = canvas.parentElement.offsetWidth;
+            canvas.height = canvas.parentElement.offsetHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        const bufferLength = analyser.frequencyBinCount;
+        const dataArray = new Uint8Array(bufferLength);
+
+        function draw() {
+            requestAnimationFrame(draw);
+            
+            // Only fetch data if we are actually playing or analyzing
+            if (analyser) {
+                analyser.getByteFrequencyData(dataArray);
+            }
+
+            canvasCtx.fillStyle = '#050011';
+            canvasCtx.fillRect(0, 0, canvas.width, canvas.height);
+
+            const barWidth = (canvas.width / bufferLength) * 2.5;
+            let barHeight;
+            let x = 0;
+
+            for(let i = 0; i < bufferLength; i++) {
+                barHeight = dataArray[i] / 2;
+
+                // Synthwave Gradient
+                const gradient = canvasCtx.createLinearGradient(0, canvas.height, 0, canvas.height - barHeight);
+                gradient.addColorStop(0, '#ff00de');
+                gradient.addColorStop(1, '#00f3ff');
+
+                canvasCtx.fillStyle = gradient;
+                canvasCtx.fillRect(x, canvas.height - barHeight, barWidth, barHeight);
+
+                x += barWidth + 1;
+            }
+        }
+        draw();
+    }
+
+    // --- Randomize Logic (The Brains) ---
+
+    function randomize() {
+        // Clear grid first
+        grid = grid.map(row => row.map(() => false));
+
+        // 1. Drums: Classic Synthwave Beat
+        const kickTrack = 0;
+        const snareTrack = 1;
+        const hatTrack = 2;
+
+        for(let i=0; i<16; i++) {
+            if (i % 4 === 0) grid[kickTrack][i] = true;
+            else if (Math.random() > 0.85) grid[kickTrack][i] = true;
+
+            if (i === 4 || i === 12) grid[snareTrack][i] = true;
+            else if (i === 15 && Math.random() > 0.5) grid[snareTrack][i] = true; 
+
+            if (i % 2 === 0 || Math.random() > 0.7) grid[hatTrack][i] = true;
+        }
+
+        // 2. Bass: Driving 8th notes (Root notes)
+        const bassLow = 3;
+        const bassHigh = 4;
+        const bassPattern = Math.random() > 0.5 ? 'rolling' : 'offbeat';
+
+        for(let i=0; i<16; i++) {
+            if (bassPattern === 'rolling') {
+                 grid[bassLow][i] = true;
+            } else {
+                 if (i % 4 !== 0) grid[bassLow][i] = true;
+            }
+            if (grid[bassLow][i] && Math.random() > 0.8) {
+                grid[bassLow][i] = false;
+                grid[bassHigh][i] = true;
+            }
+        }
+
+        // 3. Lead: Arpeggio or Melody
+        const leadTracks = [5, 6, 7, 8, 9]; 
+        const motif = [];
+        for(let m=0; m<4; m++) {
+            if (Math.random() > 0.4) {
+                const randomNote = Math.floor(Math.random() * leadTracks.length);
+                motif.push(randomNote);
+            } else {
+                motif.push(-1); 
+            }
+        }
+
+        for(let i=0; i<16; i++) {
+            const motifStep = i % 4;
+            const noteIndex = motif[motifStep];
+            
+            if (noteIndex !== -1) {
+                 if (Math.random() > 0.2) {
+                    grid[leadTracks[noteIndex]][i] = true;
+                 }
+            } else {
+                if (Math.random() > 0.95) {
+                    const randomNote = Math.floor(Math.random() * leadTracks.length);
+                    grid[leadTracks[randomNote]][i] = true;
+                }
+            }
+        }
+        renderGrid();
+    }
+
+
+    // --- Event Listeners ---
+
+    document.getElementById('playBtn').addEventListener('click', () => {
+        initAudio();
+        if (isPlaying) return;
+        isPlaying = true;
+        currentStep = 0;
+        nextNoteTime = audioCtx.currentTime;
+        scheduler();
+    });
+
+    document.getElementById('stopBtn').addEventListener('click', () => {
+        isPlaying = false;
+        window.clearTimeout(timerID);
+        // Reset UI
+        document.querySelectorAll('.step-btn').forEach(btn => btn.classList.remove('current'));
+    });
+
+    document.getElementById('clearBtn').addEventListener('click', () => {
+        grid = grid.map(row => row.map(() => false));
+        renderGrid();
+    });
+
+    document.getElementById('clearLeadsBtn').addEventListener('click', () => {
+        instruments.forEach((inst, index) => {
+            if (inst.name.startsWith("Lead")) {
+                // Clear all steps for this track
+                for(let i=0; i<16; i++) {
+                    grid[index][i] = false;
+                }
+            }
+        });
+        renderGrid();
+    });
+
+    document.getElementById('randomizeBtn').addEventListener('click', () => {
+        initAudio(); 
+        randomize();
+    });
+
+    const bpmSlider = document.getElementById('bpmSlider');
+    const bpmDisplay = document.getElementById('bpmDisplay');
+    bpmSlider.addEventListener('input', (e) => {
+        bpm = e.target.value;
+        bpmDisplay.innerText = bpm;
+    });
+
+    // Init
+    createGrid();
+    setTimeout(randomize, 100);
+
+</script>
+</body>
+</html>
