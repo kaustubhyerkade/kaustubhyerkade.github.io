@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Wobble Lab - Multi Genre</title>
+    <title>Wobble Lab - Auto DJ</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         /* Custom Neon Glows */
@@ -42,11 +42,10 @@
 <body class="h-screen flex flex-col overflow-hidden select-none">
 
     <!-- Header & Transport -->
-    <!-- Responsive: Flex-wrap allows stacking on small phones -->
     <header class="p-2 md:p-4 border-b border-slate-700 bg-slate-900/90 backdrop-blur-md z-20 flex flex-wrap justify-between items-center shrink-0 gap-2 md:gap-4">
         
         <div class="flex items-center gap-2 md:gap-3 flex-1">
-            <h1 class="text-xl font-bold italic tracking-tighter text-white mr-2 hidden lg:block"><span class="text-fuchsia-500">Kaustubh's WOBBLE</span><span class="text-cyan-400">LAB</span></h1>
+            <h1 class="text-xl font-bold italic tracking-tighter text-white mr-2 hidden lg:block"><span class="text-fuchsia-500">THE WOBBLE LAB</span><span class="text-cyan-400">of KAUSTUBH</span></h1>
             
             <button id="playBtn" class="bg-green-500 hover:bg-green-400 text-black font-bold py-1.5 px-4 md:py-2 md:px-6 rounded-full transition-all flex items-center gap-2 shadow-[0_0_15px_rgba(34,197,94,0.4)] text-sm md:text-base">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 md:h-5 md:w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" /></svg>
@@ -55,10 +54,19 @@
             <button id="stopBtn" class="bg-slate-700 hover:bg-slate-600 text-white font-bold py-1.5 px-3 md:py-2 md:px-4 rounded-full transition-all text-sm md:text-base">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 md:h-5 md:w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8 7a1 1 0 00-1 1v4a1 1 0 001 1h4a1 1 0 001-1V8a1 1 0 00-1-1H8z" clip-rule="evenodd" /></svg>
             </button>
-            <button id="randomBtn" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-1.5 px-3 text-xs md:text-sm rounded-full transition-all flex items-center gap-1 shadow-[0_0_10px_rgba(79,70,229,0.4)]">
+            
+            <!-- NEW AUTO DJ BUTTON -->
+            <button id="autoDjBtn" class="bg-fuchsia-600 hover:bg-fuchsia-500 text-white font-bold py-1.5 px-3 text-xs md:text-sm rounded-full transition-all flex items-center gap-1 shadow-[0_0_10px_rgba(192,38,211,0.4)]">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
+                <span class="hidden sm:inline">AUTO DJ</span>
+                <span class="sm:hidden">AUTO</span>
+            </button>
+
+            <button id="randomBtn" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-1.5 px-3 text-xs md:text-sm rounded-full transition-all flex items-center gap-1 shadow-[0_0_10px_rgba(79,70,229,0.4)]">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" /></svg>
                 <span class="hidden sm:inline">MAGIC</span>
             </button>
+
             <button id="exportBtn" class="bg-cyan-600 hover:bg-cyan-500 text-white font-bold py-1.5 px-3 text-xs md:text-sm rounded-full transition-all flex items-center gap-1 ml-auto sm:ml-0 shadow-[0_0_10px_rgba(8,145,178,0.4)]">
                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
                  EXP
@@ -105,7 +113,6 @@
     <main class="flex-1 flex flex-row overflow-hidden relative">
         
         <!-- Left: Instrument Labels (Sticky) -->
-        <!-- Adjusted width for mobile to save space -->
         <div class="w-20 md:w-28 bg-slate-900 border-r border-slate-800 flex-shrink-0 flex flex-col pt-8 pb-4 z-10 shadow-lg" id="labelContainer">
              <!-- JS Populates this -->
         </div>
@@ -200,6 +207,8 @@
         // State
         let currentGenre = 'dubstep';
         let isPlaying = false;
+        let isAutoDj = false;
+        let autoDjTimer = null;
         let currentStep = 0;
         let bpm = 140;
         let nextNoteTime = 0.0;
@@ -254,14 +263,11 @@
         }
 
         // --- SOUND GENERATORS (Context Agnostic) ---
-        // Refactored to accept context and destination for Offline Rendering (Export)
-
         function playKick(time, ctx = audioCtx, dest = masterGain, distNode = distortionNode) {
             const osc = ctx.createOscillator();
             const gain = ctx.createGain();
             const profile = GENRES[currentGenre].soundProfile;
 
-            // Tuning
             let freqStart = 150; 
             let freqEnd = 0.01;
             let decay = 0.5;
@@ -527,7 +533,67 @@
         function stop() {
             isPlaying = false;
             window.clearTimeout(timerID);
-            // Visual reset handled by draw loop check
+            // Also stop Auto DJ logic if manual stop is triggered
+            if (isAutoDj) toggleAutoDj(); 
+        }
+
+        // --- AUTO DJ LOGIC ---
+
+        function toggleAutoDj() {
+            isAutoDj = !isAutoDj;
+            const btn = document.getElementById('autoDjBtn');
+            
+            if(isAutoDj) {
+                // Turn ON
+                btn.classList.remove('bg-fuchsia-600', 'hover:bg-fuchsia-500');
+                btn.classList.add('bg-green-500', 'hover:bg-green-400', 'text-black', 'animate-pulse');
+                
+                // Ensure playing
+                if(!isPlaying) {
+                     if(!audioCtx) initAudio();
+                     if(audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+                     play();
+                }
+                
+                scheduleNextTrack();
+                
+            } else {
+                // Turn OFF
+                btn.classList.add('bg-fuchsia-600', 'hover:bg-fuchsia-500');
+                btn.classList.remove('bg-green-500', 'hover:bg-green-400', 'text-black', 'animate-pulse');
+                
+                if(autoDjTimer) clearTimeout(autoDjTimer);
+            }
+        }
+
+        function scheduleNextTrack() {
+            // Random duration between 4 to 8 bars
+            // At 140 BPM, 1 bar = 1.7s. 4 bars = ~7s. 8 bars = ~14s.
+            const bars = Math.floor(Math.random() * 5) + 4; // 4 to 8
+            const secondsPerBeat = 60.0 / bpm;
+            const durationMs = bars * 4 * secondsPerBeat * 1000;
+
+            if(autoDjTimer) clearTimeout(autoDjTimer);
+            
+            autoDjTimer = setTimeout(() => {
+                if(!isAutoDj || !isPlaying) return;
+
+                // Pick new genre randomly
+                const keys = Object.keys(GENRES);
+                // Filter out current so it always changes
+                const available = keys.filter(k => k !== currentGenre);
+                const nextGenre = available[Math.floor(Math.random() * available.length)];
+
+                // Update UI
+                document.getElementById('genreSelect').value = nextGenre;
+                
+                // Trigger Change (this randomizes pattern too)
+                changeGenre(nextGenre);
+                
+                // Schedule next
+                scheduleNextTrack();
+
+            }, durationMs);
         }
 
         // --- VISUALIZER ---
@@ -571,7 +637,6 @@
         }
 
         // --- EXPORT TO WAV (Offline Render) ---
-
         async function exportWav() {
             if(!audioCtx) initAudio();
             const exportBtn = document.getElementById('exportBtn');
@@ -579,14 +644,11 @@
             exportBtn.innerText = "⏳";
             exportBtn.disabled = true;
 
-            // 1. Calculate duration (1 bar loop)
             const secondsPerBeat = 60.0 / bpm;
-            const totalDuration = secondsPerBeat * 4; // 1 bar
+            const totalDuration = secondsPerBeat * 4; 
             
-            // 2. Create Offline Context
             const offlineCtx = new OfflineAudioContext(1, 44100 * totalDuration, 44100);
             
-            // 3. Recreate FX Chain for Offline Context
             const offlineMaster = offlineCtx.createGain();
             offlineMaster.gain.value = 0.8;
             offlineMaster.connect(offlineCtx.destination);
@@ -596,7 +658,6 @@
             offlineDist.oversample = '4x';
             offlineDist.connect(offlineMaster);
 
-            // 4. Schedule all notes
             const sixteenthNoteTime = secondsPerBeat / 4;
             
             for(let step = 0; step < STEPS; step++) {
@@ -613,12 +674,9 @@
                 if (rowData.synth2) playSynth(time, 'synth2', offlineCtx, offlineMaster, offlineDist);
             }
 
-            // 5. Render
             try {
                 const renderedBuffer = await offlineCtx.startRendering();
                 const wavBlob = bufferToWave(renderedBuffer, renderedBuffer.length);
-                
-                // 6. Download
                 const url = URL.createObjectURL(wavBlob);
                 const a = document.createElement('a');
                 a.style.display = 'none';
@@ -636,7 +694,6 @@
             exportBtn.disabled = false;
         }
 
-        // --- WAV ENCODER UTILITY ---
         function bufferToWave(abuffer, len) {
             let numOfChan = abuffer.numberOfChannels,
                 length = len * numOfChan * 2 + 44,
@@ -644,41 +701,24 @@
                 view = new DataView(buffer),
                 channels = [], i, sample, offset = 0, pos = 0;
 
-            // write WAVE header
-            setUint32(0x46464952);                         // "RIFF"
-            setUint32(length - 8);                         // file length - 8
-            setUint32(0x45564157);                         // "WAVE"
+            setUint32(0x46464952); setUint32(length - 8); setUint32(0x45564157);
+            setUint32(0x20746d66); setUint32(16); setUint16(1); setUint16(numOfChan);
+            setUint32(abuffer.sampleRate); setUint32(abuffer.sampleRate * 2 * numOfChan);
+            setUint16(numOfChan * 2); setUint16(16); setUint32(0x61746164);
+            setUint32(length - pos - 4);
 
-            setUint32(0x20746d66);                         // "fmt " chunk
-            setUint32(16);                                 // length = 16
-            setUint16(1);                                  // PCM (uncompressed)
-            setUint16(numOfChan);
-            setUint32(abuffer.sampleRate);
-            setUint32(abuffer.sampleRate * 2 * numOfChan); // avg. bytes/sec
-            setUint16(numOfChan * 2);                      // block-align
-            setUint16(16);                                 // 16-bit (hardcoded in this loop)
-
-            setUint32(0x61746164);                         // "data" - chunk
-            setUint32(length - pos - 4);                   // chunk length
-
-            // write interleaved data
-            for(i = 0; i < abuffer.numberOfChannels; i++)
-                channels.push(abuffer.getChannelData(i));
+            for(i = 0; i < abuffer.numberOfChannels; i++) channels.push(abuffer.getChannelData(i));
 
             while(pos < len) {
-                for(i = 0; i < numOfChan; i++) {             // interleave channels
-                    sample = Math.max(-1, Math.min(1, channels[i][pos])); // clamp
-                    sample = (0.5 + sample < 0 ? sample * 32768 : sample * 32767)|0; // scale to 16-bit signed int
-                    view.setInt16(44 + offset, sample, true);          // write 16-bit sample
-                    offset += 2;
+                for(i = 0; i < numOfChan; i++) { 
+                    sample = Math.max(-1, Math.min(1, channels[i][pos])); 
+                    sample = (0.5 + sample < 0 ? sample * 32768 : sample * 32767)|0; 
+                    view.setInt16(44 + offset, sample, true); offset += 2;
                 }
                 pos++;
             }
-
-            // helper functions to write strings as uints
             function setUint16(data) { view.setUint16(pos, data, true); pos += 2; }
             function setUint32(data) { view.setUint32(pos, data, true); pos += 4; }
-
             return new Blob([buffer], {type: "audio/wav"});
         }
 
@@ -687,9 +727,7 @@
         function updateLabels() {
             const container = document.getElementById('labelContainer');
             container.innerHTML = `<div class="h-8"></div>`; // Spacer
-            
             const g = GENRES[currentGenre];
-            
             const getLabel = (id) => {
                 if(g.labels && g.labels[id]) return g.labels[id];
                 const r = ROWS.find(x => x.id === id);
@@ -706,17 +744,14 @@
                     if(r.color === 'green-bright') colorClass = 'text-lime-400';
                     if(r.color === 'blue-light') colorClass = 'text-blue-300';
                     if(r.color === 'orange') colorClass = 'text-orange-400';
-                    
                     container.innerHTML += `<div class="h-10 flex items-center justify-end pr-2 md:pr-4 text-[9px] md:text-sm font-bold ${colorClass} truncate leading-tight">${txt}</div>`;
                 }
             });
         }
 
         function randomizePattern(style) {
-            // Clear
             gridData = Array(STEPS).fill(null).map(() => ({}));
             
-            // Style Logic
             const pf = GENRES[style].soundProfile;
             const isFourOnFloor = ['house', 'techno', 'disco', 'acid', 'hardstyle', 'afro', 'synthwave'].includes(style);
             const isBroken = ['dnb', 'breakbeat'].includes(style);
@@ -762,13 +797,11 @@
                     if(Math.random() > 0.6) gridData[i].bass2 = true; 
                 }
             }
-            
             if(style === 'ambient') {
                 gridData[0].bass2 = true; 
                 gridData[8].bass2 = true; 
                 gridData[4].synth1 = true;
             }
-
             if(Math.random() > 0.5) gridData[14].synth2 = true; 
             
             updateGridUI();
@@ -780,11 +813,8 @@
                  const step = parseInt(btn.dataset.step);
                  const inst = btn.dataset.inst;
                  const isActive = gridData[step][inst];
-
-                 // Reset
                  btn.className = `w-8 h-10 md:w-12 md:h-10 rounded-sm bg-slate-800 hover:bg-slate-700 transition-all duration-100 border border-slate-700/50 flex-shrink-0`;
                  if (step % 4 === 0) btn.classList.add('border-l-slate-500');
-
                  if(isActive) {
                     const rowDef = ROWS.find(r => r.id === inst);
                     let c = 'btn-active-purple';
@@ -831,7 +861,6 @@
                         gridData[i][rowDef.id] = !gridData[i][rowDef.id];
                         updateGridUI();
                         if(gridData[i][rowDef.id] && !isPlaying) {
-                            // Preview
                             initAudio();
                             if(audioCtx.state === 'suspended') audioCtx.resume();
                             const now = audioCtx.currentTime;
@@ -850,22 +879,17 @@
         
         function changeGenre(newGenre) {
             currentGenre = newGenre;
-            
-            // Update BPM
             const g = GENRES[newGenre];
             bpm = g.bpm;
             document.getElementById('bpmInput').value = bpm;
-            
-            // Update Labels
             updateLabels();
-            
-            // Create New Pattern
             randomizePattern(newGenre);
         }
 
         // --- LISTENERS ---
         document.getElementById('playBtn').addEventListener('click', () => isPlaying ? (stop(), play()) : play());
         document.getElementById('stopBtn').addEventListener('click', stop);
+        document.getElementById('autoDjBtn').addEventListener('click', toggleAutoDj);
         document.getElementById('exportBtn').addEventListener('click', exportWav);
         document.getElementById('clearBtn').addEventListener('click', () => {
             gridData = Array(STEPS).fill(null).map(() => ({}));
