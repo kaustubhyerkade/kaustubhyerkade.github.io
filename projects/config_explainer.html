@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Universal Config Explainer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/4.1.0/js-yaml.min.js"></script>
+    <style>
+        /* Custom scrollbar for dark theme */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569; 
+        }
+        
+        .tree-line {
+            position: absolute;
+            left: 6px;
+            top: 24px;
+            bottom: 0;
+            width: 1px;
+            background-color: #334155;
+            opacity: 0.5;
+        }
+        
+        .animate-slide-in {
+            animation: slideIn 0.2s ease-out forwards;
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(10px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        /* Tree Node Hover Effect */
+        .node-row:hover {
+            background-color: rgba(30, 41, 59, 0.5);
+        }
+        .node-row.selected {
+            background-color: rgba(59, 130, 246, 0.2);
+            border-left-color: #3b82f6;
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-200 font-sans h-screen flex flex-col overflow-hidden">
+
+    <!-- Header -->
+    <header class="bg-slate-900 border-b border-slate-700 p-4 flex items-center justify-between sticky top-0 z-20 flex-none h-16">
+        <div class="flex items-center gap-3">
+            <div class="bg-blue-600 p-2 rounded-lg shadow-lg shadow-blue-900/50">
+                <!-- Settings Icon -->
+                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+            </div>
+            <div>
+                <h1 class="text-xl font-bold text-white tracking-tight">Universal Config Explainer</h1>
+                <p class="text-xs text-slate-400">Parse • Visualize • Analyze • Secure</p>
+            </div>
+        </div>
+        <div class="flex gap-2 text-xs text-slate-500 items-center">
+           <span id="parser-status" class="flex items-center gap-1">Initializing...</span>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="flex-1 flex overflow-hidden relative">
+        
+        <!-- LEFT PANEL: EDITOR -->
+        <div id="panel-editor" class="flex-1 flex flex-col border-r border-slate-800 transition-all duration-300 min-w-0">
+            <!-- Toolbar -->
+            <div class="h-10 bg-slate-900 border-b border-slate-800 flex items-center px-4 justify-between flex-none">
+                <div class="flex items-center gap-2">
+                    <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Input</span>
+                    <div class="h-4 w-[1px] bg-slate-700 mx-2"></div>
+                    <button onclick="loadSample('k8s')" class="text-xs hover:text-white text-slate-400 transition-colors">K8s YAML</button>
+                    <button onclick="loadSample('json')" class="text-xs hover:text-white text-slate-400 transition-colors">JSON</button>
+                    <button onclick="loadSample('ini')" class="text-xs hover:text-white text-slate-400 transition-colors">INI</button>
+                </div>
+            </div>
+
+            <div class="flex-1 relative h-full">
+                <textarea id="input-area" 
+                    class="w-full h-full bg-slate-950 text-slate-300 font-mono text-sm p-4 resize-none focus:outline-none focus:ring-1 focus:ring-blue-500/50 leading-relaxed"
+                    spellcheck="false"
+                    placeholder="Paste your JSON, YAML, TOML, or INI config here..."></textarea>
+                
+                <!-- Error Toast -->
+                <div id="error-toast" class="hidden absolute bottom-4 left-4 right-4 bg-red-900/90 text-red-200 px-4 py-3 rounded shadow-lg backdrop-blur-sm border border-red-700/50 flex items-start gap-3 z-10">
+                    <svg class="w-5 h-5 flex-shrink-0 mt-0.5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                    <div class="text-sm">
+                        <p class="font-bold">Parsing Error</p>
+                        <p id="error-msg" class="opacity-90">Invalid syntax</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MIDDLE PANEL: VISUALIZER -->
+        <div id="panel-explorer" class="flex-1 flex flex-col bg-slate-925 lg:flex-[0.8] border-r border-slate-800 min-w-0 hidden lg:flex">
+             <div class="h-10 bg-slate-900 border-b border-slate-800 flex items-center px-4 justify-between flex-none">
+                <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Structure</span>
+                <span id="valid-badge" class="hidden text-xs px-2 py-0.5 rounded bg-emerald-900/30 text-emerald-400 border border-emerald-800/50">Valid Config</span>
+            </div>
+            
+            <div id="tree-container" class="flex-1 overflow-auto p-2">
+                <!-- Empty State -->
+                <div id="empty-state" class="h-full flex flex-col items-center justify-center text-slate-600">
+                    <svg class="w-12 h-12 mb-2 opacity-20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                    <p class="text-sm">Waiting for valid input...</p>
+                </div>
+                <!-- Tree Content -->
+                <div id="tree-content" class="py-2 space-y-0.5 hidden"></div>
+            </div>
+        </div>
+
+        <!-- RIGHT PANEL: DETAILS -->
+        <div id="panel-details" class="w-full lg:w-[400px] flex-none bg-slate-900 z-10 absolute inset-0 top-0 lg:static hidden lg:block overflow-hidden">
+             <!-- Mobile Close Button -->
+             <button id="close-details-btn" class="lg:hidden absolute top-4 right-4 p-2 bg-slate-800 rounded-full text-white z-50 hover:bg-slate-700">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+             </button>
+
+             <div id="detail-content" class="h-full overflow-y-auto p-6 border-l border-slate-700">
+                <!-- Empty State -->
+                <div class="h-full flex flex-col items-center justify-center text-slate-500 text-center">
+                    <svg class="w-16 h-16 mb-4 opacity-20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    <h3 class="text-lg font-medium text-slate-400">Select a Property</h3>
+                    <p class="text-sm max-w-xs mt-2 opacity-60">Click on any key in the tree view to see details, security analysis, and configuration tips.</p>
+                </div>
+             </div>
+        </div>
+
+    </div>
+
+    <!-- Mobile Tab Bar -->
+    <div class="lg:hidden h-14 bg-slate-900 border-t border-slate-800 flex items-center justify-around px-4 flex-none z-30">
+        <button onclick="switchTab('editor')" id="tab-editor" class="flex flex-col items-center gap-1 text-blue-400">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
+            <span class="text-[10px]">Input</span>
+        </button>
+        <button onclick="switchTab('explorer')" id="tab-explorer" class="flex flex-col items-center gap-1 text-slate-500">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+            <span class="text-[10px]">Explorer</span>
+        </button>
+    </div>
+
+<script>
+    // --- Constants & Knowledge Base ---
+    const KNOWLEDGE_BASE = {
+        // Network & Server
+        port: { desc: "The network port number this service listens on.", category: "Network", risk: "Verify this port is not blocked by firewalls." },
+        host: { desc: "The hostname or IP address to bind to.", category: "Network" },
+        hostname: { desc: "The DNS name for this machine or service.", category: "Network" },
+        protocol: { desc: "Communication protocol (e.g., HTTP, TCP, UDP).", category: "Network" },
+        
+        // Application Control
+        debug: { desc: "Enables verbose logging for troubleshooting.", category: "Core", warning: "Ensure this is FALSE in production to prevent performance issues and log leaks." },
+        env: { desc: "The current operating environment (dev, stage, prod).", category: "Core" },
+        environment: { desc: "The current operating environment (dev, stage, prod).", category: "Core" },
+        version: { desc: "Software version identifier.", category: "Core" },
+        
+        // Database & Storage
+        database: { desc: "Name of the database to connect to.", category: "Database" },
+        db_name: { desc: "Name of the database to connect to.", category: "Database" },
+        connectionstring: { desc: "Full string used to connect to a data source.", category: "Database", sensitive: true },
+        dsn: { desc: "Data Source Name.", category: "Database" },
+        redis: { desc: "Configuration for Redis cache.", category: "Database" },
+        
+        // Security & Auth
+        password: { desc: "Authentication credential.", category: "Security", sensitive: true },
+        secret: { desc: "Cryptographic secret or key.", category: "Security", sensitive: true },
+        key: { desc: "API key or cryptographic key.", category: "Security", sensitive: true },
+        token: { desc: "Access token for authentication.", category: "Security", sensitive: true },
+        ssl: { desc: "Secure Sockets Layer settings.", category: "Security" },
+        tls: { desc: "Transport Layer Security settings.", category: "Security" },
+        cert: { desc: "Path to a security certificate.", category: "Security" },
+        
+        // Kubernetes / Docker / Cloud
+        image: { desc: "The container image to use.", category: "Infrastructure" },
+        replicas: { desc: "Number of identical instances to run.", category: "Infrastructure" },
+        cpu: { desc: "CPU resource allocation limit or request.", category: "Infrastructure" },
+        memory: { desc: "Memory (RAM) resource allocation.", category: "Infrastructure" },
+        volume: { desc: "Persistent storage mount.", category: "Infrastructure" },
+        
+        // Web
+        cors: { desc: "Cross-Origin Resource Sharing policies.", category: "Web" },
+        baseurl: { desc: "The root URL for the application.", category: "Web" },
+        api_url: { desc: "Endpoint for backend API calls.", category: "Web" },
+    };
+
+    // --- State ---
+    let state = {
+        input: '',
+        parsedData: null,
+        selectedNode: null,
+        activeTab: 'editor',
+        yamlReady: false
+    };
+
+    // --- DOM Elements ---
+    const els = {
+        input: document.getElementById('input-area'),
+        errorToast: document.getElementById('error-toast'),
+        errorMsg: document.getElementById('error-msg'),
+        treeContent: document.getElementById('tree-content'),
+        emptyState: document.getElementById('empty-state'),
+        validBadge: document.getElementById('valid-badge'),
+        detailPanel: document.getElementById('detail-content'),
+        panelEditor: document.getElementById('panel-editor'),
+        panelExplorer: document.getElementById('panel-explorer'),
+        panelDetails: document.getElementById('panel-details'),
+        parserStatus: document.getElementById('parser-status'),
+        tabEditor: document.getElementById('tab-editor'),
+        tabExplorer: document.getElementById('tab-explorer'),
+        closeDetailsBtn: document.getElementById('close-details-btn')
+    };
+
+    // --- Icons (SVG Strings) ---
+    const Icons = {
+        chevronRight: `<svg class="w-3.5 h-3.5 text-slate-400 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>`,
+        code: `<svg class="w-3 h-3 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>`,
+        alert: `<svg class="w-3 h-3 text-orange-500 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>`,
+        shield: `<svg class="w-3 h-3 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>`,
+        info: `<svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>`,
+        terminal: `<svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>`,
+        danger: `<svg class="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>`,
+        cpu: `<svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"></path></svg>`
+    };
+
+    // --- Parsers ---
+    const parseINI = (text) => {
+        const result = {};
+        let currentSection = result;
+        text.split(/\r?\n/).forEach(line => {
+            line = line.trim();
+            if (!line || line.startsWith(';') || line.startsWith('#')) return;
+            if (line.startsWith('[') && line.endsWith(']')) {
+                const sectionName = line.slice(1, -1);
+                result[sectionName] = {};
+                currentSection = result[sectionName];
+            } else if (line.includes('=')) {
+                const [key, ...valParts] = line.split('=');
+                const val = valParts.join('=').trim();
+                const cleanKey = key.trim();
+                if (val === 'true') currentSection[cleanKey] = true;
+                else if (val === 'false') currentSection[cleanKey] = false;
+                else if (!isNaN(val) && val !== '') currentSection[cleanKey] = Number(val);
+                else currentSection[cleanKey] = val.replace(/^["']|["']$/g, '');
+            }
+        });
+        return result;
+    };
+
+    const parseXML = (text) => {
+        const parser = new DOMParser();
+        const xmlDoc = parser.parseFromString(text, "text/xml");
+        if (xmlDoc.getElementsByTagName("parsererror").length > 0) throw new Error("Invalid XML");
+        
+        const xmlToJson = (xml) => {
+            let obj = {};
+            if (xml.nodeType === 1) { // element
+                if (xml.attributes.length > 0) {
+                    obj["@attributes"] = {};
+                    for (let j = 0; j < xml.attributes.length; j++) {
+                        const attribute = xml.attributes.item(j);
+                        obj["@attributes"][attribute.nodeName] = attribute.nodeValue;
+                    }
+                }
+            } else if (xml.nodeType === 3) { // text
+                obj = xml.nodeValue;
+            }
+            if (xml.hasChildNodes()) {
+                for(let i = 0; i < xml.childNodes.length; i++) {
+                    const item = xml.childNodes.item(i);
+                    const nodeName = item.nodeName;
+                    if (nodeName === "#text") {
+                        if (item.nodeValue.trim() !== "") return item.nodeValue;
+                        continue;
+                    }
+                    if (typeof(obj[nodeName]) === "undefined") obj[nodeName] = xmlToJson(item);
+                    else {
+                        if (typeof(obj[nodeName].push) === "undefined") {
+                            const old = obj[nodeName];
+                            obj[nodeName] = [];
+                            obj[nodeName].push(old);
+                        }
+                        obj[nodeName].push(xmlToJson(item));
+                    }
+                }
+            }
+            return obj;
+        };
+        return xmlToJson(xmlDoc.documentElement);
+    };
+
+    const parseInput = (text) => {
+        if (!text.trim()) return null;
+        try {
+            // JSON
+            if (text.trim().startsWith('{') || text.trim().startsWith('[')) return JSON.parse(text);
+            // XML
+            if (text.trim().startsWith('<')) return parseXML(text);
+            // YAML
+            if (window.jsyaml) {
+                try {
+                    const y = window.jsyaml.load(text);
+                    if (typeof y === 'object' && y !== null) return y;
+                } catch(e) {/*continue*/}
+            }
+            // INI fallback
+            if (text.includes('=') || text.includes('[')) return parseINI(text);
+            
+            throw new Error("Unknown format");
+        } catch (e) {
+            throw e;
+        }
+    };
+
+    // --- Logic & UI Handling ---
+
+    const handleInput = () => {
+        const text = els.input.value;
+        state.input = text;
+        
+        try {
+            const data = parseInput(text);
+            state.parsedData = data;
+            els.errorToast.classList.add('hidden');
+            els.validBadge.classList.remove('hidden');
+            els.emptyState.classList.add('hidden');
+            els.treeContent.classList.remove('hidden');
+            renderTree(data);
+        } catch (e) {
+            state.parsedData = null;
+            els.errorToast.classList.remove('hidden');
+            els.errorMsg.textContent = e.message || "Invalid syntax";
+            els.validBadge.classList.add('hidden');
+            els.emptyState.classList.remove('hidden');
+            els.treeContent.classList.add('hidden');
+        }
+    };
+
+    // Simple debounce
+    let timeout;
+    els.input.addEventListener('input', () => {
+        clearTimeout(timeout);
+        timeout = setTimeout(handleInput, 600);
+    });
+
+    // --- Tree Rendering ---
+    
+    const createNodeEl = (key, value, depth, path) => {
+        const isObject = value !== null && typeof value === 'object';
+        const isArray = Array.isArray(value);
+        const nodeKey = key;
+        
+        const container = document.createElement('div');
+        container.className = 'font-mono text-sm select-none';
+        
+        // Row
+        const row = document.createElement('div');
+        row.className = 'node-row flex items-center gap-2 py-1 px-2 cursor-pointer transition-colors border-l-2 border-transparent';
+        row.style.paddingLeft = `${depth * 1.5 + 0.5}rem`;
+        row.dataset.path = path.join('.');
+
+        // Click Handler for Row (Select)
+        row.onclick = (e) => {
+            e.stopPropagation();
+            if(isObject) {
+                 // Toggle Expand
+                 const childContainer = container.querySelector('.children-container');
+                 const icon = row.querySelector('.chevron-icon');
+                 if(childContainer) {
+                    childContainer.classList.toggle('hidden');
+                    icon.classList.toggle('rotate-90');
+                 }
+            } else {
+                selectNode(path, value, nodeKey);
+            }
+            // Visual selection
+            document.querySelectorAll('.node-row').forEach(el => el.classList.remove('selected', 'bg-blue-500/20', 'border-blue-500'));
+            row.classList.add('selected', 'bg-blue-500/20', 'border-blue-500');
+            
+            if (window.innerWidth < 1024) switchTab('details'); // Mobile auto-switch
+        };
+
+        // Icon
+        const iconSpan = document.createElement('span');
+        iconSpan.className = 'flex-shrink-0 p-1 hover:bg-slate-700 rounded';
+        if (isObject) {
+            iconSpan.innerHTML = Icons.chevronRight;
+            iconSpan.querySelector('svg').classList.add('chevron-icon', 'rotate-90'); // Default expanded
+        } else {
+            iconSpan.innerHTML = '<span class="w-3.5 h-3.5 block"></span>'; // Spacer
+        }
+        row.appendChild(iconSpan);
+
+        // Key
+        const keySpan = document.createElement('span');
+        keySpan.className = 'text-purple-300 font-semibold truncate';
+        keySpan.textContent = nodeKey;
+        keySpan.onclick = (e) => {
+             e.stopPropagation();
+             selectNode(path, value, nodeKey);
+        };
+        row.appendChild(keySpan);
+
+        // Value or Object Indicator
+        if (!isObject) {
+            // Heuristics
+            const isSensitive = KNOWLEDGE_BASE[nodeKey.toLowerCase()]?.sensitive;
+            const isRisky = nodeKey.toLowerCase() === 'debug' && value === true;
+
+            const valContainer = document.createElement('span');
+            valContainer.className = 'text-slate-400 flex items-center gap-2 truncate';
+            
+            valContainer.innerHTML = `
+                <span class="text-slate-600">:</span>
+                <span class="truncate ${isSensitive ? 'text-red-400 blur-[2px] hover:blur-none transition-all' : 'text-emerald-300'}">
+                    ${JSON.stringify(value)}
+                </span>
+                ${isRisky ? Icons.alert : ''}
+                ${isSensitive ? Icons.shield : ''}
+            `;
+            row.appendChild(valContainer);
+        } else {
+            const countSpan = document.createElement('span');
+            countSpan.className = 'text-slate-600 text-xs ml-2';
+            countSpan.textContent = isArray ? `[${value.length}]` : '{...}';
+            row.appendChild(countSpan);
+        }
+
+        container.appendChild(row);
+
+        // Children
+        if (isObject) {
+            const childrenDiv = document.createElement('div');
+            childrenDiv.className = 'children-container border-l border-slate-800/50 ml-2';
+            Object.entries(value).forEach(([k, v]) => {
+                childrenDiv.appendChild(createNodeEl(k, v, depth + 1, [...path, k]));
+            });
+            container.appendChild(childrenDiv);
+        }
+
+        return container;
+    };
+
+    const renderTree = (data) => {
+        els.treeContent.innerHTML = '';
+        Object.entries(data).forEach(([k, v]) => {
+            els.treeContent.appendChild(createNodeEl(k, v, 0, [k]));
+        });
+    };
+
+    // --- Details Panel ---
+
+    const selectNode = (path, value, key) => {
+        state.selectedNode = { path, value, key };
+        renderDetails();
+    };
+
+    const renderDetails = () => {
+        const { path, value, key } = state.selectedNode;
+        const lowerKey = key.toLowerCase();
+        const info = KNOWLEDGE_BASE[lowerKey] || {};
+        const type = Array.isArray(value) ? 'Array' : typeof value;
+
+        // Analysis
+        let analysis = null;
+        if (info.sensitive) analysis = { type: 'danger', msg: 'This field typically contains sensitive data. Ensure it is encrypted or managed via secrets.', icon: Icons.shield };
+        else if (lowerKey === 'debug' && value === true) analysis = { type: 'warning', msg: 'Debug mode is enabled. This may expose sensitive logs and impact performance in production.', icon: Icons.alert };
+        else if (lowerKey === 'port' && typeof value === 'number' && value < 1024) analysis = { type: 'info', msg: 'This is a system port (0-1023). The application may require root privileges.', icon: Icons.cpu };
+        else if (path.includes('users') || path.includes('auth')) analysis = { type: 'info', msg: 'This section appears to manage user authentication or authorization.', icon: Icons.info };
+
+        // Build HTML
+        const html = `
+            <div class="animate-slide-in">
+                <div class="flex items-center gap-2 text-slate-400 text-xs font-mono mb-4 uppercase tracking-wider">
+                    ${Icons.terminal}
+                    ${path.join('.')}
+                </div>
+                <h2 class="text-2xl font-bold text-white mb-2 break-all">${key}</h2>
+                <div class="flex items-center gap-2 mb-6">
+                    <span class="px-2 py-0.5 rounded bg-slate-800 text-slate-300 text-xs border border-slate-700 capitalize">${type}</span>
+                    ${info.category ? `<span class="px-2 py-0.5 rounded bg-blue-900/30 text-blue-300 text-xs border border-blue-800/50">${info.category}</span>` : ''}
+                </div>
+                <div class="space-y-6">
+                    <div class="bg-slate-950 rounded-lg border border-slate-800 p-4">
+                        <label class="text-xs text-slate-500 font-semibold mb-2 block uppercase">Current Value</label>
+                        <div class="font-mono text-sm text-emerald-300 break-words whitespace-pre-wrap">${JSON.stringify(value, null, 2)}</div>
+                    </div>
+                    ${info.desc ? `
+                    <div class="bg-slate-800/30 rounded-lg p-4 border border-slate-700/50">
+                        <div class="flex items-start gap-3">
+                            ${Icons.info}
+                            <div>
+                                <h4 class="font-medium text-slate-200 mb-1">What is this?</h4>
+                                <p class="text-sm text-slate-400 leading-relaxed">${info.desc}</p>
+                            </div>
+                        </div>
+                    </div>` : ''}
+                    ${analysis ? `
+                    <div class="rounded-lg p-4 border ${analysis.type === 'danger' ? 'bg-red-900/10 border-red-900/50' : analysis.type === 'warning' ? 'bg-orange-900/10 border-orange-900/50' : 'bg-blue-900/10 border-blue-900/50'}">
+                        <div class="flex items-start gap-3">
+                            ${analysis.icon}
+                            <div>
+                                <h4 class="font-medium mb-1 ${analysis.type === 'danger' ? 'text-red-300' : analysis.type === 'warning' ? 'text-orange-300' : 'text-blue-300'}">Analysis</h4>
+                                <p class="text-sm text-slate-400 leading-relaxed">${analysis.msg}</p>
+                            </div>
+                        </div>
+                    </div>` : ''}
+                </div>
+            </div>
+        `;
+        els.detailPanel.innerHTML = html;
+    };
+
+    // --- Tabs & Layout ---
+    
+    window.switchTab = (tab) => {
+        state.activeTab = tab;
+        if (window.innerWidth < 1024) { // Mobile Logic
+            if (tab === 'editor') {
+                els.panelEditor.classList.remove('hidden');
+                els.panelExplorer.classList.add('hidden');
+                els.panelDetails.classList.add('hidden');
+                els.tabEditor.classList.add('text-blue-400');
+                els.tabEditor.classList.remove('text-slate-500');
+                els.tabExplorer.classList.remove('text-blue-400');
+                els.tabExplorer.classList.add('text-slate-500');
+            } else if (tab === 'explorer') {
+                els.panelEditor.classList.add('hidden');
+                els.panelExplorer.classList.remove('hidden');
+                els.panelDetails.classList.add('hidden');
+                els.tabEditor.classList.remove('text-blue-400');
+                els.tabEditor.classList.add('text-slate-500');
+                els.tabExplorer.classList.add('text-blue-400');
+                els.tabExplorer.classList.remove('text-slate-500');
+            } else if (tab === 'details') {
+                els.panelDetails.classList.remove('hidden');
+                // Don't change bottom tab active state when in details overlay
+            }
+        }
+    };
+
+    els.closeDetailsBtn.addEventListener('click', () => {
+        els.panelDetails.classList.add('hidden');
+        if (window.innerWidth < 1024) switchTab('explorer');
+    });
+
+    // --- Examples ---
+    window.loadSample = (type) => {
+        let content = '';
+        if (type === 'k8s') {
+            content = `apiVersion: v1\nkind: Pod\nmetadata:\n  name: nginx-demo\nspec:\n  containers:\n  - name: nginx\n    image: nginx:1.14.2\n    ports:\n    - containerPort: 80\n    env:\n    - name: SECRET_KEY\n      value: "super-secret-password"`;
+        } else if (type === 'json') {
+            content = `{\n  "server": {\n    "host": "0.0.0.0",\n    "port": 8080,\n    "debug": true\n  },\n  "database": {\n    "url": "postgres://user:pass@localhost:5432/db"\n  }\n}`;
+        } else if (type === 'ini') {
+            content = `[database]\nuser = dbuser\npassword = secret\n\n[server]\ndebug = true\nport = 3000`;
+        }
+        els.input.value = content;
+        handleInput();
+        if (window.innerWidth < 1024) switchTab('editor');
+    };
+
+    // --- Init ---
+    window.addEventListener('load', () => {
+        const checkYaml = setInterval(() => {
+            if (window.jsyaml) {
+                state.yamlReady = true;
+                els.parserStatus.innerHTML = `<span class="text-emerald-500 flex items-center gap-1">${Icons.checkCircle || '<span class="text-xs">✓</span>'} Ready</span>`;
+                clearInterval(checkYaml);
+                loadSample('k8s'); // Load default
+            }
+        }, 100);
+        setTimeout(() => clearInterval(checkYaml), 5000); // Timeout fallback
+    });
+
+</script>
+</body>
+</html>
