@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DiffMaster Pro</title>
+    
+    <!-- React & DOM -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Diff Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsdiff/5.1.0/diff.min.js"></script>
+    
+    <!-- PrismJS for Syntax Highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-css.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #4b5563; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #6b7280; }
+
+        /* Diff Colors - Dark Mode defaults */
+        .diff-add { background-color: rgba(16, 185, 129, 0.2); }
+        .diff-add-text { color: #34d399; }
+        .diff-del { background-color: rgba(239, 68, 68, 0.2); }
+        .diff-del-text { color: #f87171; }
+        .diff-gutter { user-select: none; }
+        
+        /* Light Mode Overrides */
+        .light-mode .diff-add { background-color: #d1fae5; }
+        .light-mode .diff-add-text { color: #047857; }
+        .light-mode .diff-del { background-color: #fee2e2; }
+        .light-mode .diff-del-text { color: #b91c1c; }
+        .light-mode { background-color: #f3f4f6; color: #111827; }
+        .light-mode .bg-gray-900 { background-color: white; }
+        .light-mode .bg-gray-800 { background-color: #f9fafb; border-color: #e5e7eb; }
+        .light-mode .text-gray-300 { color: #4b5563; }
+        .light-mode .text-white { color: #111827; }
+        .light-mode textarea { background-color: #ffffff; color: #1f2937; border-color: #d1d5db; }
+        .light-mode .border-gray-700 { border-color: #e5e7eb; }
+        
+        /* Editor heights */
+        .h-editor { height: calc(100vh - 280px); min-height: 400px; }
+        
+        pre { margin: 0 !important; padding: 0 !important; background: transparent !important; text-shadow: none !important; }
+        code { font-family: 'JetBrains Mono', monospace !important; text-shadow: none !important; }
+    </style>
+</head>
+<body class="bg-gray-950 text-white h-screen overflow-hidden flex flex-col">
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useRef, useMemo } = React;
+
+        // Sample Data for quick testing
+        const SAMPLE_OLD = `{
+  "name": "project-alpha",
+  "version": "1.0.0",
+  "features": [
+    "login",
+    "dashboard",
+    "reports"
+  ],
+  "active": true,
+  "settings": {
+    "theme": "dark",
+    "notifications": true
+  }
+}`;
+
+        const SAMPLE_NEW = `{
+  "name": "project-beta",
+  "version": "1.1.0",
+  "features": [
+    "login",
+    "dashboard",
+    "analytics",
+    "reports"
+  ],
+  "active": false,
+  "settings": {
+    "theme": "system",
+    "notifications": true,
+    "retries": 3
+  }
+}`;
+
+        // --- Helper Icons ---
+        const Icon = ({ name, size = 18, className }) => {
+            const icons = {
+                'split': <path d="M15 3h6v18h-6M10 21V3M3 3h6v18H3" />,
+                'unified': <path d="M3 3h18v18H3z M8 3v18" />,
+                'sun': <path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10z" />,
+                'moon': <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />,
+                'trash': <path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />,
+                'copy': <path d="M8 17.929H6c-1.105 0-2-.912-2-2.036V5.036C4 3.91 4.895 3 6 3h8c1.105 0 2 .911 2 2.036v1.866m-6 .17h8c1.105 0 2 .91 2 2.035v10.857C20 21.09 19.105 22 18 22h-8c-1.105 0-2-.911-2-2.036V9.107c0-1.124.895-2.036 2-2.036z" />,
+                'arrow-right-left': <path d="M20 17H4M4 17l4 4M4 17l4-4M4 7h16M20 7l-4-4M20 7l-4 4" />,
+                'zap': <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />,
+                'file-text': <><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><path d="M14 2v6h6" /><path d="M16 13H8" /><path d="M16 17H8" /><path d="M10 9H8" /></>
+            };
+            return (
+                <svg 
+                    xmlns="http://www.w3.org/2000/svg" 
+                    width={size} 
+                    height={size} 
+                    viewBox="0 0 24 24" 
+                    fill="none" 
+                    stroke="currentColor" 
+                    strokeWidth="2" 
+                    strokeLinecap="round" 
+                    strokeLinejoin="round" 
+                    className={className}
+                >
+                    {icons[name] || <circle cx="12" cy="12" r="10" />}
+                </svg>
+            );
+        };
+
+        const Button = ({ children, onClick, active, className = "", title }) => (
+            <button
+                onClick={onClick}
+                title={title}
+                className={`
+                    flex items-center justify-center gap-2 px-3 py-1.5 rounded-md text-sm font-medium transition-all
+                    ${active 
+                        ? 'bg-blue-600 text-white shadow-lg shadow-blue-900/20' 
+                        : 'bg-gray-800 text-gray-400 hover:bg-gray-700 hover:text-white border border-gray-700'
+                    }
+                    ${className}
+                `}
+            >
+                {children}
+            </button>
+        );
+
+        // --- Logic for Alignment ---
+        // Aligns the Left and Right changes so additions and removals usually appear side-by-side if they replace each other.
+        const computeAlignedDiff = (diffs) => {
+            const rows = [];
+            let i = 0;
+
+            while (i < diffs.length) {
+                const part = diffs[i];
+                
+                if (!part.added && !part.removed) {
+                    // Unchanged block
+                    const lines = part.value.split('\n');
+                    // Handle trailing newline usually created by split
+                    if (lines[lines.length - 1] === '') lines.pop();
+                    
+                    lines.forEach(line => {
+                        rows.push({ type: 'common', left: line, right: line });
+                    });
+                    i++;
+                } else if (part.removed && diffs[i+1] && diffs[i+1].added) {
+                    // Replacement block (Removed followed immediately by Added)
+                    const remLines = part.value.split('\n').filter((l, idx, arr) => idx < arr.length - 1 || l !== '');
+                    const addLines = diffs[i+1].value.split('\n').filter((l, idx, arr) => idx < arr.length - 1 || l !== '');
+                    
+                    const maxLen = Math.max(remLines.length, addLines.length);
+                    
+                    for (let j = 0; j < maxLen; j++) {
+                        rows.push({
+                            type: 'change',
+                            left: remLines[j] !== undefined ? remLines[j] : null,
+                            right: addLines[j] !== undefined ? addLines[j] : null,
+                            leftType: remLines[j] !== undefined ? 'removed' : 'empty',
+                            rightType: addLines[j] !== undefined ? 'added' : 'empty'
+                        });
+                    }
+                    i += 2; // Skip both
+                } else if (part.removed) {
+                    // Just removed
+                    const lines = part.value.split('\n').filter((l, idx, arr) => idx < arr.length - 1 || l !== '');
+                    lines.forEach(line => {
+                        rows.push({ type: 'change', left: line, right: null, leftType: 'removed', rightType: 'empty' });
+                    });
+                    i++;
+                } else if (part.added) {
+                    // Just added
+                    const lines = part.value.split('\n').filter((l, idx, arr) => idx < arr.length - 1 || l !== '');
+                    lines.forEach(line => {
+                        rows.push({ type: 'change', left: null, right: line, leftType: 'empty', rightType: 'added' });
+                    });
+                    i++;
+                } else {
+                    i++;
+                }
+            }
+            return rows;
+        };
+
+        const DiffViewer = ({ oldText, newText, mode, isLight, syncScroll }) => {
+            const [rows, setRows] = useState([]);
+            const [stats, setStats] = useState({ additions: 0, deletions: 0 });
+            const leftRef = useRef(null);
+            const rightRef = useRef(null);
+            
+            // Generate Diff
+            useEffect(() => {
+                if (!oldText && !newText) {
+                    setRows([]);
+                    setStats({ additions: 0, deletions: 0 });
+                    return;
+                }
+
+                // Ensure trailing newline for cleaner diffs
+                const text1 = oldText.endsWith('\n') ? oldText : oldText + '\n';
+                const text2 = newText.endsWith('\n') ? newText : newText + '\n';
+
+                const diffResult = Diff.diffLines(text1, text2);
+                
+                // Calculate Stats
+                let adds = 0;
+                let dels = 0;
+                diffResult.forEach(part => {
+                    if (part.added) adds += part.count;
+                    if (part.removed) dels += part.count;
+                });
+                setStats({ additions: adds, deletions: dels });
+
+                // Process Alignment
+                const aligned = computeAlignedDiff(diffResult);
+                setRows(aligned);
+
+            }, [oldText, newText]);
+
+            // Sync Scrolling
+            const handleScroll = (e, targetRef) => {
+                if (!syncScroll) return;
+                if (targetRef.current) {
+                    targetRef.current.scrollTop = e.target.scrollTop;
+                    targetRef.current.scrollLeft = e.target.scrollLeft;
+                }
+            };
+
+            // Syntax Highlight Helper
+            const highlight = (code) => {
+                if (!code) return null;
+                // Basic tokenization attempt using Prism if valid JSON/JS, else plain text
+                // Since this is generic text, we might just return the text wrapped if strict highlighting isn't critical per line.
+                // However, Prism.highlight needs the whole block usually.
+                // For this row-by-row renderer, we'll keep it simple: plain text but allow Prism to run if we passed a language.
+                // For now, returning simple spans.
+                return code;
+            };
+
+            if (mode === 'unified') {
+                return (
+                    <div className="font-mono text-sm h-full overflow-auto bg-gray-900 border border-gray-700 rounded-lg">
+                        <table className="w-full border-collapse">
+                            <tbody>
+                                {rows.map((row, idx) => {
+                                    if (row.type === 'common') {
+                                        return (
+                                            <tr key={idx} className="hover:bg-gray-800/50">
+                                                <td className="w-12 text-gray-500 text-right pr-4 select-none border-r border-gray-800 bg-gray-900/50">{idx + 1}</td>
+                                                <td className="w-12 text-gray-500 text-right pr-4 select-none border-r border-gray-800 bg-gray-900/50">{idx + 1}</td>
+                                                <td className="pl-4 whitespace-pre-wrap break-all">{row.left}</td>
+                                            </tr>
+                                        );
+                                    }
+                                    return (
+                                        <React.Fragment key={idx}>
+                                            {row.left !== null && (
+                                                <tr className="diff-del">
+                                                    <td className="w-12 text-red-500 text-right pr-4 select-none border-r border-red-900/30">-</td>
+                                                    <td className="w-12 bg-gray-900/10 border-r border-red-900/30"></td>
+                                                    <td className="pl-4 diff-del-text whitespace-pre-wrap break-all">{row.left}</td>
+                                                </tr>
+                                            )}
+                                            {row.right !== null && (
+                                                <tr className="diff-add">
+                                                    <td className="w-12 bg-gray-900/10 border-r border-green-900/30"></td>
+                                                    <td className="w-12 text-green-500 text-right pr-4 select-none border-r border-green-900/30">+</td>
+                                                    <td className="pl-4 diff-add-text whitespace-pre-wrap break-all">{row.right}</td>
+                                                </tr>
+                                            )}
+                                        </React.Fragment>
+                                    );
+                                })}
+                            </tbody>
+                        </table>
+                        {rows.length === 0 && <div className="p-8 text-center text-gray-500">No changes detected or empty input.</div>}
+                    </div>
+                );
+            }
+
+            // Split View
+            return (
+                <div className="grid grid-cols-2 gap-0 h-full border border-gray-700 rounded-lg overflow-hidden bg-gray-900 relative">
+                    {/* Left Pane */}
+                    <div 
+                        ref={leftRef}
+                        onScroll={(e) => handleScroll(e, rightRef)}
+                        className="overflow-auto border-r border-gray-700 bg-gray-900 font-mono text-sm scroll-smooth"
+                    >
+                        <table className="w-full border-collapse table-fixed">
+                            <colgroup>
+                                <col className="w-10" />
+                                <col />
+                            </colgroup>
+                            <tbody>
+                                {rows.map((row, idx) => (
+                                    <tr key={idx} className={`${row.leftType === 'removed' ? 'diff-del' : ''} h-6`}>
+                                        <td className="text-gray-500 text-right pr-2 select-none border-r border-gray-800 bg-gray-800/30 text-xs py-0.5">
+                                            {row.left !== null ? idx + 1 : ''}
+                                        </td>
+                                        <td className={`pl-2 whitespace-pre-wrap break-all py-0.5 ${row.leftType === 'removed' ? 'diff-del-text' : 'text-gray-300'}`}>
+                                            {row.left || ''}
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    {/* Right Pane */}
+                    <div 
+                        ref={rightRef}
+                        onScroll={(e) => handleScroll(e, leftRef)}
+                        className="overflow-auto bg-gray-900 font-mono text-sm scroll-smooth"
+                    >
+                        <table className="w-full border-collapse table-fixed">
+                             <colgroup>
+                                <col className="w-10" />
+                                <col />
+                            </colgroup>
+                            <tbody>
+                                {rows.map((row, idx) => (
+                                    <tr key={idx} className={`${row.rightType === 'added' ? 'diff-add' : ''} h-6`}>
+                                        <td className="text-gray-500 text-right pr-2 select-none border-r border-gray-800 bg-gray-800/30 text-xs py-0.5">
+                                            {row.right !== null ? idx + 1 : ''}
+                                        </td>
+                                        <td className={`pl-2 whitespace-pre-wrap break-all py-0.5 ${row.rightType === 'added' ? 'diff-add-text' : 'text-gray-300'}`}>
+                                            {row.right || ''}
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    {/* Stats Overlay */}
+                    <div className="absolute bottom-4 right-8 bg-gray-800/90 backdrop-blur border border-gray-700 rounded-full px-4 py-1 text-xs font-mono shadow-xl flex gap-3 z-10">
+                        <span className="text-green-400">+{stats.additions} Added</span>
+                        <span className="w-px h-3 bg-gray-600 my-auto"></span>
+                        <span className="text-red-400">-{stats.deletions} Removed</span>
+                    </div>
+                </div>
+            );
+        };
+
+        const App = () => {
+            const [oldText, setOldText] = useState(SAMPLE_OLD);
+            const [newText, setNewText] = useState(SAMPLE_NEW);
+            const [mode, setMode] = useState('split');
+            const [theme, setTheme] = useState('dark');
+            const [syncScroll, setSyncScroll] = useState(true);
+            const [inputType, setInputType] = useState('edit'); // 'edit' or 'view'
+
+            useEffect(() => {
+                document.body.className = theme === 'light' 
+                    ? 'light-mode bg-gray-100 text-gray-900 h-screen overflow-hidden flex flex-col' 
+                    : 'bg-gray-950 text-white h-screen overflow-hidden flex flex-col';
+            }, [theme]);
+
+            const copyToClipboard = (text) => {
+                const textarea = document.createElement('textarea');
+                textarea.value = text;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+            };
+
+            const swapTexts = () => {
+                const temp = oldText;
+                setOldText(newText);
+                setNewText(temp);
+            };
+
+            const clearAll = () => {
+                if(confirm("Clear both inputs?")) {
+                    setOldText('');
+                    setNewText('');
+                }
+            };
+
+            return (
+                <div className="flex flex-col h-full max-w-full mx-auto p-4 gap-4">
+                    {/* Header */}
+                    <div className="flex flex-wrap items-center justify-between gap-4 pb-2 border-b border-gray-800">
+                        <div className="flex items-center gap-2">
+                            <div className="p-2 bg-indigo-600 rounded-lg shadow-lg shadow-indigo-500/20">
+                                <Icon name="zap" className="text-white" />
+                            </div>
+                            <div>
+                                <h1 className="text-xl font-bold tracking-tight">DiffMaster Pro</h1>
+                                <p className="text-xs text-gray-500 font-medium">Advanced Comparison Tool</p>
+                            </div>
+                        </div>
+
+                        <div className="flex items-center gap-2 bg-gray-900 p-1.5 rounded-lg border border-gray-800 overflow-x-auto">
+                             <Button 
+                                active={inputType === 'edit'} 
+                                onClick={() => setInputType('edit')}
+                                title="Edit Mode"
+                            >
+                                Input
+                            </Button>
+                             <Button 
+                                active={inputType === 'view'} 
+                                onClick={() => setInputType('view')}
+                                title="Diff View Mode"
+                            >
+                                Result
+                            </Button>
+                        </div>
+
+                        <div className="flex items-center gap-2 overflow-x-auto">
+                            <div className="h-6 w-px bg-gray-800 mx-1"></div>
+                            
+                            <Button 
+                                active={mode === 'split'} 
+                                onClick={() => { setMode('split'); setInputType('view'); }}
+                                title="Split View"
+                            >
+                                <Icon name="split" size={16} /> Split
+                            </Button>
+                            <Button 
+                                active={mode === 'unified'} 
+                                onClick={() => { setMode('unified'); setInputType('view'); }}
+                                title="Unified View"
+                            >
+                                <Icon name="unified" size={16} /> Unified
+                            </Button>
+
+                             <div className="h-6 w-px bg-gray-800 mx-1"></div>
+
+                            <Button onClick={swapTexts} title="Swap Sides">
+                                <Icon name="arrow-right-left" size={16} />
+                            </Button>
+                            <Button onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} title="Toggle Theme">
+                                <Icon name={theme === 'dark' ? 'sun' : 'moon'} size={16} />
+                            </Button>
+                        </div>
+                    </div>
+
+                    {/* Main Content Area */}
+                    <div className="flex-1 flex flex-col min-h-0 relative group">
+                        
+                        {inputType === 'edit' && (
+                            <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-4 min-h-0">
+                                <div className="flex flex-col gap-2 min-h-0">
+                                    <div className="flex justify-between items-center text-sm px-1">
+                                        <span className="font-semibold text-gray-400 flex items-center gap-2">
+                                            <span className="w-2 h-2 rounded-full bg-red-500"></span>
+                                            Original Text
+                                        </span>
+                                        <div className="flex gap-2">
+                                            <button onClick={() => setOldText(SAMPLE_OLD)} className="text-xs text-indigo-400 hover:text-indigo-300">Sample</button>
+                                            <button onClick={() => copyToClipboard(oldText)} className="text-gray-500 hover:text-white"><Icon name="copy" size={14} /></button>
+                                            <button onClick={() => setOldText('')} className="text-gray-500 hover:text-red-400"><Icon name="trash" size={14} /></button>
+                                        </div>
+                                    </div>
+                                    <textarea 
+                                        className="flex-1 w-full bg-gray-900 border border-gray-700 rounded-lg p-4 font-mono text-sm resize-none focus:ring-2 focus:ring-indigo-500 focus:outline-none transition-shadow custom-scroll"
+                                        value={oldText}
+                                        onChange={(e) => setOldText(e.target.value)}
+                                        placeholder="Paste original text here..."
+                                        spellCheck="false"
+                                    />
+                                </div>
+                                <div className="flex flex-col gap-2 min-h-0">
+                                    <div className="flex justify-between items-center text-sm px-1">
+                                        <span className="font-semibold text-gray-400 flex items-center gap-2">
+                                            <span className="w-2 h-2 rounded-full bg-green-500"></span>
+                                            Modified Text
+                                        </span>
+                                        <div className="flex gap-2">
+                                            <button onClick={() => setNewText(SAMPLE_NEW)} className="text-xs text-indigo-400 hover:text-indigo-300">Sample</button>
+                                            <button onClick={() => copyToClipboard(newText)} className="text-gray-500 hover:text-white"><Icon name="copy" size={14} /></button>
+                                            <button onClick={() => setNewText('')} className="text-gray-500 hover:text-red-400"><Icon name="trash" size={14} /></button>
+                                        </div>
+                                    </div>
+                                    <textarea 
+                                        className="flex-1 w-full bg-gray-900 border border-gray-700 rounded-lg p-4 font-mono text-sm resize-none focus:ring-2 focus:ring-indigo-500 focus:outline-none transition-shadow custom-scroll"
+                                        value={newText}
+                                        onChange={(e) => setNewText(e.target.value)}
+                                        placeholder="Paste modified text here..."
+                                        spellCheck="false"
+                                    />
+                                </div>
+                            </div>
+                        )}
+
+                        {inputType === 'view' && (
+                             <DiffViewer 
+                                oldText={oldText} 
+                                newText={newText} 
+                                mode={mode} 
+                                isLight={theme === 'light'} 
+                                syncScroll={syncScroll}
+                            />
+                        )}
+                        
+                        {/* Compare Floating Action Button (only in edit mode) */}
+                        {inputType === 'edit' && (
+                            <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2">
+                                <button 
+                                    onClick={() => setInputType('view')}
+                                    className="bg-indigo-600 hover:bg-indigo-500 text-white px-8 py-3 rounded-full shadow-xl shadow-indigo-900/40 font-bold flex items-center gap-2 transition-transform hover:scale-105"
+                                >
+                                    Compare Files <Icon name="arrow-right-left" size={18} />
+                                </button>
+                            </div>
+                        )}
+                        
+                    </div>
+                    
+                    <div className="text-center text-xs text-gray-600 pt-2">
+                        Powered by React, Tailwind & JSDiff
+                    </div>
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
