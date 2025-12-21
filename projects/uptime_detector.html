@@ -1,0 +1,292 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Uptime Detector - Dashboard</title>
+  <style>
+    :root{--bg:#0f1724;--card:#0b1220;--muted:#94a3b8;--green:#10b981;--red:#ef4444;--glass:rgba(255,255,255,0.03)}
+    *{box-sizing:border-box}
+    body{font-family:Inter,system-ui,Segoe UI,Roboto,"Helvetica Neue",Arial;background:linear-gradient(180deg,#071023 0%, #071428 100%);color:#e6eef8;margin:0;padding:24px}
+    header{display:flex;gap:16px;align-items:center;justify-content:space-between;margin-bottom:18px}
+    h1{font-size:20px;margin:0}
+    .controls{display:flex;gap:8px;align-items:center}
+    textarea{width:520px;min-height:84px;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:var(--card);color:inherit;resize:vertical}
+    input,select,button{padding:8px 10px;border-radius:8px;border:1px solid rgba(255,255,255,0.05);background:var(--glass);color:inherit}
+    button{cursor:pointer}
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;margin-top:18px}
+    .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.03)}
+    .row{display:flex;align-items:center;gap:8px}
+    .title{font-weight:600;font-size:14px}
+    .url{font-size:12px;color:var(--muted);word-break:break-all}
+    .badge{padding:6px 8px;border-radius:999px;font-weight:700;font-size:12px}
+    .meta{font-size:12px;color:var(--muted);margin-top:8px}
+    .large{font-size:18px;font-weight:700}
+    .muted{color:var(--muted)}
+    .small{font-size:12px}
+    .actions{display:flex;gap:6px}
+    footer{margin-top:18px;color:var(--muted);font-size:13px}
+    .btn-danger{background:transparent;border:1px solid rgba(255,0,0,0.08);}
+    .btn-success{background:transparent;border:1px solid rgba(0,255,0,0.06);}
+    .inline{display:inline-flex;gap:6px;align-items:center}
+    @media (max-width:640px){textarea{width:100%}header{flex-direction:column;align-items:flex-start;gap:12px}}
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <h1>Uptime Detector — Dashboard</h1>
+      <div class="muted small">Developed By Kaustubh | Paste URLs (one per line or comma-separated). Checks run from your browser — see CORS note below.</div>
+    </div>
+
+    <div class="controls">
+      <label class="inline small muted">Interval (s)
+        <input id="interval" type="number" min="5" value="30" style="width:80px;margin-left:6px">
+      </label>
+      <button id="startBtn">Start Monitoring</button>
+      <button id="stopBtn" disabled>Stop</button>
+      <button id="clearBtn">Clear</button>
+    </div>
+  </header>
+
+  <section>
+    <div style="display:flex;gap:12px;flex-wrap:wrap">
+      <textarea id="urlInput" placeholder="https://example.com\nhttps://another-site.com"></textarea>
+
+      <div style="display:flex;flex-direction:column;gap:8px;min-width:260px">
+        <div class="card">
+          <div class="row" style="justify-content:space-between">
+            <div>
+              <div class="small muted">Monitored</div>
+              <div id="count" class="large">0</div>
+            </div>
+            <div>
+              <div class="small muted">Up / Down</div>
+              <div id="summary" class="large">0 / 0</div>
+            </div>
+          </div>
+          <div class="meta">Auto-refresh will poll each URL at the interval specified. This is a client-side tool — for reliable 24/7 monitoring use a server or dedicated uptime service.</div>
+        </div>
+
+        <div class="card">
+          <div class="small muted">Last action</div>
+          <div id="lastAction" class="large">—</div>
+          <div class="meta">Fallback: if direct fetch fails due to CORS, an image probe is attempted.</div>
+        </div>
+
+        <div class="card actions">
+          <button id="exportBtn">Export CSV</button>
+          <button id="copyBtn">Copy URLs</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid" id="dashboard"></div>
+
+    <footer>
+      <div><strong>CORS note:</strong> Browsers block cross-origin HEAD/GET requests for many sites. This tool first attempts a fetch HEAD; if it's blocked, it falls back to an image ping. Image pings work for many public sites but are not perfect. For production-grade monitoring, run probes server-side or use a 3rd-party uptime API.</div>
+    </footer>
+  </section>
+
+<script>
+(function(){
+  const urlInput = document.getElementById('urlInput');
+  const startBtn = document.getElementById('startBtn');
+  const stopBtn = document.getElementById('stopBtn');
+  const clearBtn = document.getElementById('clearBtn');
+  const dashboard = document.getElementById('dashboard');
+  const intervalInput = document.getElementById('interval');
+  const countEl = document.getElementById('count');
+  const summaryEl = document.getElementById('summary');
+  const lastActionEl = document.getElementById('lastAction');
+  const exportBtn = document.getElementById('exportBtn');
+  const copyBtn = document.getElementById('copyBtn');
+
+  let monitors = {};
+  let timer = null;
+
+  function parseUrls(text){
+    if(!text) return [];
+    // split by newline or comma
+    return text.split(/[\n,]+/).map(s=>s.trim()).filter(Boolean).map(normalizeUrl);
+  }
+
+  function normalizeUrl(u){
+    // quick normalization: add https if missing
+    try{
+      if(!/^https?:\/\//i.test(u)) u = 'https://' + u;
+      const url = new URL(u);
+      return url.href.replace(/\/$/, '');
+    }catch(e){
+      return u;
+    }
+  }
+
+  function renderDashboard(){
+    dashboard.innerHTML = '';
+    const urls = Object.keys(monitors);
+    countEl.textContent = urls.length;
+    let up = 0, down = 0;
+    urls.forEach(url=>{
+      const m = monitors[url];
+      if(m.lastStatus === 'up') up++; else if(m.lastStatus === 'down') down++;
+      const card = document.createElement('div'); card.className='card';
+
+      const titleRow = document.createElement('div'); titleRow.className='row';
+      const title = document.createElement('div'); title.innerHTML = '<div class="title">'+escapeHtml(url)+'</div><div class="url">'+(m.hostname||'')+'</div>';
+      const badge = document.createElement('div'); badge.style.textAlign='right';
+      const statusBadge = document.createElement('div'); statusBadge.className='badge';
+      if(m.lastStatus==='up') {statusBadge.style.background='rgba(16,185,129,0.12)'; statusBadge.style.color='var(--green)'; statusBadge.textContent='UP'}
+      else if(m.lastStatus==='down'){statusBadge.style.background='rgba(239,68,68,0.08)'; statusBadge.style.color='var(--red)'; statusBadge.textContent='DOWN'}
+      else {statusBadge.textContent='—';}
+
+      const rt = document.createElement('div'); rt.className='muted small'; rt.style.marginTop='6px'; rt.textContent = 'RT: '+(m.lastRT?m.lastRT+' ms':'—');
+
+      badge.appendChild(statusBadge);
+      titleRow.appendChild(title); titleRow.appendChild(badge);
+
+      const meta = document.createElement('div'); meta.className='meta';
+      meta.innerHTML = 'Checks: '+m.totalChecks+' — Success: '+m.success+' — Fail: '+m.fail+'<br>Last checked: '+(m.lastChecked?new Date(m.lastChecked).toLocaleString():'—');
+
+      const actions = document.createElement('div'); actions.style.marginTop='8px'; actions.className='actions';
+      const checkNow = document.createElement('button'); checkNow.textContent='Check now';
+      checkNow.onclick = ()=>checkUrl(url);
+      const removeBtn = document.createElement('button'); removeBtn.textContent='Remove'; removeBtn.className='btn-danger';
+      removeBtn.onclick = ()=>{ delete monitors[url]; renderDashboard(); };
+      actions.appendChild(checkNow); actions.appendChild(removeBtn);
+
+      card.appendChild(titleRow); card.appendChild(rt); card.appendChild(meta); card.appendChild(actions);
+      dashboard.appendChild(card);
+    });
+    summaryEl.textContent = up+' / '+down;
+  }
+
+  function escapeHtml(s){ return (s+'').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"})[c]); }
+
+  async function probeWithFetch(url, timeoutMs=8000){
+    const t0 = Date.now();
+    try{
+      // try HEAD first
+      const controller = new AbortController();
+      const id = setTimeout(()=>controller.abort(), timeoutMs);
+      const res = await fetch(url, {method:'HEAD', mode:'cors', cache:'no-store', signal:controller.signal});
+      clearTimeout(id);
+      const rt = Date.now() - t0;
+      return {ok: res.ok, status: res.status, rt};
+    }catch(err){
+      // could be CORS or network error
+      return {ok:false,err};
+    }
+  }
+
+  function probeWithImage(url, timeoutMs=8000){
+    return new Promise(resolve=>{
+      // use a cache-busting query param
+      const img = new Image();
+      const t0 = Date.now();
+      let done=false;
+      const src = url + '/favicon.ico?cb='+Date.now();
+      const timer = setTimeout(()=>{
+        if(done) return; done=true; resolve({ok:false,reason:'timeout'});
+      }, timeoutMs);
+      img.onload = ()=>{ if(done) return; done=true; clearTimeout(timer); resolve({ok:true,rt:Date.now()-t0,method:'img'}); };
+      img.onerror = ()=>{ if(done) return; done=true; clearTimeout(timer); resolve({ok:false,reason:'img-error'}); };
+      // Some sites block image loads; if original URL fails, try root domain
+      try{ img.src = src; }catch(e){ if(done) return; done=true; clearTimeout(timer); resolve({ok:false,reason:'exception'}); }
+    });
+  }
+
+  async function checkUrl(url){
+    const m = monitors[url];
+    if(!m) return;
+    m.totalChecks++;
+    const host = (()=>{ try{ return new URL(url).hostname }catch(e){ return url }})();
+    m.hostname=host;
+
+    lastActionEl.textContent = 'Checking '+url;
+
+    // first try fetch HEAD
+    const fetchRes = await probeWithFetch(url, 8000);
+    if(fetchRes.ok){ m.lastStatus='up'; m.success++; m.lastRT = fetchRes.rt; m.lastChecked = Date.now(); renderDashboard(); return; }
+
+    // if fetch returned object but not ok and had status (e.g. 200..299 false), consider status
+    if(fetchRes && fetchRes.status){
+      if(fetchRes.status >= 200 && fetchRes.status < 400){ m.lastStatus='up'; m.success++; m.lastRT = fetchRes.rt; m.lastChecked = Date.now(); renderDashboard(); return; }
+    }
+
+    // fallback to image ping
+    const imgRes = await probeWithImage(url, 8000);
+    if(imgRes.ok){ m.lastStatus='up'; m.success++; m.lastRT = imgRes.rt; m.lastChecked = Date.now(); renderDashboard(); return; }
+
+    // last resort: try proxied fetch using a public CORS proxy (best-effort). Note: may fail or be rate-limited.
+    try{
+      const proxy = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(url);
+      const t0 = Date.now();
+      const controller = new AbortController();
+      const id = setTimeout(()=>controller.abort(), 8000);
+      const res = await fetch(proxy, {method:'GET', signal:controller.signal});
+      clearTimeout(id);
+      if(res && res.ok){ m.lastStatus='up'; m.success++; m.lastRT = Date.now()-t0; m.lastChecked = Date.now(); renderDashboard(); return; }
+    }catch(e){ /* ignore */ }
+
+    // finally mark down
+    m.lastStatus='down'; m.fail++; m.lastChecked = Date.now(); renderDashboard();
+  }
+
+  async function runChecks(){
+    const urls = Object.keys(monitors);
+    for(const u of urls){
+      // don't await all sequentially too long; kick off in parallel batches of 6
+    }
+    // simple parallel execution with concurrency control
+    const concurrency = 6;
+    const queue = Object.keys(monitors).slice();
+    const workers = new Array(concurrency).fill(0).map(async ()=>{
+      while(queue.length){
+        const url = queue.shift();
+        await checkUrl(url);
+      }
+    });
+    await Promise.all(workers);
+    lastActionEl.textContent = 'Last sweep: '+new Date().toLocaleString();
+  }
+
+  function startMonitoring(){
+    const urls = parseUrls(urlInput.value);
+    monitors = {};
+    urls.forEach(u=>{ monitors[u] = {totalChecks:0,success:0,fail:0,lastStatus:null,lastChecked:null,lastRT:null,hostname:null}; });
+    renderDashboard();
+    const interval = Math.max(5, Number(intervalInput.value)||30) * 1000;
+    // run immediately then set interval
+    runChecks();
+    timer = setInterval(()=>runChecks(), interval);
+    startBtn.disabled=true; stopBtn.disabled=false; urlInput.disabled=true; intervalInput.disabled=true;
+  }
+
+  function stopMonitoring(){ if(timer) clearInterval(timer); timer=null; startBtn.disabled=false; stopBtn.disabled=true; urlInput.disabled=false; intervalInput.disabled=false; lastActionEl.textContent='Stopped'; }
+
+  startBtn.addEventListener('click', ()=> startMonitoring());
+  stopBtn.addEventListener('click', ()=> stopMonitoring());
+  clearBtn.addEventListener('click', ()=>{ urlInput.value=''; monitors={}; renderDashboard(); });
+
+  exportBtn.addEventListener('click', ()=>{
+    const rows = [['url','lastStatus','lastChecked','totalChecks','success','fail','lastRT']];
+    Object.entries(monitors).forEach(([u,m])=> rows.push([u,m.lastStatus||'', m.lastChecked?new Date(m.lastChecked).toISOString():'', m.totalChecks, m.success, m.fail, m.lastRT||'']));
+    const csv = rows.map(r=>r.map(c=>'"'+String(c||'').replace(/"/g,'""')+'"').join(',')).join('\n');
+    const blob = new Blob([csv], {type:'text/csv'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a'); a.href = url; a.download = 'uptime-report.csv'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+  });
+
+  copyBtn.addEventListener('click', ()=>{
+    navigator.clipboard.writeText(Object.keys(monitors).join('\n')).then(()=>{ lastActionEl.textContent='Copied URLs to clipboard'; }).catch(()=>{ lastActionEl.textContent='Unable to copy'; });
+  });
+
+  // prefill example
+  urlInput.value = 'https://example.com\nhttps://google.com\nhttps://github.com';
+  renderDashboard();
+})();
+</script>
+</body>
+</html>
