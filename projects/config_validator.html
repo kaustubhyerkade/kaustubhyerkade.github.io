@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Config Validator</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <style>
+        /* Custom scrollbar for code editor feel */
+        textarea::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+        textarea::-webkit-scrollbar-track {
+            background: #1e293b;
+        }
+        textarea::-webkit-scrollbar-thumb {
+            background: #475569;
+            border-radius: 5px;
+        }
+        textarea::-webkit-scrollbar-thumb:hover {
+            background: #64748b;
+        }
+        .fade-in {
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 font-sans min-h-screen p-4 md:p-8">
+
+    <div class="max-w-6xl mx-auto space-y-6">
+        
+        <!-- Header -->
+        <div class="flex flex-col md:flex-row justify-between items-center border-b border-slate-800 pb-6">
+            <div class="flex items-center space-x-3 mb-4 md:mb-0">
+                <div class="bg-blue-600 p-2 rounded-lg">
+                    <i data-lucide="code" class="w-6 h-6 text-white"></i>
+                </div>
+                <div>
+                    <h1 class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-emerald-400">
+                        Config Validator
+                    </h1>
+                    <p class="text-slate-400 text-sm">Developed by Kaustubh | Validate generic configuration file formats instantly</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center space-x-2">
+                <span id="libs-status" class="text-xs px-2 py-1 rounded-full bg-amber-500/20 text-amber-400 transition-colors">
+                    Loading Parsers...
+                </span>
+            </div>
+        </div>
+
+        <!-- Controls Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
+            
+            <!-- Sidebar: Format Selector -->
+            <div class="md:col-span-3 space-y-2">
+                <label class="text-xs font-semibold text-slate-400 uppercase tracking-wider">File Format</label>
+                <div class="grid grid-cols-1 gap-2" id="format-buttons">
+                    <!-- Buttons injected by JS -->
+                </div>
+            </div>
+
+            <!-- Main Editor Area -->
+            <div class="md:col-span-9 flex flex-col h-[600px] bg-slate-800/50 rounded-xl border border-slate-700 overflow-hidden relative">
+                
+                <!-- Toolbar -->
+                <div class="flex justify-between items-center p-3 bg-slate-800 border-b border-slate-700">
+                    <div class="flex space-x-2">
+                        <button onclick="document.getElementById('file-input').click()" class="flex items-center space-x-2 px-3 py-1.5 bg-slate-700 hover:bg-slate-600 rounded text-sm transition-colors text-white">
+                            <i data-lucide="upload" class="w-4 h-4"></i>
+                            <span>Upload File</span>
+                        </button>
+                        <input type="file" id="file-input" class="hidden">
+                    </div>
+
+                    <div class="flex space-x-2">
+                        <button id="btn-clear" class="p-2 hover:bg-slate-700 rounded text-slate-400 hover:text-white transition-colors" title="Clear">
+                            <i data-lucide="trash-2" class="w-4 h-4"></i>
+                        </button>
+                        <button id="btn-copy" class="p-2 hover:bg-slate-700 rounded text-slate-400 hover:text-white transition-colors" title="Copy">
+                            <i data-lucide="copy" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Textarea / Drop Zone -->
+                <div id="drop-zone" class="relative flex-1 group">
+                    <!-- Drag Overlay -->
+                    <div id="drag-overlay" class="hidden absolute inset-0 bg-blue-500/20 backdrop-blur-sm z-50 flex items-center justify-center border-2 border-blue-500 border-dashed m-4 rounded-xl pointer-events-none">
+                        <div class="text-xl font-bold text-blue-200">Drop config file here</div>
+                    </div>
+
+                    <textarea 
+                        id="editor"
+                        spellcheck="false" 
+                        class="w-full h-full bg-slate-900 text-slate-300 font-mono text-sm p-4 resize-none focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500/50 transition-shadow"
+                        placeholder="Paste your JSON configuration here..."
+                    ></textarea>
+                </div>
+
+                <!-- Footer Status -->
+                <div id="status-footer" class="p-4 border-t border-slate-700 flex items-center justify-between bg-slate-800 transition-colors duration-300">
+                    <div class="flex items-center space-x-3 overflow-hidden" id="status-display">
+                        <!-- Content injected by JS -->
+                        <div class="w-2 h-2 rounded-full bg-slate-500"></div>
+                        <span class="text-slate-400 text-sm">Waiting for input...</span>
+                    </div>
+
+                    <button id="btn-validate" class="px-6 py-2 rounded-lg font-semibold text-sm bg-blue-600 hover:bg-blue-700 text-white transition-colors shadow-lg">
+                        Validate
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Detailed Error Report -->
+        <div id="error-report" class="hidden bg-red-950/30 border border-red-900/50 rounded-xl p-6 fade-in">
+            <div class="flex items-start space-x-4">
+                <div class="bg-red-900/20 p-3 rounded-lg">
+                    <i data-lucide="alert-circle" class="w-6 h-6 text-red-500"></i>
+                </div>
+                <div class="flex-1">
+                    <h3 class="text-lg font-semibold text-red-400 mb-2">Detailed Error Report</h3>
+                    <p id="error-msg" class="text-slate-300 mb-4 font-mono text-sm"></p>
+                    
+                    <div id="code-snippet-container" class="hidden bg-slate-900 rounded p-4 border border-slate-800 font-mono text-sm overflow-x-auto">
+                        <div class="text-slate-500 mb-2 border-b border-slate-800 pb-2" id="error-loc-header">Location: Unknown</div>
+                        <div id="code-snippet" class="space-y-1"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Logic -->
+    <script>
+        // State
+        const state = {
+            format: 'json',
+            content: '',
+            status: 'idle', // idle, valid, error
+            errorMsg: null,
+            errorLine: null,
+            libsLoaded: false
+        };
+
+        // Formats Config
+        const formats = [
+            { id: 'json', name: 'JSON', icon: 'file-json' },
+            { id: 'yaml', name: 'YAML', icon: 'file-text' },
+            { id: 'xml', name: 'XML / PList', icon: 'code' },
+            { id: 'toml', name: 'TOML', icon: 'settings' },
+            { id: 'ini', name: 'INI / EditorConfig', icon: 'terminal' },
+            { id: 'env', name: 'ENV / Properties', icon: 'file-text' },
+            { id: 'csv', name: 'CSV', icon: 'file-text' },
+            { id: 'hcl', name: 'HCL (Terraform)', icon: 'code' },
+        ];
+
+        // --- DOM Elements ---
+        const editor = document.getElementById('editor');
+        const formatButtonsContainer = document.getElementById('format-buttons');
+        const statusFooter = document.getElementById('status-footer');
+        const statusDisplay = document.getElementById('status-display');
+        const btnValidate = document.getElementById('btn-validate');
+        const errorReport = document.getElementById('error-report');
+        const errorMsgEl = document.getElementById('error-msg');
+        const codeSnippetContainer = document.getElementById('code-snippet-container');
+        const codeSnippet = document.getElementById('code-snippet');
+        const errorLocHeader = document.getElementById('error-loc-header');
+        const dropZone = document.getElementById('drop-zone');
+        const dragOverlay = document.getElementById('drag-overlay');
+        const fileInput = document.getElementById('file-input');
+        const btnClear = document.getElementById('btn-clear');
+        const btnCopy = document.getElementById('btn-copy');
+        const libsStatus = document.getElementById('libs-status');
+
+        // --- Initialization ---
+        
+        // 1. Render Buttons
+        function renderButtons() {
+            formatButtonsContainer.innerHTML = formats.map(fmt => `
+                <button 
+                    onclick="setFormat('${fmt.id}')"
+                    class="flex items-center space-x-3 px-4 py-3 rounded-lg transition-all w-full text-left ${
+                        state.format === fmt.id 
+                        ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/20' 
+                        : 'bg-slate-800 text-slate-400 hover:bg-slate-700 hover:text-slate-200'
+                    }"
+                >
+                    <i data-lucide="${fmt.icon}" class="w-4 h-4"></i>
+                    <span class="font-medium">${fmt.name}</span>
+                </button>
+            `).join('');
+            lucide.createIcons();
+        }
+
+        // 2. Load Parsers
+        function loadExternalScripts() {
+            const scripts = [
+                'https://cdnjs.cloudflare.com/ajax/libs/js-yaml/4.1.0/js-yaml.min.js',
+                'https://cdnjs.cloudflare.com/ajax/libs/toml.js/0.4.0/toml.min.js'
+            ];
+
+            let loaded = 0;
+            scripts.forEach(src => {
+                const script = document.createElement('script');
+                script.src = src;
+                script.onload = () => {
+                    loaded++;
+                    if(loaded === scripts.length) {
+                        state.libsLoaded = true;
+                        libsStatus.textContent = "Parsers Ready";
+                        libsStatus.className = "text-xs px-2 py-1 rounded-full bg-emerald-500/20 text-emerald-400 transition-colors";
+                    }
+                };
+                script.onerror = () => console.warn("Failed to load " + src);
+                document.head.appendChild(script);
+            });
+        }
+
+        // --- Actions ---
+
+        window.setFormat = (id) => {
+            state.format = id;
+            editor.placeholder = `Paste your ${id.toUpperCase()} configuration here...`;
+            renderButtons(); // Re-render to update active state
+            validate();
+        };
+
+        function validate() {
+            const text = editor.value;
+            state.content = text;
+            state.status = 'idle';
+            state.errorMsg = null;
+            state.errorLine = null;
+
+            if(!text.trim()) {
+                updateUI();
+                return;
+            }
+
+            try {
+                switch(state.format) {
+                    case 'json': JSON.parse(text); break;
+                    case 'yaml': 
+                        if(window.jsyaml) window.jsyaml.load(text); 
+                        else if(!text.includes(':')) throw new Error("YAML parser missing/invalid");
+                        break;
+                    case 'xml':
+                        const parser = new DOMParser();
+                        const doc = parser.parseFromString(text, "application/xml");
+                        const err = doc.querySelector("parsererror");
+                        if(err) throw new Error(err.textContent);
+                        break;
+                    case 'toml':
+                        if(window.toml) window.toml.parse(text);
+                        else if(!text.includes('=')) throw new Error("TOML parser missing/invalid");
+                        break;
+                    case 'ini':
+                    case 'env':
+                        validateINI(text);
+                        break;
+                    case 'csv':
+                        validateCSV(text);
+                        break;
+                    case 'hcl':
+                        validateBrackets(text);
+                        break;
+                }
+                state.status = 'valid';
+            } catch(e) {
+                state.status = 'error';
+                extractErrorInfo(e, text);
+            }
+
+            updateUI();
+        }
+
+        // --- UI Updates ---
+
+        function updateUI() {
+            // Footer Styles & Icon
+            statusFooter.className = `p-4 border-t border-slate-700 flex items-center justify-between transition-colors duration-300 ${
+                state.status === 'valid' ? 'bg-emerald-900/30' : 
+                state.status === 'error' ? 'bg-red-900/30' : 'bg-slate-800'
+            }`;
+
+            // Editor Ring
+            editor.className = `w-full h-full bg-slate-900 text-slate-300 font-mono text-sm p-4 resize-none focus:outline-none focus:ring-2 focus:ring-inset transition-shadow ${
+                state.status === 'error' ? 'focus:ring-red-500/50' : 
+                state.status === 'valid' ? 'focus:ring-emerald-500/50' : 'focus:ring-blue-500/50'
+            }`;
+
+            // Button Text/Color
+            btnValidate.textContent = state.status === 'idle' ? 'Validate' : 'Re-Validate';
+            btnValidate.className = `px-6 py-2 rounded-lg font-semibold text-sm transition-all shadow-lg ${
+                state.status === 'valid' ? 'bg-emerald-600 hover:bg-emerald-700 text-white' : 
+                state.status === 'error' ? 'bg-red-600 hover:bg-red-700 text-white' : 
+                'bg-blue-600 hover:bg-blue-700 text-white'
+            }`;
+
+            // Status Text
+            if(state.status === 'idle') {
+                statusDisplay.innerHTML = `
+                    <div class="w-2 h-2 rounded-full bg-slate-500"></div>
+                    <span class="text-slate-400 text-sm">Waiting for input...</span>
+                `;
+            } else if (state.status === 'valid') {
+                statusDisplay.innerHTML = `
+                    <i data-lucide="check-circle" class="w-5 h-5 text-emerald-400"></i>
+                    <span class="text-emerald-400 font-medium text-sm">Valid ${state.format.toUpperCase()} syntax</span>
+                `;
+            } else {
+                statusDisplay.innerHTML = `
+                    <i data-lucide="alert-triangle" class="w-5 h-5 text-red-400"></i>
+                    <div class="flex flex-col">
+                        <span class="text-red-400 font-medium text-sm">Syntax Error Detected</span>
+                        <span class="text-red-300/70 text-xs truncate max-w-[200px] md:max-w-xs">${state.errorMsg || ''}</span>
+                    </div>
+                `;
+            }
+            lucide.createIcons();
+
+            // Error Report Area
+            if(state.status === 'error') {
+                errorReport.classList.remove('hidden');
+                errorMsgEl.textContent = state.errorMsg;
+                
+                if(state.errorLine) {
+                    codeSnippetContainer.classList.remove('hidden');
+                    errorLocHeader.textContent = `Location: Around Line ${state.errorLine}`;
+                    
+                    // Generate Snippet
+                    const lines = state.content.split('\n');
+                    const start = Math.max(0, state.errorLine - 2);
+                    const end = Math.min(lines.length, state.errorLine + 1);
+                    
+                    codeSnippet.innerHTML = lines.slice(start, end).map((line, idx) => {
+                        const actualLineNum = start + idx + 1;
+                        const isError = actualLineNum === state.errorLine;
+                        return `
+                            <div class="flex ${isError ? 'bg-red-500/10' : ''}">
+                                <span class="w-12 text-slate-600 select-none text-right pr-4">${actualLineNum}</span>
+                                <span class="${isError ? 'text-red-300' : 'text-slate-400'} whitespace-pre">${escapeHtml(line)}</span>
+                            </div>
+                        `;
+                    }).join('');
+
+                } else {
+                    codeSnippetContainer.classList.add('hidden');
+                }
+            } else {
+                errorReport.classList.add('hidden');
+            }
+        }
+
+        // --- Logic Helpers ---
+
+        function validateINI(text) {
+            const lines = text.split('\n');
+            lines.forEach((line, index) => {
+                const trimmed = line.trim();
+                if (!trimmed || trimmed.startsWith(';') || trimmed.startsWith('#')) return;
+                if (trimmed.startsWith('[') && trimmed.endsWith(']')) return;
+                if (!trimmed.includes('=')) throw new Error(`Line ${index + 1}: Missing assignment operator (=)`);
+            });
+        }
+
+        function validateCSV(text) {
+            const lines = text.trim().split('\n');
+            if (lines.length === 0) return;
+            const delimiter = lines[0].includes(',') ? ',' : ';';
+            const headerCount = lines[0].split(delimiter).length;
+            lines.forEach((line, index) => {
+                const cols = line.split(delimiter).length;
+                if (cols !== headerCount && line.trim() !== '') {
+                    throw new Error(`Line ${index + 1}: Column count mismatch. Expected ${headerCount}, found ${cols}.`);
+                }
+            });
+        }
+
+        function validateBrackets(text) {
+            const stack = [];
+            let inString = false; 
+            for (let i = 0; i < text.length; i++) {
+                const char = text[i];
+                if (char === '"' && text[i-1] !== '\\') { inString = !inString; continue; }
+                if (inString) continue;
+                if (['{', '[', '('].includes(char)) stack.push(char);
+                else if (['}', ']', ')'].includes(char)) {
+                    if (stack.length === 0) throw new Error(`Unexpected closing bracket '${char}' at index ${i}`);
+                    const last = stack.pop();
+                    if ((char === '}' && last !== '{') || (char === ']' && last !== '[') || (char === ')' && last !== '(')) {
+                        throw new Error(`Mismatched brackets. Expected closing for '${last}' but found '${char}'`);
+                    }
+                }
+            }
+            if (stack.length > 0) throw new Error(`Unclosed bracket '${stack[stack.length - 1]}'`);
+        }
+
+        function extractErrorInfo(err, text) {
+            let msg = err.message || "Unknown error";
+            let line = null;
+            const lineMatch = msg.match(/(?:line|position|char) (\d+)/i);
+            
+            if (err.mark && err.mark.line) { // JS-YAML
+                line = err.mark.line + 1;
+                msg = `YAML Syntax Error: ${err.reason || msg}`;
+            } else if (msg.includes('position')) { // JSON
+                const posStr = msg.match(/position (\d+)/);
+                if (posStr) {
+                    const pos = parseInt(posStr[1], 10);
+                    line = text.substring(0, pos).split('\n').length;
+                }
+            } else if (lineMatch) {
+                line = parseInt(lineMatch[1], 10);
+            }
+            state.errorMsg = msg;
+            state.errorLine = line;
+        }
+
+        function detectFormat(filename, text) {
+            const ext = filename.split('.').pop().toLowerCase();
+            const map = {
+                'json': 'json', 'yaml': 'yaml', 'yml': 'yaml',
+                'xml': 'xml', 'plist': 'xml', 'toml': 'toml',
+                'ini': 'ini', 'editorconfig': 'ini', 'env': 'env',
+                'properties': 'env', 'csv': 'csv', 'tf': 'hcl',
+                'hcl': 'hcl', 'conf': 'hcl'
+            };
+            if (map[ext]) setFormat(map[ext]);
+            else {
+                if (text.trim().startsWith('{')) setFormat('json');
+                else if (text.trim().startsWith('<')) setFormat('xml');
+                else if (text.includes('=')) setFormat('ini');
+            }
+        }
+
+        function readFile(file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                editor.value = e.target.result;
+                detectFormat(file.name, e.target.result);
+                validate();
+            };
+            reader.readAsText(file);
+        }
+
+        function escapeHtml(text) {
+            const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
+            return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+        }
+
+        // --- Event Listeners ---
+
+        editor.addEventListener('input', () => validate());
+        
+        btnValidate.addEventListener('click', validate);
+        
+        btnClear.addEventListener('click', () => {
+            editor.value = '';
+            validate();
+        });
+
+        btnCopy.addEventListener('click', () => {
+            if(editor.value) {
+                navigator.clipboard.writeText(editor.value);
+                // Could add toast here
+            }
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            if(e.target.files[0]) readFile(e.target.files[0]);
+        });
+
+        // Drag & Drop
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dragOverlay.classList.remove('hidden');
+        });
+
+        dropZone.addEventListener('dragleave', (e) => {
+            e.preventDefault();
+            dragOverlay.classList.add('hidden');
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dragOverlay.classList.add('hidden');
+            if(e.dataTransfer.files[0]) readFile(e.dataTransfer.files[0]);
+        });
+
+        // --- Boot ---
+        renderButtons();
+        loadExternalScripts();
+        lucide.createIcons();
+
+    </script>
+</body>
+</html>
